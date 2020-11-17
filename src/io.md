@@ -22,7 +22,7 @@ use std::io::Write;
 let mut stdout = std::io::stdout();
 let mut lock = stdout.lock();
 for line in lines {
-    writeln!(lock, "{}", line);
+    writeln!(lock, "{}", line)?;
 }
 // stdout is unlocked when `lock` is dropped
 ```
@@ -44,7 +44,7 @@ For example, change this unbuffered output code:
 use std::io::Write;
 let mut out = std::fs::File::create("test.txt").unwrap();
 for line in lines {
-    writeln!(out, "{}", line);
+    writeln!(out, "{}", line)?;
 }
 ```
 to this:
@@ -55,7 +55,7 @@ use std::io::{BufWriter, Write};
 let mut out = std::fs::File::create("test.txt")?;
 let mut buf = BufWriter::new(out);
 for line in lines {
-    writeln!(buf, "{}", line);
+    writeln!(buf, "{}", line)?;
 }
 buf.flush()?;
 # Ok(())
