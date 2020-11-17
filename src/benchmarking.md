@@ -1,0 +1,39 @@
+# Benchmarking
+
+When optimizing a program, you need a way to reliably answer the question "did
+this change speed things up?" This process is sometimes called benchmarking.
+Benchmarking is a complex topic and a thorough coverage is beyond the scope of
+this book, but here are the basics.
+
+First, you need workloads to measure. Ideally, you would have a variety of
+workloads that represent realistic usage of your program. Workloads using
+real-world inputs are best, but
+[microbenchmarks](https://stackoverflow.com/questions/2842695/what-is-microbenchmarking)
+and [stress tests](https://en.wikipedia.org/wiki/Stress_testing_(software)) can
+be useful in moderation.
+
+Second, you need a way to run the workloads, which will also dictate the
+metrics used. Rust's built-in [benchmark
+tests](https://doc.rust-lang.org/1.7.0/book/benchmark-tests.html) are a simple
+starting point. [Criterion](https://github.com/bheisler/criterion.rs) is a more
+sophisticated alternative. Custom benchmarking harnesses are also possible.
+For example, [rustc-perf](https://github.com/rust-lang/rustc-perf/) is the
+harness used to benchmark the Rust compiler.
+
+When it comes to metrics, there are many choices, and the right one(s) will
+depend on the nature of the program being benchmarked. For example, metrics
+that make sense for a batch program might not make sense for an interactive
+program. Wall-time is an obvious choice in many cases because it corresponds to
+what users perceive. However, it can suffer from high variance. In particular,
+tiny changes in memory layout can cause significant but ephemeral performance
+fluctuations. Therefore, other metrics with lower variance (such as cycles or
+instruction counts) may be a reasonable alternative.
+
+Summarizing measurements from multiple workloads is also a challenge, and there
+are a variety of ways to do it, with no single method being obviously best.
+
+Good benchmarking is hard. Having said that, do not stress too much about
+having a perfect benchmarking setup, particularly when you start optimizing a
+program. A mediocre setup is far better than no setup. Keep an open mind about
+what you are measuring, and over time you can make benchmarking improvements as
+you learn about the performance characteristics of your program.
