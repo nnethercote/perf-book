@@ -34,7 +34,7 @@ See the [Cargo documentation] for more details about the `debug` setting.
 
 [Cargo documentation]: https://doc.rust-lang.org/cargo/reference/profiles.html#debug
 
-Rust uses a demangling scheme to encode function names in compiled code. If a
+Rust uses a mangling scheme to encode function names in compiled code. If a
 profiler is unaware of this scheme, its output may contain function names like
 `_ZN3foo3barE` or `_ZN28_$u7b$$u7b$closure$u7d$$u7d$E` or
 `_ZN88_$LT$core..result..Result$LT$$u21$$C$$u20$E$GT$$u20$as$u20$std..process..Termination$GT$6report17hfc41d0da4a40b3e8E`.
