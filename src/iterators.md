@@ -13,7 +13,7 @@ Iterator<Item=T>` from a function than a `Vec<T>`. Note that sometimes
 additional lifetimes are required on these return types, as [this post]
 explains.
 
-[this post]: https://blog.katona.me/2019/12/29/Rust-Lifetimes-and-Iterators/)
+[`this post`]: https://blog.katona.me/2019/12/29/Rust-Lifetimes-and-Iterators/)
 
 Similarly, you can use [`extend`] to extend an existing collection (such as a
 `Vec`) with an iterator, rather than collecting the iterator into a `Vec` and
