@@ -306,7 +306,7 @@ fn do_stuff(x: u32, y: u32, vec: &mut Vec<u32>) {
 Sometimes it is worth keeping around a "workhorse" collection that can be
 reused. For example, if a `Vec` is needed for each iteration of a loop, you
 could declare the `Vec` outside the loop, use it within the loop body, and then
-call [`clear`] at the end of the loop body (to empty the loop without affecting
+call [`clear`] at the end of the loop body (to empty the `Vec` without affecting
 its capacity). This avoids allocations at the cost of obscuring the fact that
 each iteration's usage of the `Vec` is unrelated to the others.
 [**Example**](https://github.com/rust-lang/rust/pull/51870/commits/b0c78120e3ecae5f4043781f7a3f79e2277293e7).
