@@ -8,7 +8,7 @@ The rendered book is [here](https://nnethercote.github.io/perf-book/).
 
 ## Building
 
-The async book is built with [`mdbook`](https://github.com/rust-lang/mdBook),
+The performance book is built with [`mdbook`](https://github.com/rust-lang/mdBook),
 which can be installed with this command:
 ```
 cargo install mdbook
