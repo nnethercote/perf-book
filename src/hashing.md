@@ -29,7 +29,7 @@ If hashing performance is important in your program, it is worth trying more
 than one of these alternatives. For example, the following results were seen in
 rustc.
 - The switch from `fnv` to `fxhash` gave
-  [speed-ups of up to 6%](https://github.com/rust-lang/rust/pull/37229/commits/00e48affde2d349e3b3bfbd3d0f6afb5d76282a7).
+  [speedups of up to 6%](https://github.com/rust-lang/rust/pull/37229/commits/00e48affde2d349e3b3bfbd3d0f6afb5d76282a7).
 - An attempt to switch from `fxhash` to `ahash` resulted in
   [slow-downs of 1-4%](https://github.com/rust-lang/rust/issues/69153#issuecomment-589504301).
 - An attempt to switch from `fxhash` back to the default hasher resulted in
