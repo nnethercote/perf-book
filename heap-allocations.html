@@ -1,0 +1,465 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js rust">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Heap Allocations - The Rust Performance Book</title>
+        
+        
+
+
+        <!-- Custom HTML head -->
+        
+
+
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        
+        <link rel="icon" href="favicon.svg">
+        
+        
+        <link rel="shortcut icon" href="favicon.png">
+        
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        
+        <link rel="stylesheet" href="css/print.css" media="print">
+        
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        
+        <link rel="stylesheet" href="fonts/fonts.css">
+        
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        
+
+        
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "rust";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('rust')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded "><a href="introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="benchmarking.html"><strong aria-hidden="true">2.</strong> Benchmarking</a></li><li class="chapter-item expanded "><a href="build-configuration.html"><strong aria-hidden="true">3.</strong> Build Configuration</a></li><li class="chapter-item expanded "><a href="profiling.html"><strong aria-hidden="true">4.</strong> Profiling</a></li><li class="chapter-item expanded "><a href="inlining.html"><strong aria-hidden="true">5.</strong> Inlining</a></li><li class="chapter-item expanded "><a href="hashing.html"><strong aria-hidden="true">6.</strong> Hashing</a></li><li class="chapter-item expanded "><a href="heap-allocations.html" class="active"><strong aria-hidden="true">7.</strong> Heap Allocations</a></li><li class="chapter-item expanded "><a href="type-sizes.html"><strong aria-hidden="true">8.</strong> Type Sizes</a></li><li class="chapter-item expanded "><a href="standard-library-types.html"><strong aria-hidden="true">9.</strong> Standard Library Types</a></li><li class="chapter-item expanded "><a href="iterators.html"><strong aria-hidden="true">10.</strong> Iterators</a></li><li class="chapter-item expanded "><a href="io.html"><strong aria-hidden="true">11.</strong> I/O</a></li><li class="chapter-item expanded "><a href="logging-and-debugging.html"><strong aria-hidden="true">12.</strong> Logging and Debugging</a></li><li class="chapter-item expanded "><a href="wrapper-types.html"><strong aria-hidden="true">13.</strong> Wrapper Types</a></li><li class="chapter-item expanded "><a href="machine-code.html"><strong aria-hidden="true">14.</strong> Machine Code</a></li><li class="chapter-item expanded "><a href="parallelism.html"><strong aria-hidden="true">15.</strong> Parallelism</a></li><li class="chapter-item expanded "><a href="general-tips.html"><strong aria-hidden="true">16.</strong> General Tips</a></li><li class="chapter-item expanded "><a href="compile-times.html"><strong aria-hidden="true">17.</strong> Compile Times</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                        
+                    </div>
+
+                    <h1 class="menu-title">The Rust Performance Book</h1>
+
+                    <div class="right-buttons">
+                        
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        
+                        
+                        <a href="https://github.com/nnethercote/perf-book" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                        
+                    </div>
+                </div>
+
+                
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" name="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1><a class="header" href="#heap-allocations" id="heap-allocations">Heap Allocations</a></h1>
+<p>Heap allocations are moderately expensive. The exact details depend on
+allocator is in use, but each allocation (and deallocation) typically involves
+acquiring a global lock, doing some non-trivial data structure manipulation,
+and possibly executing a system call. Small allocations are not necessarily
+cheaper than large allocations. It is worth understanding which Rust data
+structures and operations cause allocations, because avoiding them can greatly
+improve performance.</p>
+<p>The <a href="https://docs.google.com/presentation/d/1q-c7UAyrUlM-eZyTo1pd8SZ0qwA_wYxmPZVOQkoDmH4/">Rust Container Cheat Sheet</a> has visualizations of common Rust types, and
+is an excellent companion to the following sections.</p>
+<h2><a class="header" href="#profiling" id="profiling">Profiling</a></h2>
+<p>If a general-purpose profiler shows <code>malloc</code>, <code>free</code>, and related functions as
+hot, then it is likely worth trying to reduce the allocation rate.</p>
+<p><a href="https://www.valgrind.org/docs/manual/dh-manual.html">DHAT</a> is an excellent profiler to use when reducing allocation rates. It
+precisely identifies hot allocation sites and their allocation rates. Exact
+results will vary, but experience with rustc has shown that reducing allocation
+rates by 10 allocations per million instructions executed can have measurable
+performance improvements (e.g. ~1%).</p>
+<p>Here is some example output from DHAT.</p>
+<pre><code class="language-text">AP 1.1/25 (2 children) {
+  Total:     54,533,440 bytes (4.02%, 2,714.28/Minstr) in 458,839 blocks (7.72%, 22.84/Minstr), avg size 118.85 bytes, avg lifetime 1,127,259,403.64 instrs (5.61% of program duration)
+  At t-gmax: 0 bytes (0%) in 0 blocks (0%), avg size 0 bytes
+  At t-end:  0 bytes (0%) in 0 blocks (0%), avg size 0 bytes
+  Reads:     15,993,012 bytes (0.29%, 796.02/Minstr), 0.29/byte
+  Writes:    20,974,752 bytes (1.03%, 1,043.97/Minstr), 0.38/byte
+  Allocated at {
+    #1: 0x95CACC9: alloc (alloc.rs:72)
+    #2: 0x95CACC9: alloc (alloc.rs:148)
+    #3: 0x95CACC9: reserve_internal&lt;syntax::tokenstream::TokenStream,alloc::alloc::Global&gt; (raw_vec.rs:669)
+    #4: 0x95CACC9: reserve&lt;syntax::tokenstream::TokenStream,alloc::alloc::Global&gt; (raw_vec.rs:492)
+    #5: 0x95CACC9: reserve&lt;syntax::tokenstream::TokenStream&gt; (vec.rs:460)
+    #6: 0x95CACC9: push&lt;syntax::tokenstream::TokenStream&gt; (vec.rs:989)
+    #7: 0x95CACC9: parse_token_trees_until_close_delim (tokentrees.rs:27)
+    #8: 0x95CACC9: syntax::parse::lexer::tokentrees::&lt;impl syntax::parse::lexer::StringReader&lt;'a&gt;&gt;::parse_token_tree (tokentrees.rs:81)
+  }
+}
+</code></pre>
+<p>It is beyond the scope of this book to describe everything in this example, but
+it should be clear that DHAT gives a wealth of information about allocations,
+such as where and how often they happen, how big they are, how long they live
+for, and how often they are accessed.</p>
+<h2><a class="header" href="#box" id="box"><code>Box</code></a></h2>
+<p><a href="https://doc.rust-lang.org/std/boxed/struct.Box.html"><code>Box</code></a> is the simplest heap-allocated type. A <code>Box&lt;T&gt;</code> value is a <code>T</code> value that
+is allocated on the heap. </p>
+<p>It is sometimes worth boxing one or more fields in a struct or enum fields to
+make a type smaller. (See the the <a href="type-sizes.html">Type Sizes</a> chapter for more
+about this.)</p>
+<p>Other than that, <code>Box</code> is straightforward and does not offer much scope for
+optimizations.</p>
+<h2><a class="header" href="#rcarc" id="rcarc"><code>Rc</code>/<code>Arc</code></a></h2>
+<p><a href="https://doc.rust-lang.org/std/rc/struct.Rc.html"><code>Rc</code></a>/<a href="https://doc.rust-lang.org/std/sync/struct.Arc.html"><code>Arc</code></a> are similar to <code>Box</code>, but the value on the heap is accompanied by
+two reference counts. They allows value sharing, which can be an effective way
+to reduce memory usage.</p>
+<p>However, if used for values that are rarely shared, they can increase allocation
+rates by heap allocating values that might otherwise not be heap allocated.
+<a href="https://github.com/rust-lang/rust/pull/37373/commits/c440a7ae654fb641e68a9ee53b03bf3f7133c2fe"><strong>Example</strong></a>.</p>
+<p>Unlike <code>Box</code>, calling <code>clone</code> on an <code>Rc</code>/<code>Arc</code> value does not involve an
+allocation. Instead, it merely increments a reference count.</p>
+<h2><a class="header" href="#vec" id="vec"><code>Vec</code></a></h2>
+<p><a href="https://doc.rust-lang.org/std/vec/struct.Vec.html"><code>Vec</code></a> is a heap-allocated type with a great deal of scope for optimizing the
+number of allocations, and/or minimizing the amount of wasted space. To do this
+requires understanding how its elements are stored.</p>
+<p>A <code>Vec</code> contains three words: a length, a capacity, and a (possibly null)
+pointer to some number of heap-allocated elements. Even if the <code>Vec</code> itself is
+not heap-allocated, the elements (if present) always will be. If elements are
+present, the memory holding those elements may be larger than necessary,
+providing space for additional future elements. The number of elements present
+is the length, and the number of elements that could be held without
+reallocating is the capacity. When the vector needs to grow beyond its current
+capacity, the elements will be copied into a larger heap allocation, and the
+old heap allocation will be freed.</p>
+<h3><a class="header" href="#vec-growth" id="vec-growth"><code>Vec</code> growth</a></h3>
+<p>A new, empty <code>Vec</code> created by the common means
+(<a href="https://doc.rust-lang.org/std/macro.vec.html"><code>vec![]</code></a>
+or <a href="https://doc.rust-lang.org/std/vec/struct.Vec.html#method.new"><code>Vec::new</code></a> or <a href="https://doc.rust-lang.org/std/default/trait.Default.html#tymethod.default"><code>Vec::default</code></a>) has a length and capacity of zero, and no
+heap allocation is required. If you repeatedly push individual elements onto
+the end of the <code>Vec</code>, it will periodically reallocate. The growth strategy is
+not specified, but at the time of writing it uses a quasi-doubling stategy
+resulting in the following capacities: 0, 4, 8, 16, 32, 64, and so on. (It
+skips directly from 0 to 4, instead of going via 1 and 2, because this <a href="https://github.com/rust-lang/rust/pull/72227">avoids
+many allocations</a> in practice.) As a vector grows, the frequency of
+reallocations will decrease exponentially, but the amount of possibly-wasted
+excess capacity will increase exponentially.</p>
+<p>This growth strategy is typical for growable data structures and reasonable in
+the general case, but if you know in advance the likely length of a vector you
+can do often do better. If you have a hot vector allocation site (e.g. a hot
+<a href="https://doc.rust-lang.org/std/vec/struct.Vec.html#method.push"><code>Vec::push</code></a> call), it is worth using <a href="https://doc.rust-lang.org/std/macro.eprintln.html"><code>eprintln!</code></a> to print the vector length
+at that site and then doing some post-processing (e.g. with <a href="https://github.com/nnethercote/counts/"><code>counts</code></a>) to
+determine the length distribution. For example, you might have many short
+vectors, or you might have a smaller number of very long vectors, and the best
+way to optimize the allocation site will vary accordingly.</p>
+<h3><a class="header" href="#short-vecs" id="short-vecs">Short <code>Vec</code>s</a></h3>
+<p>If you have many short vectors, you can use the <code>SmallVec</code> type from the
+<a href="https://crates.io/crates/smallvec"><code>smallvec</code></a> crate. <code>SmallVec&lt;[T; N]&gt;</code> is a drop-in replacement for <code>Vec</code> that
+can store <code>N</code> elements within the <code>SmallVec</code> itself, and then switches to a
+heap allocation if the number of elements exceeds that. (Note also that
+<code>vec![]</code> literals must be replaced with <code>smallvec![]</code> literals.)
+<a href="https://github.com/rust-lang/rust/pull/50565/commits/78262e700dc6a7b57e376742f344e80115d2d3f2"><strong>Example 1</strong></a>,
+<a href="https://github.com/rust-lang/rust/pull/55383/commits/526dc1421b48e3ee8357d58d997e7a0f4bb26915"><strong>Example 2</strong></a>.</p>
+<p><code>SmallVec</code> reliably reduces the allocation rate when used appropriately, but
+its use does not guarantee improved performance. It is slightly slower than
+<code>Vec</code> for normal operations because it must always check if the elements are
+heap-allocated or not. Also, If <code>N</code> is high or <code>T</code> is large, then the
+<code>SmallVec&lt;[T; N]&gt;</code> itself can be larger than <code>Vec&lt;T&gt;</code>, and copying of
+<code>SmallVec</code> values will be slower. As always, benchmarking is required to
+confirm that an optimization is effective.</p>
+<p>If you have many short vectors <em>and</em> you precisely know their maximum length,
+<code>ArrayVec</code> from the <a href="https://crates.io/crates/arrayvec"><code>arrayvec</code></a> crate is a
+better choice than <code>SmallVec</code>. It does not require the fallback to heap
+allocation, which makes it a little faster.
+<a href="https://github.com/rust-lang/rust/pull/74310/commits/c492ca40a288d8a85353ba112c4d38fe87ef453e"><strong>Example</strong></a>.</p>
+<h3><a class="header" href="#longer-vecs" id="longer-vecs">Longer <code>Vec</code>s</a></h3>
+<p>If you know the (definite or likely) minimum size of a vector, you can reserve
+the capacity with <a href="https://doc.rust-lang.org/std/vec/struct.Vec.html#method.with_capacity"><code>Vec::with_capacity</code></a>, <a href="https://doc.rust-lang.org/std/vec/struct.Vec.html#method.reserve"><code>Vec::reserve</code></a>, or
+<a href="https://doc.rust-lang.org/std/vec/struct.Vec.html#method.reserve_exact"><code>Vec::reserve_exact</code></a>. For example, if you know a vector will grow to have at
+least 20 elements, these functions can immediately provide a vector with a
+capacity of at least 20 using a single allocation, whereas pushing the items
+one at a time would result in four allocations (for capacities of 4, 8, 16, and
+32).</p>
+<p>If you know the maximum length of a vector, the above functions also let you
+not allocate excess space unnecessary. Similarly, <a href="https://doc.rust-lang.org/std/vec/struct.Vec.html#method.shrink_to_fit"><code>Vec::shrink_to_fit</code></a> can be
+used to minimize wasted space, but note that it may cause a reallocation.</p>
+<h2><a class="header" href="#string" id="string"><code>String</code></a></h2>
+<p>A <a href="https://doc.rust-lang.org/std/string/struct.String.html"><code>String</code></a> contains heap-allocated bytes. The representation and operation of
+<code>String</code> is very similar to a <code>Vec&lt;u8&gt;</code>. Many <code>Vec</code> methods relating to growth
+and capacity have equivalents for <code>String</code>, such as
+<a href="https://doc.rust-lang.org/std/string/struct.String.html#method.with_capacity"><code>String::with_capacity</code></a>.</p>
+<p>The <code>SmallString</code> type from the <a href="https://crates.io/crates/smallstr"><code>smallstr</code></a> crate is similar to the <code>SmallVec</code>
+type.</p>
+<p>Note that the <code>format!</code> macro produces a <code>String</code>, which means it performs an
+allocation. If you can avoid a <code>format!</code> call by using a string literal, that
+will avoid this allocation.
+<a href="https://github.com/rust-lang/rust/pull/55905/commits/c6862992d947331cd6556f765f6efbde0a709cf9"><strong>Example</strong></a>.</p>
+<h2><a class="header" href="#hash-tables" id="hash-tables">Hash tables</a></h2>
+<p><a href="https://doc.rust-lang.org/std/collections/struct.HashSet.html"><code>HashSet</code></a> and <a href="https://doc.rust-lang.org/std/collections/struct.HashMap.html"><code>HashMap</code></a> are hash tables. Their representation and
+operations are similar to those of <code>Vec</code>, in terms of allocations: they have
+a single contiguous heap allocation, holding keys and values, which is
+reallocated as necessary as the table grows. Many <code>Vec</code> methods relating to
+growth and capacity have equivalents for <code>HashSet</code>/<code>HashMap</code>, such as
+<a href="https://doc.rust-lang.org/std/collections/struct.HashSet.html#method.with_capacity"><code>HashSet::with_capacity</code></a>.</p>
+<h2><a class="header" href="#cow" id="cow"><code>Cow</code></a></h2>
+<p>Sometimes you have some borrowed data, such as a <code>&amp;str</code>, that is mostly
+read-only but occasionally needs to be modified. Cloning the data every time
+would be wasteful. Instead you can use “clone-on-write” semantics via the
+<a href="https://doc.rust-lang.org/std/borrow/enum.Cow.html"><code>Cow</code></a> type, which can represent both borrowed and owned data.</p>
+<p>Typically, when starting with a borrowed value <code>x</code> you wrap it in a <code>Cow</code> with
+<code>Cow::Borrowed(x)</code>. Because <code>Cow</code> implements <a href="https://doc.rust-lang.org/std/ops/trait.Deref.html"><code>Deref</code></a>, you can call
+non-mutating methods directly on the data it encloses. If mutation is desired,
+<a href="https://doc.rust-lang.org/std/borrow/enum.Cow.html#method.to_mut"><code>Cow::to_mut</code></a> will obtain a mutable reference to an owned value, cloning if
+necessary.</p>
+<p><code>Cow</code> can be fiddly to get working, but it is often worth the effort.
+<a href="https://github.com/rust-lang/rust/pull/37064/commits/b043e11de2eb2c60f7bfec5e15960f537b229e20"><strong>Example 1</strong></a>,
+<a href="https://github.com/rust-lang/rust/pull/50855/commits/ad471452ba6fbbf91ad566dc4bdf1033a7281811"><strong>Example 2</strong></a>,
+<a href="https://github.com/rust-lang/rust/pull/56336/commits/787959c20d062d396b97a5566e0a766d963af022"><strong>Example 3</strong></a>,
+<a href="https://github.com/rust-lang/rust/pull/68848/commits/67da45f5084f98eeb20cc6022d68788510dc832a"><strong>Example 4</strong></a>.</p>
+<h2><a class="header" href="#clone" id="clone"><code>clone</code></a></h2>
+<p>Calling <a href="https://doc.rust-lang.org/std/clone/trait.Clone.html#tymethod.clone"><code>clone</code></a> on a value that contains heap allocated memory typically
+involves additional allocations. For example, calling <code>clone</code> on a non-empty
+<code>Vec</code> requires a new allocation for the elements (but note that the capacity of
+the new <code>Vec</code> might not be the same as the capacity of the original <code>Vec</code>). The
+exception is <code>Rc</code>/<code>Arc</code>, where a <code>clone</code> call just increments the reference
+count.</p>
+<p><a href="https://doc.rust-lang.org/std/clone/trait.Clone.html#method.clone_from"><code>clone_from</code></a> is an alternative to <code>clone</code>. <code>a.clone_from(&amp;b)</code> is equivalent
+to <code>a = b.clone()</code> but may avoid unnecessary allocations. For example, if you
+want to clone one <code>Vec</code> over the top of an existing <code>Vec</code>, the existing <code>Vec</code>‘s
+heap allocation will be reused if possible, as the following example shows.</p>
+<pre><pre class="playground"><code class="language-rust edition2018">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let mut v1: Vec&lt;u32&gt; = Vec::with_capacity(99);
+let v2: Vec&lt;u32&gt; = vec![1, 2, 3];
+v1.clone_from(&amp;v2); // v1's allocation is reused
+assert_eq!(v1.capacity(), 99);
+<span class="boring">}
+</span></code></pre></pre>
+<p>Although <code>clone</code> usually causes allocations, it is a reasonable thing to use in
+many circumstances and can often make code simpler. Use profiling data to see
+which <code>clone</code> calls are hot and worth taking the effort to avoid.</p>
+<p>Sometimes Rust code ends up containing unnecessary <code>clone</code> calls, due to (a)
+programmer error, or (b) changes in the code that render previously-necessary
+<code>clone</code> calls unnecessary. If you see a hot <code>clone</code> call that does not seem
+necessary, sometimes it can simply be removed.
+<a href="https://github.com/rust-lang/rust/pull/37318/commits/e382267cfb9133ef12d59b66a2935ee45b546a61"><strong>Example 1</strong></a>,
+<a href="https://github.com/rust-lang/rust/pull/37705/commits/11c1126688bab32f76dbe1a973906c7586da143f"><strong>Example 2</strong></a>,
+<a href="https://github.com/rust-lang/rust/pull/64302/commits/36b37e22de92b584b9cf4464ed1d4ad317b798be"><strong>Example 3</strong></a>.</p>
+<h2><a class="header" href="#to_owned" id="to_owned"><code>to_owned</code></a></h2>
+<p><a href="https://doc.rust-lang.org/std/borrow/trait.ToOwned.html#tymethod.to_owned"><code>ToOwned::to_owned</code></a> is implemented for many common types. It creates owned
+data from borrowed data, usually by cloning, and therefore often causes heap
+allocations. For example, it can be used to create a <code>String</code> from a <code>&amp;str</code>.</p>
+<p>Sometimes <code>to_owned</code> calls can be avoided by storing a reference to borrowed
+data in a struct rather than an owned copy. This requires lifetime annotations
+on the struct, complicating the code, and should only be done when profiling
+and benchmarking shows that it is worthwhile.
+<a href="https://github.com/rust-lang/rust/pull/50855/commits/6872377357dbbf373cfd2aae352cb74cfcc66f34"><strong>Example</strong></a>.</p>
+<h2><a class="header" href="#reusing-collections" id="reusing-collections">Reusing Collections</a></h2>
+<p>Sometimes you need to build up a collection such as a <code>Vec</code> in stages. It is
+usually better to do this by modifying a single <code>Vec</code> than by building multiple
+<code>Vec</code>s and then combining them.</p>
+<p>For example, if you have a function <code>do_stuff</code> that produces a <code>Vec</code> that might
+be called multiple times:</p>
+<pre><pre class="playground"><code class="language-rust edition2018">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn do_stuff(x: u32, y: u32) -&gt; Vec&lt;u32&gt; {
+    vec![x, y]
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>It might be better to instead modify a passed-in <code>Vec</code>:</p>
+<pre><pre class="playground"><code class="language-rust edition2018">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn do_stuff(x: u32, y: u32, vec: &amp;mut Vec&lt;u32&gt;) {
+    vec.push(x);
+    vec.push(y);
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>Sometimes it is worth keeping around a “workhorse” collection that can be
+reused. For example, if a <code>Vec</code> is needed for each iteration of a loop, you
+could declare the <code>Vec</code> outside the loop, use it within the loop body, and then
+call <a href="https://doc.rust-lang.org/std/vec/struct.Vec.html#method.clear"><code>clear</code></a> at the end of the loop body (to empty the loop without affecting
+its capacity). This avoids allocations at the cost of obscuring the fact that
+each iteration’s usage of the <code>Vec</code> is unrelated to the others.
+<a href="https://github.com/rust-lang/rust/pull/51870/commits/b0c78120e3ecae5f4043781f7a3f79e2277293e7"><strong>Example</strong></a>.</p>
+<p>Similarly, it is sometimes worth keeping a “workhorse” collection within a
+struct, to be reused in one or more methods that are called repeatedly.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                        
+                            <a rel="prev" href="hashing.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                        
+
+                        
+                            <a rel="next" href="type-sizes.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                
+                    <a rel="prev" href="hashing.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                
+
+                
+                    <a rel="next" href="type-sizes.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                
+            </nav>
+
+        </div>
+
+        
+
+        
+
+        
+
+        
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+        
+
+        
+
+        
+        <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
+        
+
+        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        
+
+        
+
+    </body>
+</html>
