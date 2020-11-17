@@ -68,7 +68,7 @@ optimizations.
 ## `Rc`/`Arc`
 
 [`Rc`]/[`Arc`] are similar to `Box`, but the value on the heap is accompanied by
-two reference counts. They allows value sharing, which can be an effective way
+two reference counts. They allow value sharing, which can be an effective way
 to reduce memory usage.
 
 [`Rc`]: https://doc.rust-lang.org/std/rc/struct.Rc.html
