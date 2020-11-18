@@ -169,11 +169,11 @@
                     <main>
                         <h1><a class="header" href="#profiling" id="profiling">Profiling</a></h1>
 <p>When optimizing a program, you also need a way to determine which parts of the
-program are hot and worth modifying. This is best done with a profiler. There
-are many different profilers available, each with their strengths and
-weaknesses.</p>
-<p>The following is an incomplete list of profilers that have been used
-successfully on Rust programs.</p>
+program are hot and worth modifying. This is best done via profiling.</p>
+<h2><a class="header" href="#profilers" id="profilers">Profilers</a></h2>
+<p>There are many different profilers available, each with their strengths and
+weaknesses. The following is an incomplete list of profilers that have been
+used successfully on Rust programs.</p>
 <ul>
 <li><a href="https://perf.wiki.kernel.org/index.php/Main_Page">perf</a> is a general-purpose profiler that uses hardware performance counters.
 The <a href="https://github.com/KDAB/hotspot">Hotspot</a> viewer is good for viewing data recorded by perf.</li>
@@ -185,15 +185,19 @@ another heap profiling tool.</li>
 <li><a href="https://github.com/nnethercote/counts/"><code>counts</code></a> supports ad hoc profiling, which combines the use of <code>eprintln!</code>
 statement with frequency-based post-processing, which is good for getting
 domain-specific insights into parts of your code.</li>
+<li><a href="https://github.com/plasma-umass/coz">Coz</a> performs <em>causal profiling</em> to measure optimization potential. It has
+Rust support via <a href="https://github.com/plasma-umass/coz/tree/master/rust">coz-rs</a>.</li>
 </ul>
+<h2><a class="header" href="#debug-info" id="debug-info">Debug Info</a></h2>
 <p>To profile a release build effectively you might need to enable source line
 debug info. To do this, add the following lines to your <code>Cargo.toml</code> file:</p>
 <pre><code class="language-toml">[profile.release]
 debug = 1
 </code></pre>
 <p>See the <a href="https://doc.rust-lang.org/cargo/reference/profiles.html#debug">Cargo documentation</a> for more details about the <code>debug</code> setting.</p>
+<h2><a class="header" href="#symbol-demangling" id="symbol-demangling">Symbol Demangling</a></h2>
 <p>Rust uses a mangling scheme to encode function names in compiled code. If a
-profiler is unaware of this scheme, its output may contain function names like
+profiler is unaware of this scheme, its output may contain symbol names like
 <code>_ZN3foo3barE</code> or <code>_ZN28_$u7b$$u7b$closure$u7d$$u7d$E</code> or
 <code>_ZN88_$LT$core..result..Result$LT$$u21$$C$$u20$E$GT$$u20$as$u20$std..process..Termination$GT$6report17hfc41d0da4a40b3e8E</code>.
 Names like these can be manually demangled using <a href="https://crates.io/crates/rustfilt"><code>rustfilt</code></a>.</p>
