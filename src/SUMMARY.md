@@ -3,6 +3,7 @@
 - [Introduction](introduction.md)
 - [Benchmarking](benchmarking.md)
 - [Build Configuration](build-configuration.md)
+- [Linting](linting.md)
 - [Profiling](profiling.md)
 - [Inlining](inlining.md)
 - [Hashing](hashing.md)
