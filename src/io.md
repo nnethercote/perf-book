@@ -17,14 +17,17 @@ for line in lines {
 ```
 to this:
 ```rust
+# fn blah() -> Result<(), std::io::Error> {
 # let lines = vec!["one", "two", "three"];
 use std::io::Write;
 let mut stdout = std::io::stdout();
 let mut lock = stdout.lock();
 for line in lines {
-    writeln!(lock, "{}", line);
+    writeln!(lock, "{}", line)?;
 }
 // stdout is unlocked when `lock` is dropped
+# Ok(())
+# }
 ```
 stdin and stderr can likewise be locked when doing repeated operations on them.
 
@@ -40,12 +43,15 @@ minimizing the number of system calls required.
 
 For example, change this unbuffered output code:
 ```rust
+# fn blah() -> Result<(), std::io::Error> {
 # let lines = vec!["one", "two", "three"];
 use std::io::Write;
 let mut out = std::fs::File::create("test.txt").unwrap();
 for line in lines {
-    writeln!(out, "{}", line);
+    writeln!(out, "{}", line)?;
 }
+# Ok(())
+# }
 ```
 to this:
 ```rust
@@ -55,7 +61,7 @@ use std::io::{BufWriter, Write};
 let mut out = std::fs::File::create("test.txt")?;
 let mut buf = BufWriter::new(out);
 for line in lines {
-    writeln!(buf, "{}", line);
+    writeln!(buf, "{}", line)?;
 }
 buf.flush()?;
 # Ok(())

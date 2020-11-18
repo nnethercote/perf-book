@@ -21,6 +21,13 @@ Having said that, most optimizations result in small speedups. Although no
 single small speedup is noticeable, they really add up if you can do enough of
 them.
 
+Writing code that works well with modern hardware is not always easy, but worth
+striving for. For example, try to minimize cache misses and branch
+mispredictions, where possible.
+
+Most optimizations result in small speed-ups. Although no single small speed-up
+is noticeable, they really add up if you can do enough of them.
+
 Different profilers have different strengths. It is good to use more than one.
 
 When profiling indicates that a function is hot, there are two common ways to

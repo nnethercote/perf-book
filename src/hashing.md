@@ -18,7 +18,7 @@ provide large speed wins.
 - [`fnv`] provides `FnvHashSet` and `FnvHashMap` types. Its hashing algorithm
   is higher quality than `fxhash`'s but a little slower.
 - [`ahash`] provides `AHashSet` and `AHashMap`. Its hashing algorithm can take
-  advantage of AES hardware on Intel processors.
+  advantage of AES instruction support that is available on some processors.
 
 [HashDoS attacks]: https://en.wikipedia.org/wiki/Collision_attack
 [`fxhash`]: https://crates.io/crates/fxhash
