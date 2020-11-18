@@ -79,6 +79,7 @@ for different profiles.
 Profile-guided optimization (PGO) is a compilation model where you compile
 your program, run it on sample data while collecting profiling data, and then
 use that profiling data to guide a second compilation of the program.
+[**Example**](https://blog.rust-lang.org/inside-rust/2020/11/11/exploring-pgo-for-the-rust-compiler.html).
 
 It is an advanced technique that takes some effort to set up, but is worthwhile
 in some cases. See [the PGO section of the rustc
