@@ -18,6 +18,8 @@ used successfully on Rust programs.
 - [`counts`] supports ad hoc profiling, which combines the use of `eprintln!`
   statement with frequency-based post-processing, which is good for getting
   domain-specific insights into parts of your code.
+- [Coz] performs *causal profiling* to measure optimization potential. It has
+  Rust support via [coz-rs].
 
 [perf]: https://perf.wiki.kernel.org/index.php/Main_Page
 [Hotspot]: https://github.com/KDAB/hotspot
@@ -26,6 +28,8 @@ used successfully on Rust programs.
 [DHAT]: https://www.valgrind.org/docs/manual/dh-manual.html
 [heaptrack]: https://github.com/KDE/heaptrack
 [`counts`]: https://github.com/nnethercote/counts/
+[Coz]: https://github.com/plasma-umass/coz
+[coz-rs]: https://github.com/plasma-umass/coz/tree/master/rust
 
 ## Debug Info
 
