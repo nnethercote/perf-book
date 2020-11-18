@@ -1,12 +1,13 @@
 # Profiling
 
 When optimizing a program, you also need a way to determine which parts of the
-program are hot and worth modifying. This is best done with a profiler. There
-are many different profilers available, each with their strengths and
-weaknesses.
+program are hot and worth modifying. This is best done via profiling.
 
-The following is an incomplete list of profilers that have been used
-successfully on Rust programs.
+## Profilers
+
+There are many different profilers available, each with their strengths and
+weaknesses. The following is an incomplete list of profilers that have been
+used successfully on Rust programs.
 - [perf] is a general-purpose profiler that uses hardware performance counters.
   The [Hotspot] viewer is good for viewing data recorded by perf.
 - [Cachegrind] & [Callgrind] give global, per-function, and per-source-line
@@ -26,6 +27,8 @@ successfully on Rust programs.
 [heaptrack]: https://github.com/KDE/heaptrack
 [`counts`]: https://github.com/nnethercote/counts/
 
+## Debug Info
+
 To profile a release build effectively you might need to enable source line
 debug info. To do this, add the following lines to your `Cargo.toml` file:
 ```toml
@@ -36,8 +39,10 @@ See the [Cargo documentation] for more details about the `debug` setting.
 
 [Cargo documentation]: https://doc.rust-lang.org/cargo/reference/profiles.html#debug
 
+## Symbol Demangling
+
 Rust uses a mangling scheme to encode function names in compiled code. If a
-profiler is unaware of this scheme, its output may contain function names like
+profiler is unaware of this scheme, its output may contain symbol names like
 `_ZN3foo3barE` or `_ZN28_$u7b$$u7b$closure$u7d$$u7d$E` or
 `_ZN88_$LT$core..result..Result$LT$$u21$$C$$u20$E$GT$$u20$as$u20$std..process..Termination$GT$6report17hfc41d0da4a40b3e8E`.
 Names like these can be manually demangled using [`rustfilt`].
