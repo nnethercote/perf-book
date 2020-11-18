@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>General Tips - The Rust Performance Book</title>
+        <title>Linting - The Rust Performance Book</title>
         
         
 
@@ -95,7 +95,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="benchmarking.html"><strong aria-hidden="true">2.</strong> Benchmarking</a></li><li class="chapter-item expanded "><a href="build-configuration.html"><strong aria-hidden="true">3.</strong> Build Configuration</a></li><li class="chapter-item expanded "><a href="linting.html"><strong aria-hidden="true">4.</strong> Linting</a></li><li class="chapter-item expanded "><a href="profiling.html"><strong aria-hidden="true">5.</strong> Profiling</a></li><li class="chapter-item expanded "><a href="inlining.html"><strong aria-hidden="true">6.</strong> Inlining</a></li><li class="chapter-item expanded "><a href="hashing.html"><strong aria-hidden="true">7.</strong> Hashing</a></li><li class="chapter-item expanded "><a href="heap-allocations.html"><strong aria-hidden="true">8.</strong> Heap Allocations</a></li><li class="chapter-item expanded "><a href="type-sizes.html"><strong aria-hidden="true">9.</strong> Type Sizes</a></li><li class="chapter-item expanded "><a href="standard-library-types.html"><strong aria-hidden="true">10.</strong> Standard Library Types</a></li><li class="chapter-item expanded "><a href="iterators.html"><strong aria-hidden="true">11.</strong> Iterators</a></li><li class="chapter-item expanded "><a href="io.html"><strong aria-hidden="true">12.</strong> I/O</a></li><li class="chapter-item expanded "><a href="logging-and-debugging.html"><strong aria-hidden="true">13.</strong> Logging and Debugging</a></li><li class="chapter-item expanded "><a href="wrapper-types.html"><strong aria-hidden="true">14.</strong> Wrapper Types</a></li><li class="chapter-item expanded "><a href="machine-code.html"><strong aria-hidden="true">15.</strong> Machine Code</a></li><li class="chapter-item expanded "><a href="parallelism.html"><strong aria-hidden="true">16.</strong> Parallelism</a></li><li class="chapter-item expanded "><a href="general-tips.html" class="active"><strong aria-hidden="true">17.</strong> General Tips</a></li><li class="chapter-item expanded "><a href="compile-times.html"><strong aria-hidden="true">18.</strong> Compile Times</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="benchmarking.html"><strong aria-hidden="true">2.</strong> Benchmarking</a></li><li class="chapter-item expanded "><a href="build-configuration.html"><strong aria-hidden="true">3.</strong> Build Configuration</a></li><li class="chapter-item expanded "><a href="linting.html" class="active"><strong aria-hidden="true">4.</strong> Linting</a></li><li class="chapter-item expanded "><a href="profiling.html"><strong aria-hidden="true">5.</strong> Profiling</a></li><li class="chapter-item expanded "><a href="inlining.html"><strong aria-hidden="true">6.</strong> Inlining</a></li><li class="chapter-item expanded "><a href="hashing.html"><strong aria-hidden="true">7.</strong> Hashing</a></li><li class="chapter-item expanded "><a href="heap-allocations.html"><strong aria-hidden="true">8.</strong> Heap Allocations</a></li><li class="chapter-item expanded "><a href="type-sizes.html"><strong aria-hidden="true">9.</strong> Type Sizes</a></li><li class="chapter-item expanded "><a href="standard-library-types.html"><strong aria-hidden="true">10.</strong> Standard Library Types</a></li><li class="chapter-item expanded "><a href="iterators.html"><strong aria-hidden="true">11.</strong> Iterators</a></li><li class="chapter-item expanded "><a href="io.html"><strong aria-hidden="true">12.</strong> I/O</a></li><li class="chapter-item expanded "><a href="logging-and-debugging.html"><strong aria-hidden="true">13.</strong> Logging and Debugging</a></li><li class="chapter-item expanded "><a href="wrapper-types.html"><strong aria-hidden="true">14.</strong> Wrapper Types</a></li><li class="chapter-item expanded "><a href="machine-code.html"><strong aria-hidden="true">15.</strong> Machine Code</a></li><li class="chapter-item expanded "><a href="parallelism.html"><strong aria-hidden="true">16.</strong> Parallelism</a></li><li class="chapter-item expanded "><a href="general-tips.html"><strong aria-hidden="true">17.</strong> General Tips</a></li><li class="chapter-item expanded "><a href="compile-times.html"><strong aria-hidden="true">18.</strong> Compile Times</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -167,71 +167,32 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1><a class="header" href="#general-tips" id="general-tips">General Tips</a></h1>
-<p>The previous sections of this book have discussed Rust-specific techniques.
-This section gives a brief overview of some general performance principles.</p>
-<p>As long as the obvious pitfalls are avoided (e.g. <a href="build-configuration.html">using non-release builds</a>),
-Rust generally has good performance. Especially if you are used to
-dynamically-typed languages such as Python and Ruby.</p>
-<p>Optimized code is often more complex and takes more effort to write than
-unoptimized code. For this reason, it is only worth optimizing hot code.</p>
-<p>The biggest performance improvement often come from changes to algorithms or
-data structures, rather than low-level optimizations.
-<a href="https://github.com/rust-lang/rust/pull/53383/commits/5745597e6195fe0591737f242d02350001b6c590"><strong>Example 1</strong></a>,
-<a href="https://github.com/rust-lang/rust/pull/54318/commits/154be2c98cf348de080ce951df3f73649e8bb1a6"><strong>Example 2</strong></a>.</p>
-<p>Writing code that works well with modern hardware is not always easy, but worth
-striving for. For example, try to minimize cache misses and branch
-mispredictions, where possible.</p>
-<p>Most optimizations result in small speed-ups. Although no single small speed-up
-is noticeable, they really add up if you can do enough of them.</p>
-<p>Different profilers have different strengths. It is good to use more than one.</p>
-<p>When profiling indicates that a function is hot, there are two common ways to
-speed things up: (a) make the function faster, and/or (b) avoid calling it as
-much.</p>
-<p>It is usually easier, and often as effective, to avoid silly slow-downs as it
-is to introduce clever speed-ups.</p>
-<p>Avoid computing things unless necessary. Lazy/on-demand computations are
-often a win.
-<a href="https://github.com/rust-lang/rust/pull/36592/commits/80a44779f7a211e075da9ed0ff2763afa00f43dc"><strong>Example 1</strong></a>,
-<a href="https://github.com/rust-lang/rust/pull/50339/commits/989815d5670826078d9984a3515eeb68235a4687"><strong>Example 2</strong></a>.</p>
-<p>Complex general cases can often be avoided by optimistically checking for
-common special cases that are simpler.
-<a href="https://github.com/rust-lang/rust/pull/68790/commits/d62b6f204733d255a3e943388ba99f14b053bf4a"><strong>Example 1</strong></a>,
-<a href="https://github.com/rust-lang/rust/pull/53733/commits/130e55665f8c9f078dec67a3e92467853f400250"><strong>Example 2</strong></a>,
-<a href="https://github.com/rust-lang/rust/pull/65260/commits/59e41edcc15ed07de604c61876ea091900f73649"><strong>Example 3</strong></a>.
-In particular, specially handling collections with 0, 1, or 2 elements is often
-a win when small sizes dominate.
-<a href="https://github.com/rust-lang/rust/pull/50932/commits/2ff632484cd8c2e3b123fbf52d9dd39b54a94505"><strong>Example 1</strong></a>,
-<a href="https://github.com/rust-lang/rust/pull/64627/commits/acf7d4dcdba4046917c61aab141c1dec25669ce9"><strong>Example 2</strong></a>,
-<a href="https://github.com/rust-lang/rust/pull/64949/commits/14192607d38f5501c75abea7a4a0e46349df5b5f"><strong>Example 3</strong></a>,
-<a href="https://github.com/rust-lang/rust/pull/64949/commits/d1a7bb36ad0a5932384eac03d3fb834efc0317e5"><strong>Example 4</strong></a>.</p>
-<p>Similarly, when dealing with repetitive data, it is often possible to use a
-simple form of data compression, by using a compact representation for common
-values and then having a fallback to a secondary table for unusual values.
-<a href="https://github.com/rust-lang/rust/pull/54420/commits/b2f25e3c38ff29eebe6c8ce69b8c69243faa440d"><strong>Example 1</strong></a>,
-<a href="https://github.com/rust-lang/rust/pull/59693/commits/fd7f605365b27bfdd3cd6763124e81bddd61dd28"><strong>Example 2</strong></a>,
-<a href="https://github.com/rust-lang/rust/pull/65750/commits/eea6f23a0ed67fd8c6b8e1b02cda3628fee56b2f"><strong>Example 3</strong></a>.</p>
-<p>When code deals with multiple cases, measure case frequencies and handle the
-most common ones first.</p>
-<p>When dealing with lookups that involve high locality, it can be a win to put a
-small cache in front of a data structure.</p>
-<p>Optimized code often has a non-obvious structure, which means that explanatory
-comments are valuable, particularly those that reference profiling
-measurements. A comment like “99% of the time this vector has 0 or 1 elements,
-so handle those cases first” can be illuminating.</p>
+                        <h1><a class="header" href="#linting" id="linting">Linting</a></h1>
+<p><a href="https://github.com/rust-lang/rust-clippy">Clippy</a> is a collection of lints to catch common mistakes in Rust code. It is
+an excellent tool to run on Rust code in general. It can also help with
+performance, because a number of the lints relate to code patterns that can
+cause sub-optimal performance.</p>
+<p>Once installed, it is easy to run:</p>
+<pre><code class="language-text">cargo clippy
+</code></pre>
+<p>The full list of performance lints can be seen by visiting the <a href="https://rust-lang.github.io/rust-clippy/master/">lint list</a> and
+deselecting all the lint groups except for “Perf”.</p>
+<p>As well as making the code faster, the performance lint suggestions usually
+result in code that is simpler and more idiomatic, so they are worth following
+even for code that is not hot.</p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
                         
-                            <a rel="prev" href="parallelism.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="build-configuration.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
                         
 
                         
-                            <a rel="next" href="compile-times.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next" href="profiling.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
                         
@@ -243,13 +204,13 @@ so handle those cases first” can be illuminating.</p>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
                 
-                    <a rel="prev" href="parallelism.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="build-configuration.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
                 
 
                 
-                    <a rel="next" href="compile-times.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next" href="profiling.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
                 
