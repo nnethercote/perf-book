@@ -487,7 +487,7 @@ about this.)</p>
 optimizations.</p>
 <h2><a class="header" href="#rcarc" id="rcarc"><code>Rc</code>/<code>Arc</code></a></h2>
 <p><a href="https://doc.rust-lang.org/std/rc/struct.Rc.html"><code>Rc</code></a>/<a href="https://doc.rust-lang.org/std/sync/struct.Arc.html"><code>Arc</code></a> are similar to <code>Box</code>, but the value on the heap is accompanied by
-two reference counts. They allows value sharing, which can be an effective way
+two reference counts. They allow value sharing, which can be an effective way
 to reduce memory usage.</p>
 <p>However, if used for values that are rarely shared, they can increase allocation
 rates by heap allocating values that might otherwise not be heap allocated.
