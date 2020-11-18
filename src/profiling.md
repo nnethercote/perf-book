@@ -12,7 +12,8 @@ successfully on Rust programs.
 - [Cachegrind] & [Callgrind] give global, per-function, and per-source-line
   instruction counts and simulated cache and branch prediction data.
 - [DHAT] is good for finding which parts of the code are causing a lot of
-  allocations, and for giving insight into peak memory usage.
+  allocations, and for giving insight into peak memory usage. [heaptrack] is
+  another heap profiling tool.
 - [`counts`] supports ad hoc profiling, which combines the use of `eprintln!`
   statement with frequency-based post-processing, which is good for getting
   domain-specific insights into parts of your code.
@@ -22,6 +23,7 @@ successfully on Rust programs.
 [Cachegrind]: https://www.valgrind.org/docs/manual/cg-manual.html
 [Callgrind]: https://www.valgrind.org/docs/manual/cl-manual.html
 [DHAT]: https://www.valgrind.org/docs/manual/dh-manual.html
+[heaptrack]: https://github.com/KDE/heaptrack
 [`counts`]: https://github.com/nnethercote/counts/
 
 To profile a release build effectively you might need to enable source line
