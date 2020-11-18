@@ -184,7 +184,7 @@ out-perform all other hash algorithms within rustc.</li>
 <li><a href="https://crates.io/crates/fnv"><code>fnv</code></a> provides <code>FnvHashSet</code> and <code>FnvHashMap</code> types. Its hashing algorithm
 is higher quality than <code>fxhash</code>‘s but a little slower.</li>
 <li><a href="https://crates.io/crates/ahash"><code>ahash</code></a> provides <code>AHashSet</code> and <code>AHashMap</code>. Its hashing algorithm can take
-advantage of AES hardware on Intel processors.</li>
+advantage of AES instruction support that is available on some processors.</li>
 </ul>
 <p>If hashing performance is important in your program, it is worth trying more
 than one of these alternatives. For example, the following results were seen in
