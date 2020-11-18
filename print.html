@@ -171,18 +171,23 @@
                     <main>
                         <h1><a class="header" href="#introduction" id="introduction">Introduction</a></h1>
 <p>Performance is important for many Rust programs. </p>
-<p>This book contains techniques that can improve the performance—speed and memory
-usage—of Rust programs. It also contains some techniques that will improve the
-compile times of Rust programs. Some of these techniques only require changing
-build configurations, but many require changing code.</p>
+<p>This book contains many techniques that can improve the performance—speed and
+memory usage—of Rust programs. The <a href="compile-times.html">Compile Times</a> section also contains some
+techniques that will improve the compile times of Rust programs. Some of the
+book’s techniques only require changing build configurations, but many require
+changing code.</p>
+<p>Some of the techniques within are entirely Rust-specific, and some involve
+ideas that can be applied (often with modifications) to programs written in
+other languages. The <a href="general-tips.html">General Tips</a> section also includes some general
+principles that apply to any programming language. Nonetheless, this book is
+mostly about the performance of Rust programs and is no substitute for a
+general purpose guide to profiling and optimization.</p>
+<p>The book also focuses on techniques that are practical: many are accompanied by
+links to pull requests or other resources that show how the technique was used
+on a real-world Rust program.</p>
 <p>This book is aimed at intermediate and advanced Rust users. Beginner Rust users
 have more than enough to learn and these techniques are likely to be an
 unhelpful distraction to them.</p>
-<p>Some of the techniques within are entirely Rust-specific, and some involve
-ideas that can be applied (often with modifications) to programs written in
-other languages. The techniques are practical: many are accompanied by links to
-pull requests that show how the technique was used on a real-world Rust
-program.</p>
 <h1><a class="header" href="#benchmarking" id="benchmarking">Benchmarking</a></h1>
 <p>When optimizing a program, you need a way to reliably answer the question “did
 this change speed things up?” This process is sometimes called benchmarking.
@@ -1009,9 +1014,11 @@ unoptimized code. For this reason, it is only worth optimizing hot code.</p>
 data structures, rather than low-level optimizations.
 <a href="https://github.com/rust-lang/rust/pull/53383/commits/5745597e6195fe0591737f242d02350001b6c590"><strong>Example 1</strong></a>,
 <a href="https://github.com/rust-lang/rust/pull/54318/commits/154be2c98cf348de080ce951df3f73649e8bb1a6"><strong>Example 2</strong></a>.</p>
-<p>Having said that, most optimizations result in small speed-ups. Although no
-single small speed-up is noticeable, they really add up if you can do enough of
-them.</p>
+<p>Writing code that works well with modern hardware is not always easy, but worth
+striving for. For example, try to minimize cache misses and branch
+mispredictions, where possible.</p>
+<p>Most optimizations result in small speed-ups. Although no single small speed-up
+is noticeable, they really add up if you can do enough of them.</p>
 <p>Different profilers have different strengths. It is good to use more than one.</p>
 <p>When profiling indicates that a function is hot, there are two common ways to
 speed things up: (a) make the function faster, and/or (b) avoid calling it as
