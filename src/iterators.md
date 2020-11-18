@@ -2,9 +2,9 @@
 
 ## `collect`
 
-[`Iterator::collect`] converts an iterator into a collection,`Vec`
+[`Iterator::collect`] converts an iterator into a collection, like `Vec`,
 which typically requires an allocation. You should avoid calling `collect` if
-the collection is then only iterated over again.
+the collection is later iterated over again.
 
 [`Iterator::collect`]: https://doc.rust-lang.org/std/iter/trait.Iterator.html#method.collect
 
