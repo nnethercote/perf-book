@@ -185,15 +185,18 @@ have repeated calls to these macros it may be better to lock stdout manually.</p
 <pre><pre class="playground"><code class="language-rust edition2018">
 <span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
+</span><span class="boring">fn blah() -&gt; Result&lt;(), std::io::Error&gt; {
 </span><span class="boring">let lines = vec![&quot;one&quot;, &quot;two&quot;, &quot;three&quot;];
 </span>use std::io::Write;
 let mut stdout = std::io::stdout();
 let mut lock = stdout.lock();
 for line in lines {
-    writeln!(lock, &quot;{}&quot;, line);
+    writeln!(lock, &quot;{}&quot;, line)?;
 }
 // stdout is unlocked when `lock` is dropped
-<span class="boring">}
+<span class="boring">Ok(())
+</span><span class="boring">}
+</span><span class="boring">}
 </span></code></pre></pre>
 <p>stdin and stderr can likewise be locked when doing repeated operations on them.</p>
 <h2><a class="header" href="#buffering" id="buffering">Buffering</a></h2>
@@ -205,13 +208,16 @@ minimizing the number of system calls required.</p>
 <pre><pre class="playground"><code class="language-rust edition2018">
 <span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
+</span><span class="boring">fn blah() -&gt; Result&lt;(), std::io::Error&gt; {
 </span><span class="boring">let lines = vec![&quot;one&quot;, &quot;two&quot;, &quot;three&quot;];
 </span>use std::io::Write;
 let mut out = std::fs::File::create(&quot;test.txt&quot;).unwrap();
 for line in lines {
-    writeln!(out, &quot;{}&quot;, line);
+    writeln!(out, &quot;{}&quot;, line)?;
 }
-<span class="boring">}
+<span class="boring">Ok(())
+</span><span class="boring">}
+</span><span class="boring">}
 </span></code></pre></pre>
 <p>to this:</p>
 <pre><pre class="playground"><code class="language-rust edition2018">
@@ -223,7 +229,7 @@ for line in lines {
 let mut out = std::fs::File::create(&quot;test.txt&quot;)?;
 let mut buf = BufWriter::new(out);
 for line in lines {
-    writeln!(buf, &quot;{}&quot;, line);
+    writeln!(buf, &quot;{}&quot;, line)?;
 }
 buf.flush()?;
 <span class="boring">Ok(())
