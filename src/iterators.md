@@ -2,14 +2,14 @@
 
 ## `collect`
 
-[`Iterator::collect`] converts an iterator into a collection such as `Vec`,
+[`Iterator::collect`] converts an iterator into a collection,`Vec`
 which typically requires an allocation. You should avoid calling `collect` if
 the collection is then only iterated over again.
 
 [`Iterator::collect`]: https://doc.rust-lang.org/std/iter/trait.Iterator.html#method.collect
 
 For this reason, it is often better to return an iterator type like `impl
-Iterator<Item=T>` from a function than a `Vec<T>`. Note that sometimes
+Iterator<Item=T>` from a function than a`Vec<T>`. Sometimes
 additional lifetimes are required on these return types, as [this post]
 explains.
 
