@@ -9,7 +9,7 @@ There are many different profilers available, each with their strengths and
 weaknesses. The following is an incomplete list of profilers that have been
 used successfully on Rust programs.
 - [perf] is a general-purpose profiler that uses hardware performance counters.
-  The [Hotspot] viewer is good for viewing data recorded by perf.
+  [Hotspot] and [Firefox Profiler] are good for viewing data recorded by perf.
 - [Cachegrind] & [Callgrind] give global, per-function, and per-source-line
   instruction counts and simulated cache and branch prediction data.
 - [DHAT] is good for finding which parts of the code are causing a lot of
@@ -23,6 +23,7 @@ used successfully on Rust programs.
 
 [perf]: https://perf.wiki.kernel.org/index.php/Main_Page
 [Hotspot]: https://github.com/KDAB/hotspot
+[Firefox Profiler]: https://profiler.firefox.com/
 [Cachegrind]: https://www.valgrind.org/docs/manual/cg-manual.html
 [Callgrind]: https://www.valgrind.org/docs/manual/cl-manual.html
 [DHAT]: https://www.valgrind.org/docs/manual/dh-manual.html
