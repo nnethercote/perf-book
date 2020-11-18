@@ -1,6 +1,5 @@
 ## Profilers
 
-
 When optimizing code, you also need a way to determine which parts of the
 program are hot and worth modifying. This is best done with a profiler. There
 are many profilers available, each with their strengths and
@@ -9,10 +8,6 @@ weaknesses.
 Here are some profilers that work with Rust.
 - [perf] is a versatile profiler that uses hardware performance counters.
   The [Hotspot] viewer is good for viewing data recorded by perf.
-=======
-When optimizing a program, you also need a way to determine which parts of the
-program are hot and worth modifying. This is best done via profiling.
-
 - [Cachegrind] & [Callgrind] give global, per-function, and per-source-line
 instruction counts and simulated cache and branch prediction data.
 - [DHAT] is good for finding which parts of the code are causing a lot of
