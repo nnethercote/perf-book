@@ -20,6 +20,8 @@ used successfully on Rust programs.
   domain-specific insights into parts of your code.
 - [Coz] performs *causal profiling* to measure optimization potential. It has
   Rust support via [coz-rs].
+- [flamegraph] is a Cargo command that uses `perf`/`DTrace` to profile your
+  code and then displays the results in a flame graph.
 
 [perf]: https://perf.wiki.kernel.org/index.php/Main_Page
 [Hotspot]: https://github.com/KDAB/hotspot
@@ -31,6 +33,7 @@ used successfully on Rust programs.
 [`counts`]: https://github.com/nnethercote/counts/
 [Coz]: https://github.com/plasma-umass/coz
 [coz-rs]: https://github.com/plasma-umass/coz/tree/master/rust
+[flamegraph]: https://github.com/flamegraph-rs/flamegraph
 
 ## Debug Info
 
