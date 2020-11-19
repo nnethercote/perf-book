@@ -76,3 +76,35 @@ that error explicit.
 
 Note that buffering also works with stdout, so you might want to combine manual
 locking *and* buffering when making many writes to stdout.
+
+## Reading Input as Raw Bytes
+
+The built-in [String] type uses UTF-8 internally, which adds a small, but
+nonzero overhead caused by UTF-8 validation when you read input into it. If you
+just want to process input bytes without worrying about UTF-8 (for example if
+you handle ASCII text), you can use [`BufRead::read_until`]:
+```rust
+use std::io::{BufReader, BufRead};
+
+# fn blah() -> Result<(), std::io::Error> {
+let stdin = std::io::stdin();
+let mut stdin = stdin.lock();
+let mut buffered = BufReader::new(stdin);
+let mut buf = vec![];
+
+loop {
+    buffered.read_until(b'\n', &mut buf)?;
+    // handle buf
+    buf.clear();
+}
+# }
+```
+
+[String]: https://doc.rust-lang.org/std/string/struct.String.html
+[`BufRead::read_until`]: https://doc.rust-lang.org/std/io/trait.BufRead.html#method.read_until
+
+There are also dedicated crates for reading [byte-oriented lines of data]
+and working with [byte strings].
+
+[byte-oriented lines of data]: https://github.com/Freaky/rust-linereader
+[byte strings]: https://github.com/BurntSushi/bstr
