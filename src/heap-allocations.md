@@ -315,3 +315,21 @@ each iteration's usage of the `Vec` is unrelated to the others.
 
 Similarly, it is sometimes worth keeping a "workhorse" collection within a
 struct, to be reused in one or more methods that are called repeatedly.
+
+## Using a different allocator
+
+A very simple way to improve the performance of "allocation-bound" programs is to simply plug-in
+a different implementation of the global allocator. Each implementation is better for certain
+workloads and worse for others, so it might happen that your program might be sped up if a different
+implementation is used.
+
+Popular choices are for example [`jemalloc`](https://docs.rs/jemallocator/0.3.2/jemallocator/) or
+[`mimalloc`](https://docs.rs/mimalloc/0.1.22/mimalloc/).
+
+You can set the global allocator with the `#[global_allocator]` attribute:
+```rust
+use mimalloc::MiMalloc;
+
+#[global_allocator]
+static GLOBAL: MiMalloc = MiMalloc;
+```
