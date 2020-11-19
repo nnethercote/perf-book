@@ -158,13 +158,14 @@ allocation, which makes it a little faster.
 
 ### Longer `Vec`s
 
-If you know the (definite or likely) minimum size of a vector, you can reserve
-the capacity with [`Vec::with_capacity`], [`Vec::reserve`], or
+If you know the minimum or exact size of a vector, you can reserve a specific
+capacity with [`Vec::with_capacity`], [`Vec::reserve`], or
 [`Vec::reserve_exact`]. For example, if you know a vector will grow to have at
 least 20 elements, these functions can immediately provide a vector with a
 capacity of at least 20 using a single allocation, whereas pushing the items
 one at a time would result in four allocations (for capacities of 4, 8, 16, and
 32).
+[**Example**](https://github.com/rust-lang/rust/pull/77990/commits/a7f2bb634308a5f05f2af716482b67ba43701681).
 
 [`Vec::with_capacity`]: https://doc.rust-lang.org/std/vec/struct.Vec.html#method.with_capacity
 [`Vec::reserve`]: https://doc.rust-lang.org/std/vec/struct.Vec.html#method.reserve
@@ -309,7 +310,8 @@ could declare the `Vec` outside the loop, use it within the loop body, and then
 call [`clear`] at the end of the loop body (to empty the `Vec` without affecting
 its capacity). This avoids allocations at the cost of obscuring the fact that
 each iteration's usage of the `Vec` is unrelated to the others.
-[**Example**](https://github.com/rust-lang/rust/pull/51870/commits/b0c78120e3ecae5f4043781f7a3f79e2277293e7).
+[**Example 1**](https://github.com/rust-lang/rust/pull/77990/commits/45faeb43aecdc98c9e3f2b24edf2ecc71f39d323),
+[**Example 2**](https://github.com/rust-lang/rust/pull/51870/commits/b0c78120e3ecae5f4043781f7a3f79e2277293e7).
 
 [`clear`]: https://doc.rust-lang.org/std/vec/struct.Vec.html#method.clear
 

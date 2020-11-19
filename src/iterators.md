@@ -12,6 +12,7 @@ For this reason, it is often better to return an iterator type like `impl
 Iterator<Item=T>` from a function than a `Vec<T>`. Note that sometimes
 additional lifetimes are required on these return types, as [this post]
 explains.
+[**Example**](https://github.com/rust-lang/rust/pull/77990/commits/660d8a6550a126797aa66a417137e39a5639451b).
 
 [this post]: https://blog.katona.me/2019/12/29/Rust-Lifetimes-and-Iterators/
 
