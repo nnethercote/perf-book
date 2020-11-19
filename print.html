@@ -572,13 +572,14 @@ better choice than <code>SmallVec</code>. It does not require the fallback to he
 allocation, which makes it a little faster.
 <a href="https://github.com/rust-lang/rust/pull/74310/commits/c492ca40a288d8a85353ba112c4d38fe87ef453e"><strong>Example</strong></a>.</p>
 <h3><a class="header" href="#longer-vecs" id="longer-vecs">Longer <code>Vec</code>s</a></h3>
-<p>If you know the (definite or likely) minimum size of a vector, you can reserve
-the capacity with <a href="https://doc.rust-lang.org/std/vec/struct.Vec.html#method.with_capacity"><code>Vec::with_capacity</code></a>, <a href="https://doc.rust-lang.org/std/vec/struct.Vec.html#method.reserve"><code>Vec::reserve</code></a>, or
+<p>If you know the minimum or exact size of a vector, you can reserve a specific
+capacity with <a href="https://doc.rust-lang.org/std/vec/struct.Vec.html#method.with_capacity"><code>Vec::with_capacity</code></a>, <a href="https://doc.rust-lang.org/std/vec/struct.Vec.html#method.reserve"><code>Vec::reserve</code></a>, or
 <a href="https://doc.rust-lang.org/std/vec/struct.Vec.html#method.reserve_exact"><code>Vec::reserve_exact</code></a>. For example, if you know a vector will grow to have at
 least 20 elements, these functions can immediately provide a vector with a
 capacity of at least 20 using a single allocation, whereas pushing the items
 one at a time would result in four allocations (for capacities of 4, 8, 16, and
-32).</p>
+32).
+<a href="https://github.com/rust-lang/rust/pull/77990/commits/a7f2bb634308a5f05f2af716482b67ba43701681"><strong>Example</strong></a>.</p>
 <p>If you know the maximum length of a vector, the above functions also let you
 not allocate excess space unnecessary. Similarly, <a href="https://doc.rust-lang.org/std/vec/struct.Vec.html#method.shrink_to_fit"><code>Vec::shrink_to_fit</code></a> can be
 used to minimize wasted space, but note that it may cause a reallocation.</p>
@@ -684,7 +685,8 @@ could declare the <code>Vec</code> outside the loop, use it within the loop body
 call <a href="https://doc.rust-lang.org/std/vec/struct.Vec.html#method.clear"><code>clear</code></a> at the end of the loop body (to empty the <code>Vec</code> without affecting
 its capacity). This avoids allocations at the cost of obscuring the fact that
 each iteration’s usage of the <code>Vec</code> is unrelated to the others.
-<a href="https://github.com/rust-lang/rust/pull/51870/commits/b0c78120e3ecae5f4043781f7a3f79e2277293e7"><strong>Example</strong></a>.</p>
+<a href="https://github.com/rust-lang/rust/pull/77990/commits/45faeb43aecdc98c9e3f2b24edf2ecc71f39d323"><strong>Example 1</strong></a>,
+<a href="https://github.com/rust-lang/rust/pull/51870/commits/b0c78120e3ecae5f4043781f7a3f79e2277293e7"><strong>Example 2</strong></a>.</p>
 <p>Similarly, it is sometimes worth keeping a “workhorse” collection within a
 struct, to be reused in one or more methods that are called repeatedly.</p>
 <h1><a class="header" href="#type-sizes" id="type-sizes">Type Sizes</a></h1>
@@ -875,7 +877,8 @@ which typically requires an allocation. You should avoid calling <code>collect</
 the collection is then only iterated over again.</p>
 <p>For this reason, it is often better to return an iterator type like <code>impl Iterator&lt;Item=T&gt;</code> from a function than a <code>Vec&lt;T&gt;</code>. Note that sometimes
 additional lifetimes are required on these return types, as <a href="https://blog.katona.me/2019/12/29/Rust-Lifetimes-and-Iterators/">this post</a>
-explains.</p>
+explains.
+<a href="https://github.com/rust-lang/rust/pull/77990/commits/660d8a6550a126797aa66a417137e39a5639451b"><strong>Example</strong></a>.</p>
 <p>Similarly, you can use <a href="https://doc.rust-lang.org/std/iter/trait.Extend.html#tymethod.extend"><code>extend</code></a> to extend an existing collection (such as a
 <code>Vec</code>) with an iterator, rather than collecting the iterator into a <code>Vec</code> and
 then using <a href="https://doc.rust-lang.org/std/vec/struct.Vec.html#method.append"><code>append</code></a>.</p>
