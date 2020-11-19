@@ -191,11 +191,11 @@ than one of these alternatives. For example, the following results were seen in
 rustc.</p>
 <ul>
 <li>The switch from <code>fnv</code> to <code>fxhash</code> gave
-<a href="https://github.com/rust-lang/rust/pull/37229/commits/00e48affde2d349e3b3bfbd3d0f6afb5d76282a7">speed-ups of up to 6%</a>.</li>
+<a href="https://github.com/rust-lang/rust/pull/37229/commits/00e48affde2d349e3b3bfbd3d0f6afb5d76282a7">speedups of up to 6%</a>.</li>
 <li>An attempt to switch from <code>fxhash</code> to <code>ahash</code> resulted in
-<a href="https://github.com/rust-lang/rust/issues/69153#issuecomment-589504301">slow-downs of 1-4%</a>.</li>
+<a href="https://github.com/rust-lang/rust/issues/69153#issuecomment-589504301">slowdowns of 1-4%</a>.</li>
 <li>An attempt to switch from <code>fxhash</code> back to the default hasher resulted in
-<a href="https://github.com/rust-lang/rust/issues/69153#issuecomment-589338446">slow-downs ranging from 4-84%</a>!</li>
+<a href="https://github.com/rust-lang/rust/issues/69153#issuecomment-589338446">slowdowns ranging from 4-84%</a>!</li>
 </ul>
 <p>If you decide to universally use one of the alternatives, such as
 <code>FxHashSet</code>/<code>FxHashMap</code>, it is easy to accidentally use <code>HashSet</code>/<code>HashMap</code> in

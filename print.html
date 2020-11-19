@@ -230,7 +230,7 @@ overlook</a>: make sure you are using a release build rather than a debug build
 when you want high performance. This is most often done by specifying the
 <code>--release</code> flag to Cargo.</p>
 <p>A release build typically runs <em>much</em> faster than a debug build. 10-100x
-speed-ups over debug builds are common!</p>
+speedups over debug builds are common!</p>
 <p>Debug builds are the default. They are produced if you run <code>cargo build</code>,
 <code>cargo run</code>, or <code>rustc</code> without any additional options. Debug builds are good
 for debugging, but are not optimized.</p>
@@ -448,11 +448,11 @@ than one of these alternatives. For example, the following results were seen in
 rustc.</p>
 <ul>
 <li>The switch from <code>fnv</code> to <code>fxhash</code> gave
-<a href="https://github.com/rust-lang/rust/pull/37229/commits/00e48affde2d349e3b3bfbd3d0f6afb5d76282a7">speed-ups of up to 6%</a>.</li>
+<a href="https://github.com/rust-lang/rust/pull/37229/commits/00e48affde2d349e3b3bfbd3d0f6afb5d76282a7">speedups of up to 6%</a>.</li>
 <li>An attempt to switch from <code>fxhash</code> to <code>ahash</code> resulted in
-<a href="https://github.com/rust-lang/rust/issues/69153#issuecomment-589504301">slow-downs of 1-4%</a>.</li>
+<a href="https://github.com/rust-lang/rust/issues/69153#issuecomment-589504301">slowdowns of 1-4%</a>.</li>
 <li>An attempt to switch from <code>fxhash</code> back to the default hasher resulted in
-<a href="https://github.com/rust-lang/rust/issues/69153#issuecomment-589338446">slow-downs ranging from 4-84%</a>!</li>
+<a href="https://github.com/rust-lang/rust/issues/69153#issuecomment-589338446">slowdowns ranging from 4-84%</a>!</li>
 </ul>
 <p>If you decide to universally use one of the alternatives, such as
 <code>FxHashSet</code>/<code>FxHashMap</code>, it is easy to accidentally use <code>HashSet</code>/<code>HashMap</code> in
@@ -1030,14 +1030,14 @@ data structures, rather than low-level optimizations.
 <p>Writing code that works well with modern hardware is not always easy, but worth
 striving for. For example, try to minimize cache misses and branch
 mispredictions, where possible.</p>
-<p>Most optimizations result in small speed-ups. Although no single small speed-up
+<p>Most optimizations result in small speedups. Although no single small speedup
 is noticeable, they really add up if you can do enough of them.</p>
 <p>Different profilers have different strengths. It is good to use more than one.</p>
 <p>When profiling indicates that a function is hot, there are two common ways to
 speed things up: (a) make the function faster, and/or (b) avoid calling it as
 much.</p>
-<p>It is usually easier, and often as effective, to avoid silly slow-downs as it
-is to introduce clever speed-ups.</p>
+<p>It is usually easier, and often as effective, to avoid silly slowdowns as it
+is to introduce clever speedups.</p>
 <p>Avoid computing things unless necessary. Lazy/on-demand computations are
 often a win.
 <a href="https://github.com/rust-lang/rust/pull/36592/commits/80a44779f7a211e075da9ed0ff2763afa00f43dc"><strong>Example 1</strong></a>,
