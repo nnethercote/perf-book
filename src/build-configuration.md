@@ -13,7 +13,7 @@ when you want high performance. This is most often done by specifying the
 [easy to overlook]: https://users.rust-lang.org/t/why-my-rust-program-is-so-slow/47764/5
 
 A release build typically runs *much* faster than a debug build. 10-100x
-speed-ups over debug builds are common!
+speedups over debug builds are common!
 
 Debug builds are the default. They are produced if you run `cargo build`,
 `cargo run`, or `rustc` without any additional options. Debug builds are good

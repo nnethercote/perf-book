@@ -21,7 +21,7 @@ Writing code that works well with modern hardware is not always easy, but worth
 striving for. For example, try to minimize cache misses and branch
 mispredictions, where possible.
 
-Most optimizations result in small speed-ups. Although no single small speed-up
+Most optimizations result in small speedups. Although no single small speedup
 is noticeable, they really add up if you can do enough of them.
 
 Different profilers have different strengths. It is good to use more than one.
@@ -30,8 +30,8 @@ When profiling indicates that a function is hot, there are two common ways to
 speed things up: (a) make the function faster, and/or (b) avoid calling it as
 much.
 
-It is usually easier, and often as effective, to avoid silly slow-downs as it
-is to introduce clever speed-ups.
+It is usually easier, and often as effective, to avoid silly slowdowns as it
+is to introduce clever speedups.
 
 Avoid computing things unless necessary. Lazy/on-demand computations are
 often a win.
