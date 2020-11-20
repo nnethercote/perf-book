@@ -74,38 +74,48 @@ documentation](https://doc.rust-lang.org/cargo/reference/profiles.html#lto)
 for more details about the `lto` setting, and about enabling specific settings
 for different profiles.
 
-## Codegen units
+## Codegen Units
 
-The Rust compiler splits your crate into multiple [codegen units](https://doc.rust-lang.org/rustc/codegen-options/index.html#codegen-units)
-to parallelize (and thus speed up) compile times. However, this might cause it to miss some potential
-optimizations. If you want to potentially improve runtime performance at the cost of larger compile
-time, you can try to set the number of units to one:
+The Rust compiler splits your crate into multiple [codegen units] to
+parallelize (and thus speed up) compilation. However, this might cause it to
+miss some potential optimizations. If you want to potentially improve runtime
+performance at the cost of larger compile time, you can try to set the number
+of units to one:
 ```toml
 [profile.release]
 codegen-units = 1
 ```
 
-> Be wary that the codegen unit count is a heuristic and thus a smaller count can actually result in
-> a slower program.
+[Example](https://likebike.com/posts/How_To_Write_Fast_Rust_Code.html#emit-asm).
 
-## Using CPU specific instruction set
+[codegen units]: https://doc.rust-lang.org/rustc/codegen-options/index.html#codegen-units
 
-If you do not care that much about the compatibility of your binary on older (or other types of) processors,
-you can tell the compiler to generate the newest (and potentially fastest) instructions specific to
-a [certain CPU architecture](https://doc.rust-lang.org/1.41.1/rustc/codegen-options/index.html#target-cpu).
+Be wary that the codegen unit count is a heuristic and thus a smaller count can
+actually result in a slower program.
 
-For example, if you pass `-C target-cpu=native` to Rustc, it will use the best instructions for your
-current CPU:
+## Using CPU Specific Instruction Set
+
+If you do not care that much about the compatibility of your binary on older
+(or other types of) processors, you can tell the compiler to generate the
+newest (and potentially fastest) instructions specific to a
+[certain CPU architecture].
+
+[certain CPU architecture]: https://doc.rust-lang.org/1.41.1/rustc/codegen-options/index.html#target-cpu
+
+For example, if you pass `-C target-cpu=native` to Rustc, it will use the best
+instructions for your current CPU:
 ```bash
 $ RUSTFLAGS="-C target-cpu=native" cargo build --release
 ```
 
-This can have a large effect especially if the compiler finds vectorization opportunities in your code.
+This can have a large effect especially if the compiler finds vectorization
+opportunities in your code.
 
 ## Abort on `panic!`
 
-If you do not need to catch or unwind panics, you can tell the compiler to abort on panics instead,
-which might reduce binary size and potentially even increase performance slightly:
+If you do not need to catch or unwind panics, you can tell the compiler to
+abort on panics instead, which might reduce binary size and potentially even
+increase performance slightly:
 ```toml
 [profile.release]
 panic = "abort"
