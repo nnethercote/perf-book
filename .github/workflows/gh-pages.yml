@@ -1,25 +1,33 @@
-name: github pages
+name: CI
 
 on:
+  pull_request:
   push:
     branches:
       - master
 
 jobs:
-  deploy:
+  test_and_maybe_deploy:
     runs-on: ubuntu-18.04
     steps:
-      - uses: actions/checkout@v2
+      - name: Clone repository
+        uses: actions/checkout@v2
 
       - name: Setup mdBook
         uses: peaceiris/actions-mdbook@v1
         with:
           mdbook-version: 'latest'
 
-      - run: mdbook build
+      - name: Build
+        run: mdbook build
+
+      - name: Test
+        run: mdbook test
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./book
+        # Only deploy on a push to master, not on a pull request.
+        if: github.event_name == 'push' && github.ref == 'refs/heads/master' && github.repository == 'rust-lang/async-book'
