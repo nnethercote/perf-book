@@ -1004,6 +1004,13 @@ that occurs on flushing will be ignored, whereas an explicit flush will make
 that error explicit.</p>
 <p>Note that buffering also works with stdout, so you might want to combine manual
 locking <em>and</em> buffering when making many writes to stdout.</p>
+<h2><a class="header" href="#reading-input-as-raw-bytes" id="reading-input-as-raw-bytes">Reading Input as Raw Bytes</a></h2>
+<p>The built-in <a href="https://doc.rust-lang.org/std/string/struct.String.html">String</a> type uses UTF-8 internally, which adds a small, but
+nonzero overhead caused by UTF-8 validation when you read input into it. If you
+just want to process input bytes without worrying about UTF-8 (for example if
+you handle ASCII text), you can use <a href="https://doc.rust-lang.org/std/io/trait.BufRead.html#method.read_until"><code>BufRead::read_until</code></a>.</p>
+<p>There are also dedicated crates for reading <a href="https://github.com/Freaky/rust-linereader">byte-oriented lines of data</a>
+and working with <a href="https://github.com/BurntSushi/bstr">byte strings</a>.</p>
 <h1><a class="header" href="#logging-and-debugging" id="logging-and-debugging">Logging and Debugging</a></h1>
 <p>Sometimes logging code or debugging code can slow down a program significantly.
 Either the logging/debugging code itself is slow, or data collection code that
