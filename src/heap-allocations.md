@@ -16,7 +16,8 @@ is an excellent companion to the following sections.
 ## Profiling
 
 If a general-purpose profiler shows `malloc`, `free`, and related functions as
-hot, then it is likely worth trying to reduce the allocation rate.
+hot, then it is likely worth trying to reduce the allocation rate and/or using
+an alternative allocator.
 
 [DHAT] is an excellent profiler to use when reducing allocation rates. It
 precisely identifies hot allocation sites and their allocation rates. Exact
@@ -317,3 +318,30 @@ each iteration's usage of the `Vec` is unrelated to the others.
 
 Similarly, it is sometimes worth keeping a "workhorse" collection within a
 struct, to be reused in one or more methods that are called repeatedly.
+
+## Using an Alternative Allocator
+
+Another option for improving the performance of allocation-heavy Rust programs
+is to replace the default (system) allocator with an alternative allocator. The
+exact effect will depend on the individual program and the alternative
+allocator chosen. It will also vary across platforms, because each platform's
+system allocator has its own strengths and weaknesses. The use of an
+alternative allocator can also affect binary size.
+
+One popular alternative allocator is [jemalloc], usable via the
+[`jemallocator`] crate. To use it, add a dependency to your `Cargo.toml` file:
+```toml
+[dependencies]
+jemallocator = "0.3.2"
+```
+Then add the following somewhere in your Rust code:
+```rust,ignore
+#[global_allocator]
+static GLOBAL: jemallocator::Jemalloc = jemallocator::Jemalloc;
+```
+Another alternative allocator is [mimalloc], usable via the [`mimalloc`] crate.
+
+[jemalloc]: https://github.com/jemalloc/jemalloc
+[`jemallocator`]: https://crates.io/crates/jemallocator
+[mimalloc]: https://github.com/microsoft/mimalloc
+[`mimalloc`]: https://docs.rs/mimalloc/0.1.22/mimalloc/
