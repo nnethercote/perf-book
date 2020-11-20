@@ -30,4 +30,4 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./book
         # Only deploy on a push to master, not on a pull request.
-        if: github.event_name == 'push' && github.ref == 'refs/heads/master' && github.repository == 'rust-lang/perf-book'
+        if: github.event_name == 'push' && github.ref == 'refs/heads/master' && github.repository == 'nnethercote/perf-book'
