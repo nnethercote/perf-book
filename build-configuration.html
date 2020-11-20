@@ -220,29 +220,29 @@ about enabling specific settings for different profiles.</p>
 <p>The Rust compiler splits your crate into multiple <a href="https://doc.rust-lang.org/rustc/codegen-options/index.html#codegen-units">codegen units</a> to
 parallelize (and thus speed up) compilation. However, this might cause it to
 miss some potential optimizations. If you want to potentially improve runtime
-performance at the cost of larger compile time, you can try to set the number
-of units to one:</p>
+performance at the cost of larger compile time, you can set the number of units
+to one:</p>
 <pre><code class="language-toml">[profile.release]
 codegen-units = 1
 </code></pre>
-<p><a href="https://likebike.com/posts/How_To_Write_Fast_Rust_Code.html#emit-asm">Example</a>.</p>
+<p><a href="https://likebike.com/posts/How_To_Write_Fast_Rust_Code.html#emit-asm"><strong>Example</strong></a>.</p>
 <p>Be wary that the codegen unit count is a heuristic and thus a smaller count can
 actually result in a slower program.</p>
-<h2><a class="header" href="#using-cpu-specific-instruction-set" id="using-cpu-specific-instruction-set">Using CPU Specific Instruction Set</a></h2>
+<h2><a class="header" href="#using-cpu-specific-instructions" id="using-cpu-specific-instructions">Using CPU Specific Instructions</a></h2>
 <p>If you do not care that much about the compatibility of your binary on older
 (or other types of) processors, you can tell the compiler to generate the
-newest (and potentially fastest) instructions specific to a
-<a href="https://doc.rust-lang.org/1.41.1/rustc/codegen-options/index.html#target-cpu">certain CPU architecture</a>.</p>
-<p>For example, if you pass <code>-C target-cpu=native</code> to Rustc, it will use the best
+newest (and potentially fastest) instructions specific to a <a href="https://doc.rust-lang.org/1.41.1/rustc/codegen-options/index.html#target-cpu">certain CPU
+architecture</a>.</p>
+<p>For example, if you pass <code>-C target-cpu=native</code> to rustc, it will use the best
 instructions for your current CPU:</p>
 <pre><code class="language-bash">$ RUSTFLAGS=&quot;-C target-cpu=native&quot; cargo build --release
 </code></pre>
-<p>This can have a large effect especially if the compiler finds vectorization
+<p>This can have a large effect, especially if the compiler finds vectorization
 opportunities in your code.</p>
 <h2><a class="header" href="#abort-on-panic" id="abort-on-panic">Abort on <code>panic!</code></a></h2>
 <p>If you do not need to catch or unwind panics, you can tell the compiler to
-abort on panics instead, which might reduce binary size and potentially even
-increase performance slightly:</p>
+simply abort on panics. This might reduce binary size and increase performance
+slightly:</p>
 <pre><code class="language-toml">[profile.release]
 panic = &quot;abort&quot;
 </code></pre>
