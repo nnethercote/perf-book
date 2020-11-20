@@ -196,10 +196,9 @@ additional optimizations.</p>
 </code></pre>
 <p>The <code>[optimized]</code> indicates that a release build has been produced. The
 compiled code will be placed in the <code>target/release/</code> directory. <code>cargo run --release</code> will run the release build.</p>
-<p>See the <a href="https://doc.rust-lang.org/cargo/reference/profiles.html">Cargo
-documentation</a> for
-more details about the differences between debug builds (which use the <code>dev</code>
-profile) and release builds (which use the <code>release</code> profile).</p>
+<p>See the <a href="https://doc.rust-lang.org/cargo/reference/profiles.html">Cargo profile documentation</a> for more details about the differences
+between debug builds (which use the <code>dev</code> profile) and release builds (which
+use the <code>release</code> profile).</p>
 <h2><a class="header" href="#link-time-optimization" id="link-time-optimization">Link-time Optimization</a></h2>
 <p>Link-time optimization (LTO) is a whole-program optimization technique that can
 improve runtime performance by 10-20% or more, at the cost of increased build
@@ -215,19 +214,15 @@ dependency graph.</p>
 <p>Alternatively, use <code>lto = &quot;thin&quot;</code> in <code>Cargo.toml</code> to use “thin” LTO, which is a
 less aggressive form of LTO that often works as well as “fat” LTO without
 increasing build times as much.</p>
-<p>See the <a href="https://doc.rust-lang.org/cargo/reference/profiles.html#lto">Cargo
-documentation</a>
-for more details about the <code>lto</code> setting, and about enabling specific settings
-for different profiles.</p>
+<p>See the <a href="https://doc.rust-lang.org/cargo/reference/profiles.html#lto">Cargo LTO documentation</a> for more details about the <code>lto</code> setting, and
+about enabling specific settings for different profiles.</p>
 <h2><a class="header" href="#profile-guided-optimization" id="profile-guided-optimization">Profile-guided Optimization</a></h2>
 <p>Profile-guided optimization (PGO) is a compilation model where you compile
 your program, run it on sample data while collecting profiling data, and then
 use that profiling data to guide a second compilation of the program.
 <a href="https://blog.rust-lang.org/inside-rust/2020/11/11/exploring-pgo-for-the-rust-compiler.html"><strong>Example</strong></a>.</p>
 <p>It is an advanced technique that takes some effort to set up, but is worthwhile
-in some cases. See <a href="https://doc.rust-lang.org/rustc/profile-guided-optimization.html">the PGO section of the rustc
-book</a> for
-details.</p>
+in some cases. See the <a href="https://doc.rust-lang.org/rustc/profile-guided-optimization.html">rustc PGO documentation</a> for details.</p>
 
                     </main>
 

@@ -294,7 +294,7 @@ without any cloning or a reallocation.</p>
 <h2><a class="header" href="#avoiding-regressions" id="avoiding-regressions">Avoiding Regressions</a></h2>
 <p>If a type is hot enough that its size can affect performance, it is a good idea
 to use a static assertion to ensure that it does not accidentally regress. The
-following example uses a macro from the <a href="https://crates.io/crates/static_assertions">static_assertions</a> crate.</p>
+following example uses a macro from the <a href="https://crates.io/crates/static_assertions"><code>static_assertions</code></a> crate.</p>
 <pre><code class="language-rust ignore">  // This type is used a lot. Make sure it doesn't unintentionally get bigger.
   #[cfg(target_arch = &quot;x86_64&quot;)]
   static_assertions::assert_eq_size!(HotType, [u8; 64]);

@@ -195,17 +195,13 @@ Benchmarking is a complex topic and a thorough coverage is beyond the scope of
 this book, but here are the basics.</p>
 <p>First, you need workloads to measure. Ideally, you would have a variety of
 workloads that represent realistic usage of your program. Workloads using
-real-world inputs are best, but
-<a href="https://stackoverflow.com/questions/2842695/what-is-microbenchmarking">microbenchmarks</a>
-and <a href="https://en.wikipedia.org/wiki/Stress_testing_(software)">stress tests</a> can
-be useful in moderation.</p>
+real-world inputs are best, but <a href="https://stackoverflow.com/questions/2842695/what-is-microbenchmarking">microbenchmarks</a> and <a href="https://en.wikipedia.org/wiki/Stress_testing_(software)">stress tests</a> can be
+useful in moderation.</p>
 <p>Second, you need a way to run the workloads, which will also dictate the
-metrics used. Rust’s built-in <a href="https://doc.rust-lang.org/1.7.0/book/benchmark-tests.html">benchmark
-tests</a> are a simple
-starting point. <a href="https://github.com/bheisler/criterion.rs">Criterion</a> is a more
-sophisticated alternative. Custom benchmarking harnesses are also possible.
-For example, <a href="https://github.com/rust-lang/rustc-perf/">rustc-perf</a> is the
-harness used to benchmark the Rust compiler.</p>
+metrics used. Rust’s built-in <a href="https://doc.rust-lang.org/1.7.0/book/benchmark-tests.html">benchmark tests</a> are a simple starting point.
+<a href="https://github.com/bheisler/criterion.rs">Criterion</a> is a more sophisticated alternative. Custom benchmarking harnesses
+are also possible. For example, <a href="https://github.com/rust-lang/rustc-perf/">rustc-perf</a> is the harness used to benchmark
+the Rust compiler.</p>
 <p>When it comes to metrics, there are many choices, and the right one(s) will
 depend on the nature of the program being benchmarked. For example, metrics
 that make sense for a batch program might not make sense for an interactive
@@ -250,10 +246,9 @@ additional optimizations.</p>
 </code></pre>
 <p>The <code>[optimized]</code> indicates that a release build has been produced. The
 compiled code will be placed in the <code>target/release/</code> directory. <code>cargo run --release</code> will run the release build.</p>
-<p>See the <a href="https://doc.rust-lang.org/cargo/reference/profiles.html">Cargo
-documentation</a> for
-more details about the differences between debug builds (which use the <code>dev</code>
-profile) and release builds (which use the <code>release</code> profile).</p>
+<p>See the <a href="https://doc.rust-lang.org/cargo/reference/profiles.html">Cargo profile documentation</a> for more details about the differences
+between debug builds (which use the <code>dev</code> profile) and release builds (which
+use the <code>release</code> profile).</p>
 <h2><a class="header" href="#link-time-optimization" id="link-time-optimization">Link-time Optimization</a></h2>
 <p>Link-time optimization (LTO) is a whole-program optimization technique that can
 improve runtime performance by 10-20% or more, at the cost of increased build
@@ -269,19 +264,15 @@ dependency graph.</p>
 <p>Alternatively, use <code>lto = &quot;thin&quot;</code> in <code>Cargo.toml</code> to use “thin” LTO, which is a
 less aggressive form of LTO that often works as well as “fat” LTO without
 increasing build times as much.</p>
-<p>See the <a href="https://doc.rust-lang.org/cargo/reference/profiles.html#lto">Cargo
-documentation</a>
-for more details about the <code>lto</code> setting, and about enabling specific settings
-for different profiles.</p>
+<p>See the <a href="https://doc.rust-lang.org/cargo/reference/profiles.html#lto">Cargo LTO documentation</a> for more details about the <code>lto</code> setting, and
+about enabling specific settings for different profiles.</p>
 <h2><a class="header" href="#profile-guided-optimization" id="profile-guided-optimization">Profile-guided Optimization</a></h2>
 <p>Profile-guided optimization (PGO) is a compilation model where you compile
 your program, run it on sample data while collecting profiling data, and then
 use that profiling data to guide a second compilation of the program.
 <a href="https://blog.rust-lang.org/inside-rust/2020/11/11/exploring-pgo-for-the-rust-compiler.html"><strong>Example</strong></a>.</p>
 <p>It is an advanced technique that takes some effort to set up, but is worthwhile
-in some cases. See <a href="https://doc.rust-lang.org/rustc/profile-guided-optimization.html">the PGO section of the rustc
-book</a> for
-details.</p>
+in some cases. See the <a href="https://doc.rust-lang.org/rustc/profile-guided-optimization.html">rustc PGO documentation</a> for details.</p>
 <h1><a class="header" href="#linting" id="linting">Linting</a></h1>
 <p><a href="https://github.com/rust-lang/rust-clippy">Clippy</a> is a collection of lints to catch common mistakes in Rust code. It is
 an excellent tool to run on Rust code in general. It can also help with
@@ -472,7 +463,8 @@ improve performance.</p>
 is an excellent companion to the following sections.</p>
 <h2><a class="header" href="#profiling-1" id="profiling-1">Profiling</a></h2>
 <p>If a general-purpose profiler shows <code>malloc</code>, <code>free</code>, and related functions as
-hot, then it is likely worth trying to reduce the allocation rate.</p>
+hot, then it is likely worth trying to reduce the allocation rate and/or using
+an alternative allocator.</p>
 <p><a href="https://www.valgrind.org/docs/manual/dh-manual.html">DHAT</a> is an excellent profiler to use when reducing allocation rates. It
 precisely identifies hot allocation sites and their allocation rates. Exact
 results will vary, but experience with rustc has shown that reducing allocation
@@ -567,9 +559,9 @@ heap-allocated or not. Also, If <code>N</code> is high or <code>T</code> is larg
 <code>SmallVec</code> values will be slower. As always, benchmarking is required to
 confirm that an optimization is effective.</p>
 <p>If you have many short vectors <em>and</em> you precisely know their maximum length,
-<code>ArrayVec</code> from the <a href="https://crates.io/crates/arrayvec"><code>arrayvec</code></a> crate is a
-better choice than <code>SmallVec</code>. It does not require the fallback to heap
-allocation, which makes it a little faster.
+<code>ArrayVec</code> from the <a href="https://crates.io/crates/arrayvec"><code>arrayvec</code></a> crate is a better choice than <code>SmallVec</code>. It
+does not require the fallback to heap allocation, which makes it a little
+faster.
 <a href="https://github.com/rust-lang/rust/pull/74310/commits/c492ca40a288d8a85353ba112c4d38fe87ef453e"><strong>Example</strong></a>.</p>
 <h3><a class="header" href="#longer-vecs" id="longer-vecs">Longer <code>Vec</code>s</a></h3>
 <p>If you know the minimum or exact size of a vector, you can reserve a specific
@@ -689,6 +681,23 @@ each iteration’s usage of the <code>Vec</code> is unrelated to the others.
 <a href="https://github.com/rust-lang/rust/pull/51870/commits/b0c78120e3ecae5f4043781f7a3f79e2277293e7"><strong>Example 2</strong></a>.</p>
 <p>Similarly, it is sometimes worth keeping a “workhorse” collection within a
 struct, to be reused in one or more methods that are called repeatedly.</p>
+<h2><a class="header" href="#using-an-alternative-allocator" id="using-an-alternative-allocator">Using an Alternative Allocator</a></h2>
+<p>Another option for improving the performance of allocation-heavy Rust programs
+is to replace the default (system) allocator with an alternative allocator. The
+exact effect will depend on the individual program and the alternative
+allocator chosen. It will also vary across platforms, because each platform’s
+system allocator has its own strengths and weaknesses. The use of an
+alternative allocator can also affect binary size.</p>
+<p>One popular alternative allocator is <a href="https://github.com/jemalloc/jemalloc">jemalloc</a>, usable via the
+<a href="https://crates.io/crates/jemallocator"><code>jemallocator</code></a> crate. To use it, add a dependency to your <code>Cargo.toml</code> file:</p>
+<pre><code class="language-toml">[dependencies]
+jemallocator = &quot;0.3.2&quot;
+</code></pre>
+<p>Then add the following somewhere in your Rust code:</p>
+<pre><code class="language-rust ignore">#[global_allocator]
+static GLOBAL: jemallocator::Jemalloc = jemallocator::Jemalloc;
+</code></pre>
+<p>Another alternative allocator is <a href="https://github.com/microsoft/mimalloc">mimalloc</a>, usable via the <a href="https://docs.rs/mimalloc/0.1.22/mimalloc/"><code>mimalloc</code></a> crate.</p>
 <h1><a class="header" href="#type-sizes" id="type-sizes">Type Sizes</a></h1>
 <p>Shrinking oft-instantiated types can reduce peak memory usage, and also
 improve performance by reducing memory traffic and cache pressure. (In
@@ -816,7 +825,7 @@ without any cloning or a reallocation.</p>
 <h2><a class="header" href="#avoiding-regressions" id="avoiding-regressions">Avoiding Regressions</a></h2>
 <p>If a type is hot enough that its size can affect performance, it is a good idea
 to use a static assertion to ensure that it does not accidentally regress. The
-following example uses a macro from the <a href="https://crates.io/crates/static_assertions">static_assertions</a> crate.</p>
+following example uses a macro from the <a href="https://crates.io/crates/static_assertions"><code>static_assertions</code></a> crate.</p>
 <pre><code class="language-rust ignore">  // This type is used a lot. Make sure it doesn't unintentionally get bigger.
   #[cfg(target_arch = &quot;x86_64&quot;)]
   static_assertions::assert_eq_size!(HotType, [u8; 64]);
@@ -883,9 +892,8 @@ explains.
 <code>Vec</code>) with an iterator, rather than collecting the iterator into a <code>Vec</code> and
 then using <a href="https://doc.rust-lang.org/std/vec/struct.Vec.html#method.append"><code>append</code></a>.</p>
 <h2><a class="header" href="#chaining" id="chaining">Chaining</a></h2>
-<p><a href="https://doc.rust-lang.org/std/iter/trait.Iterator.html#method.chain"><code>chain</code></a>
-can be very convenient, but it can also be slower than a single iterator. It
-may be worth avoiding for hot iterators, if possible.
+<p><a href="https://doc.rust-lang.org/std/iter/trait.Iterator.html#method.chain"><code>chain</code></a> can be very convenient, but it can also be slower than a single
+iterator. It may be worth avoiding for hot iterators, if possible.
 <a href="https://github.com/rust-lang/rust/pull/64801/commits/5ca99b750e455e9b5e13e83d0d7886486231e48a"><strong>Example</strong></a>.</p>
 <p>Similarly, <a href="https://doc.rust-lang.org/std/iter/trait.Iterator.html#method.filter_map"><code>filter_map</code></a> may be faster than using <a href="https://doc.rust-lang.org/std/iter/trait.Iterator.html#method.filter"><code>filter</code></a> followed by
 <a href="https://doc.rust-lang.org/std/iter/trait.Iterator.html#method.map"><code>map</code></a>.</p>
@@ -1016,8 +1024,8 @@ to large performance improvements. There are a variety of ways to introduce
 parallelism into a program and the best way for any program will depend greatly
 on its design. </p>
 <p>An in-depth treatment of parallelism is beyond the scope of this book. If you
-are interested in this topic, the documentation for the <a href="https://crates.io/crates/rayon">rayon</a> and <a href="https://crates.io/crates/crossbeam">crossbeam</a>
-crates is a good place to start.</p>
+are interested in this topic, the documentation for the <a href="https://crates.io/crates/rayon"><code>rayon</code></a> and
+<a href="https://crates.io/crates/crossbeam"><code>crossbeam</code></a> crates is a good place to start.</p>
 <h1><a class="header" href="#general-tips" id="general-tips">General Tips</a></h1>
 <p>The previous sections of this book have discussed Rust-specific techniques.
 This section gives a brief overview of some general performance principles.</p>

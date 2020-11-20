@@ -179,7 +179,8 @@ improve performance.</p>
 is an excellent companion to the following sections.</p>
 <h2><a class="header" href="#profiling" id="profiling">Profiling</a></h2>
 <p>If a general-purpose profiler shows <code>malloc</code>, <code>free</code>, and related functions as
-hot, then it is likely worth trying to reduce the allocation rate.</p>
+hot, then it is likely worth trying to reduce the allocation rate and/or using
+an alternative allocator.</p>
 <p><a href="https://www.valgrind.org/docs/manual/dh-manual.html">DHAT</a> is an excellent profiler to use when reducing allocation rates. It
 precisely identifies hot allocation sites and their allocation rates. Exact
 results will vary, but experience with rustc has shown that reducing allocation
@@ -274,9 +275,9 @@ heap-allocated or not. Also, If <code>N</code> is high or <code>T</code> is larg
 <code>SmallVec</code> values will be slower. As always, benchmarking is required to
 confirm that an optimization is effective.</p>
 <p>If you have many short vectors <em>and</em> you precisely know their maximum length,
-<code>ArrayVec</code> from the <a href="https://crates.io/crates/arrayvec"><code>arrayvec</code></a> crate is a
-better choice than <code>SmallVec</code>. It does not require the fallback to heap
-allocation, which makes it a little faster.
+<code>ArrayVec</code> from the <a href="https://crates.io/crates/arrayvec"><code>arrayvec</code></a> crate is a better choice than <code>SmallVec</code>. It
+does not require the fallback to heap allocation, which makes it a little
+faster.
 <a href="https://github.com/rust-lang/rust/pull/74310/commits/c492ca40a288d8a85353ba112c4d38fe87ef453e"><strong>Example</strong></a>.</p>
 <h3><a class="header" href="#longer-vecs" id="longer-vecs">Longer <code>Vec</code>s</a></h3>
 <p>If you know the minimum or exact size of a vector, you can reserve a specific
@@ -396,6 +397,23 @@ each iteration’s usage of the <code>Vec</code> is unrelated to the others.
 <a href="https://github.com/rust-lang/rust/pull/51870/commits/b0c78120e3ecae5f4043781f7a3f79e2277293e7"><strong>Example 2</strong></a>.</p>
 <p>Similarly, it is sometimes worth keeping a “workhorse” collection within a
 struct, to be reused in one or more methods that are called repeatedly.</p>
+<h2><a class="header" href="#using-an-alternative-allocator" id="using-an-alternative-allocator">Using an Alternative Allocator</a></h2>
+<p>Another option for improving the performance of allocation-heavy Rust programs
+is to replace the default (system) allocator with an alternative allocator. The
+exact effect will depend on the individual program and the alternative
+allocator chosen. It will also vary across platforms, because each platform’s
+system allocator has its own strengths and weaknesses. The use of an
+alternative allocator can also affect binary size.</p>
+<p>One popular alternative allocator is <a href="https://github.com/jemalloc/jemalloc">jemalloc</a>, usable via the
+<a href="https://crates.io/crates/jemallocator"><code>jemallocator</code></a> crate. To use it, add a dependency to your <code>Cargo.toml</code> file:</p>
+<pre><code class="language-toml">[dependencies]
+jemallocator = &quot;0.3.2&quot;
+</code></pre>
+<p>Then add the following somewhere in your Rust code:</p>
+<pre><code class="language-rust ignore">#[global_allocator]
+static GLOBAL: jemallocator::Jemalloc = jemallocator::Jemalloc;
+</code></pre>
+<p>Another alternative allocator is <a href="https://github.com/microsoft/mimalloc">mimalloc</a>, usable via the <a href="https://docs.rs/mimalloc/0.1.22/mimalloc/"><code>mimalloc</code></a> crate.</p>
 
                     </main>
 
