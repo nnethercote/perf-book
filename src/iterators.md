@@ -25,9 +25,8 @@ then using [`append`].
 
 ## Chaining
 
-[`chain`](https://doc.rust-lang.org/std/iter/trait.Iterator.html#method.chain)
-can be very convenient, but it can also be slower than a single iterator. It
-may be worth avoiding for hot iterators, if possible.
+[`chain`] can be very convenient, but it can also be slower than a single
+iterator. It may be worth avoiding for hot iterators, if possible.
 [**Example**](https://github.com/rust-lang/rust/pull/64801/commits/5ca99b750e455e9b5e13e83d0d7886486231e48a).
 
 Similarly, [`filter_map`] may be faster than using [`filter`] followed by

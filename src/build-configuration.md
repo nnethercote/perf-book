@@ -42,12 +42,11 @@ The `[optimized]` indicates that a release build has been produced. The
 compiled code will be placed in the `target/release/` directory. `cargo run
 --release` will run the release build.
 
-See the [Cargo
-documentation](https://doc.rust-lang.org/cargo/reference/profiles.html) for
-more details about the differences between debug builds (which use the `dev`
-profile) and release builds (which use the `release` profile).
+See the [Cargo profile documentation] for more details about the differences
+between debug builds (which use the `dev` profile) and release builds (which
+use the `release` profile).
 
-[Cargo documentation]: https://doc.rust-lang.org/cargo/reference/profiles.html
+[Cargo profile documentation]: https://doc.rust-lang.org/cargo/reference/profiles.html
 
 ## Link-time Optimization
 
@@ -69,10 +68,10 @@ Alternatively, use `lto = "thin"` in `Cargo.toml` to use "thin" LTO, which is a
 less aggressive form of LTO that often works as well as "fat" LTO without
 increasing build times as much.
 
-See the [Cargo
-documentation](https://doc.rust-lang.org/cargo/reference/profiles.html#lto)
-for more details about the `lto` setting, and about enabling specific settings
-for different profiles.
+See the [Cargo LTO documentation] for more details about the `lto` setting, and
+about enabling specific settings for different profiles.
+
+[Cargo LTO documentation]: https://doc.rust-lang.org/cargo/reference/profiles.html#lto
 
 ## Profile-guided Optimization
 
@@ -82,6 +81,6 @@ use that profiling data to guide a second compilation of the program.
 [**Example**](https://blog.rust-lang.org/inside-rust/2020/11/11/exploring-pgo-for-the-rust-compiler.html).
 
 It is an advanced technique that takes some effort to set up, but is worthwhile
-in some cases. See [the PGO section of the rustc
-book](https://doc.rust-lang.org/rustc/profile-guided-optimization.html) for
-details.
+in some cases. See the [rustc PGO documentation] for details.
+
+[rustc PGO documentation]: https://doc.rust-lang.org/rustc/profile-guided-optimization.html

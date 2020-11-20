@@ -152,10 +152,12 @@ heap-allocated or not. Also, If `N` is high or `T` is large, then the
 confirm that an optimization is effective.
 
 If you have many short vectors *and* you precisely know their maximum length,
-`ArrayVec` from the [`arrayvec`](https://crates.io/crates/arrayvec) crate is a
-better choice than `SmallVec`. It does not require the fallback to heap
-allocation, which makes it a little faster.
+`ArrayVec` from the [`arrayvec`] crate is a better choice than `SmallVec`. It
+does not require the fallback to heap allocation, which makes it a little
+faster.
 [**Example**](https://github.com/rust-lang/rust/pull/74310/commits/c492ca40a288d8a85353ba112c4d38fe87ef453e).
+
+[`arrayvec`]: https://crates.io/crates/arrayvec
 
 ### Longer `Vec`s
 

@@ -133,7 +133,7 @@ without any cloning or a reallocation.
 
 If a type is hot enough that its size can affect performance, it is a good idea
 to use a static assertion to ensure that it does not accidentally regress. The
-following example uses a macro from the [static_assertions] crate.
+following example uses a macro from the [`static_assertions`] crate.
 ```rust,ignore
   // This type is used a lot. Make sure it doesn't unintentionally get bigger.
   #[cfg(target_arch = "x86_64")]
@@ -144,5 +144,5 @@ platforms. Restricting the assertion to `x86_64` (which is typically the most
 widely-used platform) is likely to be good enough to prevent regressions in
 practice.
 
-[static_assertions]: https://crates.io/crates/static_assertions
+[`static_assertions`]: https://crates.io/crates/static_assertions
 
