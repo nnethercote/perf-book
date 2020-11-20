@@ -88,7 +88,9 @@ simplest is to just make the function smaller.
 
 Another way is to move the non-generic parts of the function into a separate,
 non-generic function, which will only be instantiated once. Whether or not this
-is possible will depend on the details of the generic function.
+is possible will depend on the details of the generic function. The non-generic
+function can often be written as an inner function within the generic function,
+to minimize its exposure to the rest of the code.
 [**Example**](https://github.com/rust-lang/rust/pull/72013/commits/68b75033ad78d88872450a81745cacfc11e58178).
 
 Sometimes common utility functions like [`Option::map`] and [`Result::map_err`]
