@@ -211,7 +211,6 @@ growth and capacity have equivalents for `HashSet`/`HashMap`, such as
 
 [`HashSet`]: https://doc.rust-lang.org/std/collections/struct.HashSet.html
 [`HashMap`]: https://doc.rust-lang.org/std/collections/struct.HashMap.html
-
 [`HashSet::with_capacity`]: https://doc.rust-lang.org/std/collections/struct.HashSet.html#method.with_capacity
 
 ## `Cow`
