@@ -526,8 +526,8 @@ it should be clear that DHAT gives a wealth of information about allocations,
 such as where and how often they happen, how big they are, how long they live
 for, and how often they are accessed.</p>
 <h2><a class="header" href="#box" id="box"><code>Box</code></a></h2>
-<p><a href="https://doc.rust-lang.org/std/boxed/struct.Box.html"><code>Box</code></a> is the simplest heap-allocated type. A <code>Box&lt;T&gt;</code> value is a <code>T</code> value that
-is allocated on the heap. </p>
+<p><a href="https://doc.rust-lang.org/std/boxed/struct.Box.html"><code>Box</code></a> is the simplest heap-allocated type. A <code>Box&lt;T&gt;</code> value is a <code>T</code> value
+that is allocated on the heap. </p>
 <p>It is sometimes worth boxing one or more fields in a struct or enum fields to
 make a type smaller. (See the the <a href="type-sizes.html">Type Sizes</a> chapter for more
 about this.)</p>
@@ -538,7 +538,7 @@ optimizations.</p>
 two reference counts. They allow value sharing, which can be an effective way
 to reduce memory usage.</p>
 <p>However, if used for values that are rarely shared, they can increase allocation
-rates by heap allocating values that might otherwise not be heap allocated.
+rates by heap allocating values that might otherwise not be heap-allocated.
 <a href="https://github.com/rust-lang/rust/pull/37373/commits/c440a7ae654fb641e68a9ee53b03bf3f7133c2fe"><strong>Example</strong></a>.</p>
 <p>Unlike <code>Box</code>, calling <code>clone</code> on an <code>Rc</code>/<code>Arc</code> value does not involve an
 allocation. Instead, it merely increments a reference count.</p>
@@ -546,15 +546,17 @@ allocation. Instead, it merely increments a reference count.</p>
 <p><a href="https://doc.rust-lang.org/std/vec/struct.Vec.html"><code>Vec</code></a> is a heap-allocated type with a great deal of scope for optimizing the
 number of allocations, and/or minimizing the amount of wasted space. To do this
 requires understanding how its elements are stored.</p>
-<p>A <code>Vec</code> contains three words: a length, a capacity, and a (possibly null)
-pointer to some number of heap-allocated elements. Even if the <code>Vec</code> itself is
-not heap-allocated, the elements (if present) always will be. If elements are
-present, the memory holding those elements may be larger than necessary,
-providing space for additional future elements. The number of elements present
-is the length, and the number of elements that could be held without
-reallocating is the capacity. When the vector needs to grow beyond its current
-capacity, the elements will be copied into a larger heap allocation, and the
-old heap allocation will be freed.</p>
+<p>A <code>Vec</code> contains three words: a length, a capacity, and a pointer. The pointer
+will point to heap-allocated memory if the capacity is nonzero and the element
+size is nonzero; otherwise, it will not point to allocated memory.</p>
+<p>Even if the <code>Vec</code> itself is not heap-allocated, the elements (if present and
+nonzero-sized) always will be. If nonzero-sized elements are present, the
+memory holding those elements may be larger than necessary, providing space for
+additional future elements. The number of elements present is the length, and
+the number of elements that could be held without reallocating is the capacity.</p>
+<p>When the vector needs to grow beyond its current capacity, the elements will be
+copied into a larger heap allocation, and the old heap allocation will be
+freed.</p>
 <h3><a class="header" href="#vec-growth" id="vec-growth"><code>Vec</code> growth</a></h3>
 <p>A new, empty <code>Vec</code> created by the common means
 (<a href="https://doc.rust-lang.org/std/macro.vec.html"><code>vec![]</code></a>
@@ -641,7 +643,7 @@ necessary.</p>
 <a href="https://github.com/rust-lang/rust/pull/56336/commits/787959c20d062d396b97a5566e0a766d963af022"><strong>Example 3</strong></a>,
 <a href="https://github.com/rust-lang/rust/pull/68848/commits/67da45f5084f98eeb20cc6022d68788510dc832a"><strong>Example 4</strong></a>.</p>
 <h2><a class="header" href="#clone" id="clone"><code>clone</code></a></h2>
-<p>Calling <a href="https://doc.rust-lang.org/std/clone/trait.Clone.html#tymethod.clone"><code>clone</code></a> on a value that contains heap allocated memory typically
+<p>Calling <a href="https://doc.rust-lang.org/std/clone/trait.Clone.html#tymethod.clone"><code>clone</code></a> on a value that contains heap-allocated memory typically
 involves additional allocations. For example, calling <code>clone</code> on a non-empty
 <code>Vec</code> requires a new allocation for the elements (but note that the capacity of
 the new <code>Vec</code> might not be the same as the capacity of the original <code>Vec</code>). The
@@ -835,12 +837,11 @@ reasonable to stores indices as <code>u32</code>, <code>u16</code>, or even <cod
 <a href="https://github.com/rust-lang/rust/pull/49993/commits/4d34bfd00a57f8a8bdb60ec3f908c5d4256f8a9a"><strong>Example 1</strong></a>,
 <a href="https://github.com/rust-lang/rust/pull/50981/commits/8d0fad5d3832c6c1f14542ea0be038274e454524"><strong>Example 2</strong></a>.</p>
 <h2><a class="header" href="#boxed-slices" id="boxed-slices">Boxed Slices</a></h2>
-<p>Rust vectors contain three words: a length, a capacity, and a (possibly null)
-pointer to some number of heap-allocated elements. If you have a vector that is
-unlikely to be changed in the future, you can convert it to a <em>boxed slice</em>
-with <a href="https://doc.rust-lang.org/std/vec/struct.Vec.html#method.into_boxed_slice"><code>Vec::into_boxed_slice</code></a>. A boxed slice contains only two words, a length
-and a pointer. Any excess element capacity is dropped, which may cause a
-reallocation.</p>
+<p>Rust vectors contain three words: a length, a capacity, and a pointer. If you
+have a vector that is unlikely to be changed in the future, you can convert it
+to a <em>boxed slice</em> with <a href="https://doc.rust-lang.org/std/vec/struct.Vec.html#method.into_boxed_slice"><code>Vec::into_boxed_slice</code></a>. A boxed slice contains only
+two words, a length and a pointer. Any excess element capacity is dropped,
+which may cause a reallocation.</p>
 <pre><pre class="playground"><code class="language-rust edition2018">
 <span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {

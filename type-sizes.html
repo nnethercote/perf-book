@@ -272,12 +272,11 @@ reasonable to stores indices as <code>u32</code>, <code>u16</code>, or even <cod
 <a href="https://github.com/rust-lang/rust/pull/49993/commits/4d34bfd00a57f8a8bdb60ec3f908c5d4256f8a9a"><strong>Example 1</strong></a>,
 <a href="https://github.com/rust-lang/rust/pull/50981/commits/8d0fad5d3832c6c1f14542ea0be038274e454524"><strong>Example 2</strong></a>.</p>
 <h2><a class="header" href="#boxed-slices" id="boxed-slices">Boxed Slices</a></h2>
-<p>Rust vectors contain three words: a length, a capacity, and a (possibly null)
-pointer to some number of heap-allocated elements. If you have a vector that is
-unlikely to be changed in the future, you can convert it to a <em>boxed slice</em>
-with <a href="https://doc.rust-lang.org/std/vec/struct.Vec.html#method.into_boxed_slice"><code>Vec::into_boxed_slice</code></a>. A boxed slice contains only two words, a length
-and a pointer. Any excess element capacity is dropped, which may cause a
-reallocation.</p>
+<p>Rust vectors contain three words: a length, a capacity, and a pointer. If you
+have a vector that is unlikely to be changed in the future, you can convert it
+to a <em>boxed slice</em> with <a href="https://doc.rust-lang.org/std/vec/struct.Vec.html#method.into_boxed_slice"><code>Vec::into_boxed_slice</code></a>. A boxed slice contains only
+two words, a length and a pointer. Any excess element capacity is dropped,
+which may cause a reallocation.</p>
 <pre><pre class="playground"><code class="language-rust edition2018">
 <span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
