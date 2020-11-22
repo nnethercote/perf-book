@@ -109,7 +109,7 @@ reasonable to stores indices as `u32`, `u16`, or even `u8`, and then coerce to
 
 ## Boxed Slices
 
-Rust vectors contain three words: a length, a capacity, and a (possibly null)
+Rust vectors contain three words: a length, a capacity, and a
 pointer to some number of heap-allocated elements. If you have a vector that is
 unlikely to be changed in the future, you can convert it to a *boxed slice*
 with [`Vec::into_boxed_slice`]. A boxed slice contains only two words, a length
