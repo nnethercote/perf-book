@@ -1,7 +1,8 @@
 # Profiling
 
 When optimizing a program, you also need a way to determine which parts of the
-program are hot and worth modifying. This is best done via profiling.
+program are "hot" (executed frequently enough to affect runtime) and worth
+modifying. This is best done via profiling.
 
 ## Profilers
 
