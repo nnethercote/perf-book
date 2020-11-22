@@ -869,6 +869,9 @@ practice.</p>
 <p>It is worth reading through the documentation for common standard library
 types—such as <a href="https://doc.rust-lang.org/std/vec/struct.Vec.html"><code>Vec</code></a>, <a href="https://doc.rust-lang.org/std/option/enum.Option.html"><code>Option</code></a>, <a href="https://doc.rust-lang.org/std/result/enum.Result.html"><code>Result</code></a>, and <a href="https://doc.rust-lang.org/std/rc/struct.Rc.html"><code>Rc</code></a>—to find interesting
 functions that can sometimes be used to improve performance.</p>
+<p>It is also worth knowing about high-performance alternatives to standard
+library types, such as <a href="https://doc.rust-lang.org/std/sync/struct.Mutex.html"><code>Mutex</code></a>, <a href="https://doc.rust-lang.org/std/sync/struct.RwLock.html"><code>RwLock</code></a>, <a href="https://doc.rust-lang.org/std/sync/struct.Condvar.html"><code>Condvar</code></a>, and
+<a href="https://doc.rust-lang.org/std/sync/struct.Once.html"><code>Once</code></a>.</p>
 <h2><a class="header" href="#vec-1" id="vec-1"><code>Vec</code></a></h2>
 <p><a href="https://doc.rust-lang.org/std/vec/struct.Vec.html#method.remove"><code>Vec::remove</code></a> removes an element at a particular index and shifts all
 subsequent elements one to the left, which makes it O(n). <a href="https://doc.rust-lang.org/std/vec/struct.Vec.html#method.swap_remove"><code>Vec::swap_remove</code></a>
@@ -910,6 +913,12 @@ inner value to ensure unique ownership; otherwise, it will modify the original
 value. It is not needed often, but it can be extremely useful on occasion.
 <a href="https://github.com/rust-lang/rust/pull/65198/commits/3832a634d3aa6a7c60448906e6656a22f7e35628"><strong>Example 1</strong></a>,
 <a href="https://github.com/rust-lang/rust/pull/65198/commits/75e0078a1703448a19e25eac85daaa5a4e6e68ac"><strong>Example 2</strong></a>.</p>
+<h2><a class="header" href="#mutex-rwlock-condvar-and-once" id="mutex-rwlock-condvar-and-once"><code>Mutex</code>, <code>RwLock</code>, <code>Condvar</code>, and <code>Once</code></a></h2>
+<p>The <a href="https://crates.io/crates/parking_lot"><code>parking_lot</code></a> crate provides alternative implementations of these
+synchronization types that are smaller, faster, and more flexible than those in
+the standard library. The APIs and semantics of the <code>parking_lot</code> types are
+similar but not identical to those of the equivalent types in the standard
+library.</p>
 <h1><a class="header" href="#iterators" id="iterators">Iterators</a></h1>
 <h2><a class="header" href="#collect" id="collect"><code>collect</code></a></h2>
 <p><a href="https://doc.rust-lang.org/std/iter/trait.Iterator.html#method.collect"><code>Iterator::collect</code></a> converts an iterator into a collection such as <code>Vec</code>,
