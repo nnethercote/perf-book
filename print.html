@@ -1065,6 +1065,12 @@ generated machine code to see if it has any inefficiencies. The <a href="https:/
 Explorer</a> website is an excellent resource when doing this.</p>
 <p>Relatedly, the <a href="https://doc.rust-lang.org/core/arch/index.html"><code>core::arch</code></a> module provides access to architecture-specific
 intrinsics, many of which relate to SIMD instructions.</p>
+<p>It is sometimes possible to avoid bounds checking within loops by adding
+assertions on the ranges of the index variables. This is an advanced technique,
+and you should check the generated code to ensure the bounds checks are
+actually removed.
+<a href="https://github.com/rust-random/rand/pull/960/commits/de9dfdd86851032d942eb583d8d438e06085867b"><strong>Example 1</strong></a>,
+<a href="https://github.com/image-rs/jpeg-decoder/pull/167/files"><strong>Example 2</strong></a>.</p>
 <h1><a class="header" href="#parallelism" id="parallelism">Parallelism</a></h1>
 <p>Rust provides excellent support for safe parallel programming, which can lead
 to large performance improvements. There are a variety of ways to introduce
