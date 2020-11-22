@@ -9,6 +9,15 @@ functions that can sometimes be used to improve performance.
 [`Result`]: https://doc.rust-lang.org/std/result/enum.Result.html
 [`Rc`]: https://doc.rust-lang.org/std/rc/struct.Rc.html
 
+It is also worth knowing about high-performance alternatives to standard
+library types, such as [`Mutex`], [`RwLock`], [`Condvar`], and
+[`Once`].
+
+[`Mutex`]: https://doc.rust-lang.org/std/sync/struct.Mutex.html
+[`RwLock`]: https://doc.rust-lang.org/std/sync/struct.RwLock.html
+[`Condvar`]: https://doc.rust-lang.org/std/sync/struct.Condvar.html
+[`Once`]: https://doc.rust-lang.org/std/sync/struct.Once.html
+
 ## `Vec`
 
 [`Vec::remove`] removes an element at a particular index and shifts all
@@ -67,3 +76,12 @@ value. It is not needed often, but it can be extremely useful on occasion.
 
 [`Rc::make_mut`]: https://doc.rust-lang.org/std/rc/struct.Rc.html#method.make_mut
 
+## `Mutex`, `RwLock`, `Condvar`, and `Once`
+
+The [`parking_lot`] crate provides alternative implementations of these
+synchronization types that are smaller, faster, and more flexible than those in
+the standard library. The APIs and semantics of the `parking_lot` types are
+similar but not identical to those of the equivalent types in the standard
+library.
+
+[`parking_lot`]: https://crates.io/crates/parking_lot
