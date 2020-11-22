@@ -54,8 +54,8 @@ for, and how often they are accessed.
 
 ## `Box`
 
-[`Box`] is the simplest heap-allocated type. A `Box<T>` value is a `T` value that
-is allocated on the heap. 
+[`Box`] is the simplest heap-allocated type. A `Box<T>` value is a `T` value
+that is allocated on the heap. 
 
 [`Box`]: https://doc.rust-lang.org/std/boxed/struct.Box.html
 
@@ -76,7 +76,7 @@ to reduce memory usage.
 [`Arc`]: https://doc.rust-lang.org/std/sync/struct.Arc.html
 
 However, if used for values that are rarely shared, they can increase allocation
-rates by heap allocating values that might otherwise not be heap allocated.
+rates by heap allocating values that might otherwise not be heap-allocated.
 [**Example**](https://github.com/rust-lang/rust/pull/37373/commits/c440a7ae654fb641e68a9ee53b03bf3f7133c2fe).
 
 Unlike `Box`, calling `clone` on an `Rc`/`Arc` value does not involve an
@@ -90,15 +90,19 @@ requires understanding how its elements are stored.
 
 [`Vec`]: https://doc.rust-lang.org/std/vec/struct.Vec.html
 
-A `Vec` contains three words: a length, a capacity, and a (possibly null)
-pointer to some number of heap-allocated elements. Even if the `Vec` itself is
-not heap-allocated, the elements (if present) always will be. If elements are
-present, the memory holding those elements may be larger than necessary,
-providing space for additional future elements. The number of elements present
-is the length, and the number of elements that could be held without
-reallocating is the capacity. When the vector needs to grow beyond its current
-capacity, the elements will be copied into a larger heap allocation, and the
-old heap allocation will be freed.
+A `Vec` contains three words: a length, a capacity, and a pointer. The pointer
+will point to heap-allocated memory if the capacity is nonzero and the element
+size is nonzero; otherwise, it will not point to allocated memory.
+
+Even if the `Vec` itself is not heap-allocated, the elements (if present and
+nonzero-sized) always will be. If nonzero-sized elements are present, the
+memory holding those elements may be larger than necessary, providing space for
+additional future elements. The number of elements present is the length, and
+the number of elements that could be held without reallocating is the capacity.
+
+When the vector needs to grow beyond its current capacity, the elements will be
+copied into a larger heap allocation, and the old heap allocation will be
+freed.
 
 ### `Vec` growth
 
@@ -239,7 +243,7 @@ necessary.
 
 ## `clone`
 
-Calling [`clone`] on a value that contains heap allocated memory typically
+Calling [`clone`] on a value that contains heap-allocated memory typically
 involves additional allocations. For example, calling `clone` on a non-empty
 `Vec` requires a new allocation for the elements (but note that the capacity of
 the new `Vec` might not be the same as the capacity of the original `Vec`). The
