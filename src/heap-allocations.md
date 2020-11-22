@@ -90,7 +90,7 @@ requires understanding how its elements are stored.
 
 [`Vec`]: https://doc.rust-lang.org/std/vec/struct.Vec.html
 
-A `Vec` contains three words: a length, a capacity, and a (possibly null)
+A `Vec` contains three words: a length, a capacity, and a
 pointer to some number of heap-allocated elements. Even if the `Vec` itself is
 not heap-allocated, the elements (if present) always will be. If elements are
 present, the memory holding those elements may be larger than necessary,
