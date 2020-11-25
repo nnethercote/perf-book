@@ -1168,10 +1168,10 @@ enable it for release builds as well, add the following lines to the
 <pre><code class="language-toml">[profile.release]
 incremental = true
 </code></pre>
-<p>See the <a href="https://doc.rust-lang.org/cargo/reference/profiles.html#incremental">Cargo documentation</a> for more details about the <code>lto</code> setting, and
+<p>See the <a href="https://doc.rust-lang.org/cargo/reference/profiles.html#incremental">Cargo documentation</a> for more details about the <code>incremental</code> setting, and
 about enabling specific settings for different profiles.</p>
 <h2><a class="header" href="#visualization" id="visualization">Visualization</a></h2>
-<p>The Rust compiler has a feature that lets you visualize compilation of your
+<p>Cargo has a feature that lets you visualize compilation of your
 program. Build with this command:</p>
 <pre><code class="language-text">cargo +nightly build -Ztimings
 </code></pre>
@@ -1179,7 +1179,8 @@ program. Build with this command:</p>
 browser. It contains a <a href="https://en.wikipedia.org/wiki/Gantt_chart">Gantt chart</a> that shows the dependencies between the
 various crates in your program. This shows how much parallelism there is in
 your crate graph, which can indicate if any large crates that serialize
-compilation should be broken up.</p>
+compilation should be broken up. See <a href="https://doc.rust-lang.org/nightly/cargo/reference/unstable.html#timings">the documentation</a> for more
+details on how to read the graphs.</p>
 <h2><a class="header" href="#llvm-ir" id="llvm-ir">LLVM IR</a></h2>
 <p>The Rust compiler uses <a href="https://llvm.org/">LLVM</a> for its back-end. LLVM’s execution can be a large
 part of compile times, especially when the Rust compiler’s front end generates
