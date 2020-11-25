@@ -45,7 +45,7 @@ enable it for release builds as well, add the following lines to the
 [profile.release]
 incremental = true
 ```
-See the [Cargo documentation] for more details about the `lto` setting, and
+See the [Cargo documentation] for more details about the `incremental` setting, and
 about enabling specific settings for different profiles.
 
 [incremental compilation]: https://blog.rust-lang.org/2016/09/08/incremental.html
