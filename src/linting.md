@@ -18,4 +18,4 @@ deselecting all the lint groups except for "Perf".
 
 As well as making the code faster, the performance lint suggestions usually
 result in code that is simpler and more idiomatic, so they are worth following
-even for code that is not hot.
+even for code that is not executed frequently.
