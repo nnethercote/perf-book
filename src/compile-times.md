@@ -53,7 +53,7 @@ about enabling specific settings for different profiles.
 
 ## Visualization 
 
-The Rust compiler has a feature that lets you visualize compilation of your
+Cargo has a feature that lets you visualize compilation of your
 program. Build with this command:
 ```text
 cargo +nightly build -Ztimings
@@ -62,9 +62,11 @@ On completion it will print the name of an HTML file. Open that file in a web
 browser. It contains a [Gantt chart] that shows the dependencies between the
 various crates in your program. This shows how much parallelism there is in
 your crate graph, which can indicate if any large crates that serialize
-compilation should be broken up.
+compilation should be broken up. See [the documentation][Z-timings] for more
+details on how to read the graphs.
 
 [Gantt chart]: https://en.wikipedia.org/wiki/Gantt_chart
+[Z-timings]: https://doc.rust-lang.org/nightly/cargo/reference/unstable.html#timings
 
 ## LLVM IR
 
