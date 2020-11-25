@@ -144,4 +144,3 @@ widely-used platform) is likely to be good enough to prevent regressions in
 practice.
 
 [`static_assertions`]: https://crates.io/crates/static_assertions
-
