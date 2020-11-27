@@ -1,6 +1,6 @@
 # Heap Allocations
 
-Heap allocations are moderately expensive. The exact details depend on
+Heap allocations are moderately expensive. The exact details depend on which
 allocator is in use, but each allocation (and deallocation) typically involves
 acquiring a global lock, doing some non-trivial data structure manipulation,
 and possibly executing a system call. Small allocations are not necessarily
