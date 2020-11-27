@@ -199,6 +199,14 @@ type.
 
 [`smallstr`]: https://crates.io/crates/smallstr
 
+The `String` type from the [`smartstring`] crate is a drop-in replacement for
+`String` that avoids heap allocations for strings with less than three words'
+worth of characters. On 64-bit platforms, this is any string that is less than
+24 bytes, which includes all strings containing 23 or fewer ASCII characters.
+[**Example**](https://github.com/djc/topfew-rs/commit/803fd566e9b889b7ba452a2a294a3e4df76e6c4c).
+
+[`smartstring`]: https://crates.io/crates/smartstring
+
 Note that the `format!` macro produces a `String`, which means it performs an
 allocation. If you can avoid a `format!` call by using a string literal, that
 will avoid this allocation.
