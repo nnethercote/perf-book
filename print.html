@@ -619,6 +619,11 @@ and capacity have equivalents for <code>String</code>, such as
 <a href="https://doc.rust-lang.org/std/string/struct.String.html#method.with_capacity"><code>String::with_capacity</code></a>.</p>
 <p>The <code>SmallString</code> type from the <a href="https://crates.io/crates/smallstr"><code>smallstr</code></a> crate is similar to the <code>SmallVec</code>
 type.</p>
+<p>The <code>String</code> type from the <a href="https://crates.io/crates/smartstring"><code>smartstring</code></a> crate is a drop-in replacement for
+<code>String</code> that avoids heap allocations for strings with less than three words’
+worth of characters. On 64-bit platforms, this is any string that is less than
+24 bytes, which includes all strings containing 23 or fewer ASCII characters.
+<a href="https://github.com/djc/topfew-rs/commit/803fd566e9b889b7ba452a2a294a3e4df76e6c4c"><strong>Example</strong></a>.</p>
 <p>Note that the <code>format!</code> macro produces a <code>String</code>, which means it performs an
 allocation. If you can avoid a <code>format!</code> call by using a string literal, that
 will avoid this allocation.
