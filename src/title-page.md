@@ -1,5 +1,5 @@
-# The Rust Performance Book
+# <span style="font-size: 150%">The Rust Performance Book</span>
 
-**First published in November 2020**
+**<span style="font-size: 130%">First published in November 2020</span>**
 
-**Written by Nicholas Nethercote and others**
+**<span style="font-size: 130%">Written by Nicholas Nethercote and others</span>**
