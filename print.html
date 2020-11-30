@@ -326,23 +326,28 @@ program are “hot” (executed frequently enough to affect runtime) and worth
 modifying. This is best done via profiling.</p>
 <h2><a class="header" href="#profilers" id="profilers">Profilers</a></h2>
 <p>There are many different profilers available, each with their strengths and
-weaknesses. The following is an incomplete list of profilers that have been
-used successfully on Rust programs.</p>
+weaknesses. The following profilers have been used successfully on Rust
+programs.</p>
 <ul>
 <li><a href="https://perf.wiki.kernel.org/index.php/Main_Page">perf</a> is a general-purpose profiler that uses hardware performance counters.
-<a href="https://github.com/KDAB/hotspot">Hotspot</a> and <a href="https://profiler.firefox.com/">Firefox Profiler</a> are good for viewing data recorded by perf.</li>
+<a href="https://github.com/KDAB/hotspot">Hotspot</a> and <a href="https://profiler.firefox.com/">Firefox Profiler</a> are good for viewing data recorded by perf.
+It works on Linux.</li>
 <li><a href="https://www.valgrind.org/docs/manual/cg-manual.html">Cachegrind</a> &amp; <a href="https://www.valgrind.org/docs/manual/cl-manual.html">Callgrind</a> give global, per-function, and per-source-line
-instruction counts and simulated cache and branch prediction data.</li>
+instruction counts and simulated cache and branch prediction data. They work
+on Linux and some other Unixes.</li>
 <li><a href="https://www.valgrind.org/docs/manual/dh-manual.html">DHAT</a> is good for finding which parts of the code are causing a lot of
-allocations, and for giving insight into peak memory usage. <a href="https://github.com/KDE/heaptrack">heaptrack</a> is
-another heap profiling tool.</li>
+allocations, and for giving insight into peak memory usage. It works on Linux
+and some other Unixes.</li>
+<li><a href="https://github.com/KDE/heaptrack">heaptrack</a> is another heap profiling tool. It works on Linux.</li>
 <li><a href="https://github.com/nnethercote/counts/"><code>counts</code></a> supports ad hoc profiling, which combines the use of <code>eprintln!</code>
 statement with frequency-based post-processing, which is good for getting
-domain-specific insights into parts of your code.</li>
-<li><a href="https://github.com/plasma-umass/coz">Coz</a> performs <em>causal profiling</em> to measure optimization potential. It has
-Rust support via <a href="https://github.com/plasma-umass/coz/tree/master/rust">coz-rs</a>.</li>
+domain-specific insights into parts of your code. It works on all platforms.</li>
+<li><a href="https://github.com/plasma-umass/coz">Coz</a> performs <em>causal profiling</em> to measure optimization potential, and has
+Rust support via <a href="https://github.com/plasma-umass/coz/tree/master/rust">coz-rs</a>. It works on Linux. </li>
 <li><a href="https://github.com/flamegraph-rs/flamegraph">flamegraph</a> is a Cargo command that uses <code>perf</code>/<code>DTrace</code> to profile your
-code and then displays the results in a flame graph.</li>
+code and then displays the results in a flame graph. It works on Linux and
+all platforms that support DTrace (macOS, FreeBSD, NetBSD, and possibly
+Windows).</li>
 </ul>
 <h2><a class="header" href="#debug-info" id="debug-info">Debug Info</a></h2>
 <p>To profile a release build effectively you might need to enable source line
@@ -501,11 +506,11 @@ is an excellent companion to the following sections.</p>
 <p>If a general-purpose profiler shows <code>malloc</code>, <code>free</code>, and related functions as
 hot, then it is likely worth trying to reduce the allocation rate and/or using
 an alternative allocator.</p>
-<p><a href="https://www.valgrind.org/docs/manual/dh-manual.html">DHAT</a> is an excellent profiler to use when reducing allocation rates. It
-precisely identifies hot allocation sites and their allocation rates. Exact
-results will vary, but experience with rustc has shown that reducing allocation
-rates by 10 allocations per million instructions executed can have measurable
-performance improvements (e.g. ~1%).</p>
+<p><a href="https://www.valgrind.org/docs/manual/dh-manual.html">DHAT</a> is an excellent profiler to use when reducing allocation rates. It works
+on Linux and some other Unixes. It precisely identifies hot allocation
+sites and their allocation rates. Exact results will vary, but experience with
+rustc has shown that reducing allocation rates by 10 allocations per million
+instructions executed can have measurable performance improvements (e.g. ~1%).</p>
 <p>Here is some example output from DHAT.</p>
 <pre><code class="language-text">AP 1.1/25 (2 children) {
   Total:     54,533,440 bytes (4.02%, 2,714.28/Minstr) in 458,839 blocks (7.72%, 22.84/Minstr), avg size 118.85 bytes, avg lifetime 1,127,259,403.64 instrs (5.61% of program duration)

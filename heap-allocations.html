@@ -181,11 +181,11 @@ is an excellent companion to the following sections.</p>
 <p>If a general-purpose profiler shows <code>malloc</code>, <code>free</code>, and related functions as
 hot, then it is likely worth trying to reduce the allocation rate and/or using
 an alternative allocator.</p>
-<p><a href="https://www.valgrind.org/docs/manual/dh-manual.html">DHAT</a> is an excellent profiler to use when reducing allocation rates. It
-precisely identifies hot allocation sites and their allocation rates. Exact
-results will vary, but experience with rustc has shown that reducing allocation
-rates by 10 allocations per million instructions executed can have measurable
-performance improvements (e.g. ~1%).</p>
+<p><a href="https://www.valgrind.org/docs/manual/dh-manual.html">DHAT</a> is an excellent profiler to use when reducing allocation rates. It works
+on Linux and some other Unixes. It precisely identifies hot allocation
+sites and their allocation rates. Exact results will vary, but experience with
+rustc has shown that reducing allocation rates by 10 allocations per million
+instructions executed can have measurable performance improvements (e.g. ~1%).</p>
 <p>Here is some example output from DHAT.</p>
 <pre><code class="language-text">AP 1.1/25 (2 children) {
   Total:     54,533,440 bytes (4.02%, 2,714.28/Minstr) in 458,839 blocks (7.72%, 22.84/Minstr), avg size 118.85 bytes, avg lifetime 1,127,259,403.64 instrs (5.61% of program duration)
