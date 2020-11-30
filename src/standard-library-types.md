@@ -1,13 +1,14 @@
 # Standard Library Types
 
 It is worth reading through the documentation for common standard library
-types—such as [`Vec`], [`Option`], [`Result`], and [`Rc`]—to find interesting
+types—such as [`Vec`], [`Option`], [`Result`], and [`Rc`]/[`Arc`]—to find interesting
 functions that can sometimes be used to improve performance.
 
 [`Vec`]: https://doc.rust-lang.org/std/vec/struct.Vec.html
 [`Option`]: https://doc.rust-lang.org/std/option/enum.Option.html
 [`Result`]: https://doc.rust-lang.org/std/result/enum.Result.html
 [`Rc`]: https://doc.rust-lang.org/std/rc/struct.Rc.html
+[`Arc`]: https://doc.rust-lang.org/std/sync/struct.Arc.html
 
 It is also worth knowing about high-performance alternatives to standard
 library types, such as [`Mutex`], [`RwLock`], [`Condvar`], and
@@ -65,16 +66,18 @@ There are similar alternatives for [`Option::map_or`], [`Option::unwrap_or`],
 [`Result::map_or`]: https://doc.rust-lang.org/std/result/enum.Result.html#method.map_or
 [`Result::unwrap_or`]: https://doc.rust-lang.org/std/result/enum.Result.html#method.unwrap_or
 
-## `Rc`
+## `Rc`/`Arc`
 
-[`Rc::make_mut`] provides clone-on-write semantics for `Rc`. It makes a mutable
-reference to an `Rc`. If the refcount is greater than one, it will `clone` the
-inner value to ensure unique ownership; otherwise, it will modify the original
-value. It is not needed often, but it can be extremely useful on occasion.
+[`Rc::make_mut`]/[`Arc::make_mut`] provide clone-on-write semantics. They make
+a mutable reference to an `Rc`/`Arc`. If the refcount is greater than one, they
+will `clone` the inner value to ensure unique ownership; otherwise, they will
+modify the original value. They are not needed often, but they can be extremely
+useful on occasion.
 [**Example 1**](https://github.com/rust-lang/rust/pull/65198/commits/3832a634d3aa6a7c60448906e6656a22f7e35628),
 [**Example 2**](https://github.com/rust-lang/rust/pull/65198/commits/75e0078a1703448a19e25eac85daaa5a4e6e68ac).
 
 [`Rc::make_mut`]: https://doc.rust-lang.org/std/rc/struct.Rc.html#method.make_mut
+[`Arc::make_mut`]: https://doc.rust-lang.org/std/sync/struct.Arc.html#method.make_mut
 
 ## `Mutex`, `RwLock`, `Condvar`, and `Once`
 
