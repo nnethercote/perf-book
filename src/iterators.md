@@ -1,6 +1,6 @@
 # Iterators
 
-## `collect`
+## `collect` and `extend`
 
 [`Iterator::collect`] converts an iterator into a collection such as `Vec`,
 which typically requires an allocation. You should avoid calling `collect` if
@@ -22,6 +22,15 @@ then using [`append`].
 
 [`extend`]: https://doc.rust-lang.org/std/iter/trait.Extend.html#tymethod.extend
 [`append`]: https://doc.rust-lang.org/std/vec/struct.Vec.html#method.append
+
+Finally, when you write an iterator it is often worth implementing the
+[`Iterator::size_hint`] or [`ExactSizeIterator::len`] method, if possible.
+`collect` and `extend` calls that use the iterator may then do fewer
+allocations, because they have advance information about the number of elements
+yielded by the iterator.
+
+[`Iterator::size_hint`]: https://doc.rust-lang.org/std/iter/trait.Iterator.html#method.size_hint
+[`ExactSizeIterator::len`]: https://doc.rust-lang.org/std/iter/trait.ExactSizeIterator.html#method.len
 
 ## Chaining
 
