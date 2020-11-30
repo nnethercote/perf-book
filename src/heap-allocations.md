@@ -19,11 +19,11 @@ If a general-purpose profiler shows `malloc`, `free`, and related functions as
 hot, then it is likely worth trying to reduce the allocation rate and/or using
 an alternative allocator.
 
-[DHAT] is an excellent profiler to use when reducing allocation rates. It
-precisely identifies hot allocation sites and their allocation rates. Exact
-results will vary, but experience with rustc has shown that reducing allocation
-rates by 10 allocations per million instructions executed can have measurable
-performance improvements (e.g. ~1%).
+[DHAT] is an excellent profiler to use when reducing allocation rates. It works
+on Linux and some other Unixes. It precisely identifies hot allocation
+sites and their allocation rates. Exact results will vary, but experience with
+rustc has shown that reducing allocation rates by 10 allocations per million
+instructions executed can have measurable performance improvements (e.g. ~1%).
 
 [DHAT]: https://www.valgrind.org/docs/manual/dh-manual.html
 

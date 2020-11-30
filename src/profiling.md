@@ -7,22 +7,27 @@ modifying. This is best done via profiling.
 ## Profilers
 
 There are many different profilers available, each with their strengths and
-weaknesses. The following is an incomplete list of profilers that have been
-used successfully on Rust programs.
+weaknesses. The following profilers have been used successfully on Rust
+programs.
 - [perf] is a general-purpose profiler that uses hardware performance counters.
   [Hotspot] and [Firefox Profiler] are good for viewing data recorded by perf.
+  It works on Linux.
 - [Cachegrind] & [Callgrind] give global, per-function, and per-source-line
-  instruction counts and simulated cache and branch prediction data.
+  instruction counts and simulated cache and branch prediction data. They work
+  on Linux and some other Unixes.
 - [DHAT] is good for finding which parts of the code are causing a lot of
-  allocations, and for giving insight into peak memory usage. [heaptrack] is
-  another heap profiling tool.
+  allocations, and for giving insight into peak memory usage. It works on Linux
+  and some other Unixes.
+- [heaptrack] is another heap profiling tool. It works on Linux.
 - [`counts`] supports ad hoc profiling, which combines the use of `eprintln!`
   statement with frequency-based post-processing, which is good for getting
-  domain-specific insights into parts of your code.
-- [Coz] performs *causal profiling* to measure optimization potential. It has
-  Rust support via [coz-rs].
+  domain-specific insights into parts of your code. It works on all platforms.
+- [Coz] performs *causal profiling* to measure optimization potential, and has
+  Rust support via [coz-rs]. It works on Linux. 
 - [flamegraph] is a Cargo command that uses `perf`/`DTrace` to profile your
-  code and then displays the results in a flame graph.
+  code and then displays the results in a flame graph. It works on Linux and
+  all platforms that support DTrace (macOS, FreeBSD, NetBSD, and possibly
+  Windows).
 
 [perf]: https://perf.wiki.kernel.org/index.php/Main_Page
 [Hotspot]: https://github.com/KDAB/hotspot
