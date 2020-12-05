@@ -12,6 +12,11 @@ programs.
 - [perf] is a general-purpose profiler that uses hardware performance counters.
   [Hotspot] and [Firefox Profiler] are good for viewing data recorded by perf.
   It works on Linux.
+- [AMD μProf] is a general-purpose profiler. It works on Windows and Linux.
+- [flamegraph] is a Cargo command that uses perf/DTrace to profile your
+  code and then displays the results in a flame graph. It works on Linux and
+  all platforms that support DTrace (macOS, FreeBSD, NetBSD, and possibly
+  Windows).
 - [Cachegrind] & [Callgrind] give global, per-function, and per-source-line
   instruction counts and simulated cache and branch prediction data. They work
   on Linux and some other Unixes.
@@ -24,14 +29,12 @@ programs.
   domain-specific insights into parts of your code. It works on all platforms.
 - [Coz] performs *causal profiling* to measure optimization potential, and has
   Rust support via [coz-rs]. It works on Linux. 
-- [flamegraph] is a Cargo command that uses `perf`/`DTrace` to profile your
-  code and then displays the results in a flame graph. It works on Linux and
-  all platforms that support DTrace (macOS, FreeBSD, NetBSD, and possibly
-  Windows).
 
 [perf]: https://perf.wiki.kernel.org/index.php/Main_Page
 [Hotspot]: https://github.com/KDAB/hotspot
 [Firefox Profiler]: https://profiler.firefox.com/
+[AMD μProf]: https://developer.amd.com/amd-uprof/
+[flamegraph]: https://github.com/flamegraph-rs/flamegraph
 [Cachegrind]: https://www.valgrind.org/docs/manual/cg-manual.html
 [Callgrind]: https://www.valgrind.org/docs/manual/cl-manual.html
 [DHAT]: https://www.valgrind.org/docs/manual/dh-manual.html
@@ -39,7 +42,6 @@ programs.
 [`counts`]: https://github.com/nnethercote/counts/
 [Coz]: https://github.com/plasma-umass/coz
 [coz-rs]: https://github.com/plasma-umass/coz/tree/master/rust
-[flamegraph]: https://github.com/flamegraph-rs/flamegraph
 
 ## Debug Info
 
