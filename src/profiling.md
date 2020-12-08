@@ -22,7 +22,9 @@ programs.
   on Linux and some other Unixes.
 - [DHAT] is good for finding which parts of the code are causing a lot of
   allocations, and for giving insight into peak memory usage. It works on Linux
-  and some other Unixes.
+  and some other Unixes. [dhat-rs] is an alternative that is a little less
+  powerful and requires minor changes to your Rust program, but works on all
+  platforms.
 - [heaptrack] is another heap profiling tool. It works on Linux.
 - [`counts`] supports ad hoc profiling, which combines the use of `eprintln!`
   statement with frequency-based post-processing, which is good for getting
@@ -38,6 +40,7 @@ programs.
 [Cachegrind]: https://www.valgrind.org/docs/manual/cg-manual.html
 [Callgrind]: https://www.valgrind.org/docs/manual/cl-manual.html
 [DHAT]: https://www.valgrind.org/docs/manual/dh-manual.html
+[dhat-rs]: https://github.com/nnethercote/dhat-rs/
 [heaptrack]: https://github.com/KDE/heaptrack
 [`counts`]: https://github.com/nnethercote/counts/
 [Coz]: https://github.com/plasma-umass/coz
