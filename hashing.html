@@ -177,10 +177,11 @@ such as integers.</p>
 for your application, the use of hash tables with faster hash algorithms can
 provide large speed wins.</p>
 <ul>
-<li><a href="https://crates.io/crates/fxhash"><code>fxhash</code></a> provides <code>FxHashSet</code> and <code>FxHashMap</code> types that are drop-in
+<li><a href="https://crates.io/crates/rustc-hash"><code>rustc-hash</code></a> provides <code>FxHashSet</code> and <code>FxHashMap</code> types that are drop-in
 replacements for <code>HashSet</code> and <code>HashMap</code>. Its hashing algorithm is
 low-quality but very fast, especially for integer keys, and has been found to
-out-perform all other hash algorithms within rustc.</li>
+out-perform all other hash algorithms within rustc. (<a href="https://crates.io/crates/fxhash"><code>fxhash</code></a> is an older,
+less well maintained implementation of the same algorithm and types.)</li>
 <li><a href="https://crates.io/crates/fnv"><code>fnv</code></a> provides <code>FnvHashSet</code> and <code>FnvHashMap</code> types. Its hashing algorithm
 is higher quality than <code>fxhash</code>‘s but a little slower.</li>
 <li><a href="https://crates.io/crates/ahash"><code>ahash</code></a> provides <code>AHashSet</code> and <code>AHashMap</code>. Its hashing algorithm can take
