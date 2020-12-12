@@ -11,16 +11,18 @@ such as integers.
 If profiling shows that hashing is hot, and [HashDoS attacks] are not a concern
 for your application, the use of hash tables with faster hash algorithms can
 provide large speed wins.
-- [`fxhash`] provides `FxHashSet` and `FxHashMap` types that are drop-in
+- [`rustc-hash`] provides `FxHashSet` and `FxHashMap` types that are drop-in
   replacements for `HashSet` and `HashMap`. Its hashing algorithm is
   low-quality but very fast, especially for integer keys, and has been found to
-  out-perform all other hash algorithms within rustc.
+  out-perform all other hash algorithms within rustc. ([`fxhash`] is an older,
+  less well maintained implementation of the same algorithm and types.)
 - [`fnv`] provides `FnvHashSet` and `FnvHashMap` types. Its hashing algorithm
   is higher quality than `fxhash`'s but a little slower.
 - [`ahash`] provides `AHashSet` and `AHashMap`. Its hashing algorithm can take
   advantage of AES instruction support that is available on some processors.
 
 [HashDoS attacks]: https://en.wikipedia.org/wiki/Collision_attack
+[`rustc-hash`]: https://crates.io/crates/rustc-hash
 [`fxhash`]: https://crates.io/crates/fxhash
 [`fnv`]: https://crates.io/crates/fnv
 [`ahash`]: https://crates.io/crates/ahash
