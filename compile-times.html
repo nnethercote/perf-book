@@ -176,16 +176,11 @@ because that is a related topic of interest to many people.</p>
 rebuilding a program after a small change. On Linux and Windows you can select
 lld as the linker, which is much faster than the default linker.</p>
 <p>To specify lld from the command line, precede your build command with <code>RUSTFLAGS=&quot;-C link-arg=-fuse-ld=lld&quot;</code>.</p>
-<p>To specify lld from a <a href="https://doc.rust-lang.org/cargo/reference/config.html">config.toml</a> file, add these lines:</p>
+<p>To specify lld from a <a href="https://doc.rust-lang.org/cargo/reference/config.html">config.toml</a> file (for one or more projects), add these
+lines:</p>
 <pre><code class="language-text">[build]
 rustflags = [&quot;-C&quot;, &quot;link-arg=-fuse-ld=lld&quot;]
 </code></pre>
-<p>Alternatively, add these lines to your <code>Cargo.toml</code>:</p>
-<pre><code class="language-text">[target.x86_64-unknown-linux-gnu]
-linker = &quot;lld&quot;
-</code></pre>
-<p>You can use <a href="https://doc.rust-lang.org/cargo/reference/config.html">Cargo configuration files</a> to apply these configurations to more
-than a single project.</p>
 <p>lld is not fully supported for use with Rust, but it should work for most use
 cases on Linux and Windows. There is a <a href="https://github.com/rust-lang/rust/issues/39915#issuecomment-618726211">GitHub Issue</a> tracking full support for
 lld.</p>
