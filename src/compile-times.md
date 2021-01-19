@@ -12,20 +12,13 @@ lld as the linker, which is much faster than the default linker.
 
 To specify lld from the command line, precede your build command with `RUSTFLAGS="-C link-arg=-fuse-ld=lld"`.
 
-To specify lld from a [config.toml](https://doc.rust-lang.org/cargo/reference/config.html) file, add these lines:
+To specify lld from a [config.toml] file (for one or more projects), add these
+lines:
 ```text
 [build]
 rustflags = ["-C", "link-arg=-fuse-ld=lld"]
 ```
-Alternatively, add these lines to your `Cargo.toml`:
-```text
-[target.x86_64-unknown-linux-gnu]
-linker = "lld"
-```
-You can use [Cargo configuration files] to apply these configurations to more
-than a single project.
-
-[Cargo configuration files]: https://doc.rust-lang.org/cargo/reference/config.html
+[config.toml]: https://doc.rust-lang.org/cargo/reference/config.html
 
 lld is not fully supported for use with Rust, but it should work for most use
 cases on Linux and Windows. There is a [GitHub Issue] tracking full support for
