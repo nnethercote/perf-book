@@ -1,7 +1,11 @@
 # Benchmarking
 
-When optimizing a program, you need a way to reliably answer the question "did
-this change speed things up?" This process is sometimes called benchmarking.
+Benchmarking typically involves comparing the speed of two or more programs
+that do the same thing. Sometimes this might involve comparing two or more
+different programs, e.g. Firefox vs Safari vs Chrome. Sometimes it involves
+comparing two different versions of the same program. This latter case lets us
+reliably answer the question "did this change speed things up?"
+
 Benchmarking is a complex topic and a thorough coverage is beyond the scope of
 this book, but here are the basics.
 

@@ -21,8 +21,9 @@ programs.
   instruction counts and simulated cache and branch prediction data. They work
   on Linux and some other Unixes.
 - [DHAT] is good for finding which parts of the code are causing a lot of
-  allocations, and for giving insight into peak memory usage. It works on Linux
-  and some other Unixes. [dhat-rs] is an alternative that is a little less
+  allocations, and for giving insight into peak memory usage. It can also be
+  used to identify hot calls to `memcpy`. It works on Linux and some other
+  Unixes. [dhat-rs] is an experimental alternative that is a little less
   powerful and requires minor changes to your Rust program, but works on all
   platforms.
 - [heaptrack] is another heap profiling tool. It works on Linux.

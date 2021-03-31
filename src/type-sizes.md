@@ -1,14 +1,21 @@
 # Type Sizes
 
-Shrinking oft-instantiated types can reduce peak memory usage, and also
-improve performance by reducing memory traffic and cache pressure. (In
-particular, note that types that are larger than 128 bytes are copied with
-`memcpy` rather than inline code.)
+Shrinking oft-instantiated types can help performance.
 
-The Rust compiler automatically sorts the fields in struct and enums to
-minimize their sizes (unless the `#[repr(C)]` attribute is specified), so you
-do not have to worry about field ordering. But there are still other ways to
-minimize the size of hot types.
+For example, if memory usage is high, a heap profiler like [DHAT] or
+[heaptrack] can identify the hot allocation points and the types involved.
+Shrinking these types can reduce peak memory usage, and possibly improve
+performance by reducing memory traffic and cache pressure.
+
+[DHAT]: https://www.valgrind.org/docs/manual/dh-manual.html
+[heaptrack]: https://github.com/KDE/heaptrack
+
+Furthermore, Rust types that are larger than 128 bytes are copied with `memcpy`
+rather than inline code. If `memcpy` shows up in non-trivial amounts in
+profiles, DHAT's "copy profiling" mode will tell you exactly where the hot
+`memcpy` calls are and the types involved. Shrinking these types to 128 bytes
+or less can make the code faster by avoiding `memcpy` calls and reducing meomry
+traffic.
 
 ## Measuring Type Sizes
 
@@ -65,6 +72,13 @@ The output shows the following.
 - The size and location of all padding.
 
 Once you know the layout of a hot type, there are multiple ways to shrink it.
+
+## Field Ordering
+
+The Rust compiler automatically sorts the fields in struct and enums to
+minimize their sizes (unless the `#[repr(C)]` attribute is specified), so you
+do not have to worry about field ordering. But there are other ways to minimize
+the size of hot types.
 
 ## Smaller Enums
 
