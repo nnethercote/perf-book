@@ -167,7 +167,7 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1><a class="header" href="#heap-allocations" id="heap-allocations">Heap Allocations</a></h1>
+                        <h1 id="heap-allocations"><a class="header" href="#heap-allocations">Heap Allocations</a></h1>
 <p>Heap allocations are moderately expensive. The exact details depend on which
 allocator is in use, but each allocation (and deallocation) typically involves
 acquiring a global lock, doing some non-trivial data structure manipulation,
@@ -177,7 +177,7 @@ structures and operations cause allocations, because avoiding them can greatly
 improve performance.</p>
 <p>The <a href="https://docs.google.com/presentation/d/1q-c7UAyrUlM-eZyTo1pd8SZ0qwA_wYxmPZVOQkoDmH4/">Rust Container Cheat Sheet</a> has visualizations of common Rust types, and
 is an excellent companion to the following sections.</p>
-<h2><a class="header" href="#profiling" id="profiling">Profiling</a></h2>
+<h2 id="profiling"><a class="header" href="#profiling">Profiling</a></h2>
 <p>If a general-purpose profiler shows <code>malloc</code>, <code>free</code>, and related functions as
 hot, then it is likely worth trying to reduce the allocation rate and/or using
 an alternative allocator.</p>
@@ -209,7 +209,7 @@ instructions executed can have measurable performance improvements (e.g. ~1%).</
 it should be clear that DHAT gives a wealth of information about allocations,
 such as where and how often they happen, how big they are, how long they live
 for, and how often they are accessed.</p>
-<h2><a class="header" href="#box" id="box"><code>Box</code></a></h2>
+<h2 id="box"><a class="header" href="#box"><code>Box</code></a></h2>
 <p><a href="https://doc.rust-lang.org/std/boxed/struct.Box.html"><code>Box</code></a> is the simplest heap-allocated type. A <code>Box&lt;T&gt;</code> value is a <code>T</code> value
 that is allocated on the heap. </p>
 <p>It is sometimes worth boxing one or more fields in a struct or enum fields to
@@ -217,7 +217,7 @@ make a type smaller. (See the the <a href="type-sizes.html">Type Sizes</a> chapt
 about this.)</p>
 <p>Other than that, <code>Box</code> is straightforward and does not offer much scope for
 optimizations.</p>
-<h2><a class="header" href="#rcarc" id="rcarc"><code>Rc</code>/<code>Arc</code></a></h2>
+<h2 id="rcarc"><a class="header" href="#rcarc"><code>Rc</code>/<code>Arc</code></a></h2>
 <p><a href="https://doc.rust-lang.org/std/rc/struct.Rc.html"><code>Rc</code></a>/<a href="https://doc.rust-lang.org/std/sync/struct.Arc.html"><code>Arc</code></a> are similar to <code>Box</code>, but the value on the heap is accompanied by
 two reference counts. They allow value sharing, which can be an effective way
 to reduce memory usage.</p>
@@ -226,7 +226,7 @@ rates by heap allocating values that might otherwise not be heap-allocated.
 <a href="https://github.com/rust-lang/rust/pull/37373/commits/c440a7ae654fb641e68a9ee53b03bf3f7133c2fe"><strong>Example</strong></a>.</p>
 <p>Unlike <code>Box</code>, calling <code>clone</code> on an <code>Rc</code>/<code>Arc</code> value does not involve an
 allocation. Instead, it merely increments a reference count.</p>
-<h2><a class="header" href="#vec" id="vec"><code>Vec</code></a></h2>
+<h2 id="vec"><a class="header" href="#vec"><code>Vec</code></a></h2>
 <p><a href="https://doc.rust-lang.org/std/vec/struct.Vec.html"><code>Vec</code></a> is a heap-allocated type with a great deal of scope for optimizing the
 number of allocations, and/or minimizing the amount of wasted space. To do this
 requires understanding how its elements are stored.</p>
@@ -241,7 +241,7 @@ the number of elements that could be held without reallocating is the capacity.<
 <p>When the vector needs to grow beyond its current capacity, the elements will be
 copied into a larger heap allocation, and the old heap allocation will be
 freed.</p>
-<h3><a class="header" href="#vec-growth" id="vec-growth"><code>Vec</code> growth</a></h3>
+<h3 id="vec-growth"><a class="header" href="#vec-growth"><code>Vec</code> growth</a></h3>
 <p>A new, empty <code>Vec</code> created by the common means
 (<a href="https://doc.rust-lang.org/std/macro.vec.html"><code>vec![]</code></a>
 or <a href="https://doc.rust-lang.org/std/vec/struct.Vec.html#method.new"><code>Vec::new</code></a> or <a href="https://doc.rust-lang.org/std/default/trait.Default.html#tymethod.default"><code>Vec::default</code></a>) has a length and capacity of zero, and no
@@ -261,7 +261,7 @@ at that site and then doing some post-processing (e.g. with <a href="https://git
 determine the length distribution. For example, you might have many short
 vectors, or you might have a smaller number of very long vectors, and the best
 way to optimize the allocation site will vary accordingly.</p>
-<h3><a class="header" href="#short-vecs" id="short-vecs">Short <code>Vec</code>s</a></h3>
+<h3 id="short-vecs"><a class="header" href="#short-vecs">Short <code>Vec</code>s</a></h3>
 <p>If you have many short vectors, you can use the <code>SmallVec</code> type from the
 <a href="https://crates.io/crates/smallvec"><code>smallvec</code></a> crate. <code>SmallVec&lt;[T; N]&gt;</code> is a drop-in replacement for <code>Vec</code> that
 can store <code>N</code> elements within the <code>SmallVec</code> itself, and then switches to a
@@ -281,7 +281,7 @@ confirm that an optimization is effective.</p>
 does not require the fallback to heap allocation, which makes it a little
 faster.
 <a href="https://github.com/rust-lang/rust/pull/74310/commits/c492ca40a288d8a85353ba112c4d38fe87ef453e"><strong>Example</strong></a>.</p>
-<h3><a class="header" href="#longer-vecs" id="longer-vecs">Longer <code>Vec</code>s</a></h3>
+<h3 id="longer-vecs"><a class="header" href="#longer-vecs">Longer <code>Vec</code>s</a></h3>
 <p>If you know the minimum or exact size of a vector, you can reserve a specific
 capacity with <a href="https://doc.rust-lang.org/std/vec/struct.Vec.html#method.with_capacity"><code>Vec::with_capacity</code></a>, <a href="https://doc.rust-lang.org/std/vec/struct.Vec.html#method.reserve"><code>Vec::reserve</code></a>, or
 <a href="https://doc.rust-lang.org/std/vec/struct.Vec.html#method.reserve_exact"><code>Vec::reserve_exact</code></a>. For example, if you know a vector will grow to have at
@@ -293,7 +293,7 @@ one at a time would result in four allocations (for capacities of 4, 8, 16, and
 <p>If you know the maximum length of a vector, the above functions also let you
 not allocate excess space unnecessary. Similarly, <a href="https://doc.rust-lang.org/std/vec/struct.Vec.html#method.shrink_to_fit"><code>Vec::shrink_to_fit</code></a> can be
 used to minimize wasted space, but note that it may cause a reallocation.</p>
-<h2><a class="header" href="#string" id="string"><code>String</code></a></h2>
+<h2 id="string"><a class="header" href="#string"><code>String</code></a></h2>
 <p>A <a href="https://doc.rust-lang.org/std/string/struct.String.html"><code>String</code></a> contains heap-allocated bytes. The representation and operation of
 <code>String</code> is very similar to a <code>Vec&lt;u8&gt;</code>. Many <code>Vec</code> methods relating to growth
 and capacity have equivalents for <code>String</code>, such as
@@ -309,14 +309,14 @@ worth of characters. On 64-bit platforms, this is any string that is less than
 allocation. If you can avoid a <code>format!</code> call by using a string literal, that
 will avoid this allocation.
 <a href="https://github.com/rust-lang/rust/pull/55905/commits/c6862992d947331cd6556f765f6efbde0a709cf9"><strong>Example</strong></a>.</p>
-<h2><a class="header" href="#hash-tables" id="hash-tables">Hash tables</a></h2>
+<h2 id="hash-tables"><a class="header" href="#hash-tables">Hash tables</a></h2>
 <p><a href="https://doc.rust-lang.org/std/collections/struct.HashSet.html"><code>HashSet</code></a> and <a href="https://doc.rust-lang.org/std/collections/struct.HashMap.html"><code>HashMap</code></a> are hash tables. Their representation and
 operations are similar to those of <code>Vec</code>, in terms of allocations: they have
 a single contiguous heap allocation, holding keys and values, which is
 reallocated as necessary as the table grows. Many <code>Vec</code> methods relating to
 growth and capacity have equivalents for <code>HashSet</code>/<code>HashMap</code>, such as
 <a href="https://doc.rust-lang.org/std/collections/struct.HashSet.html#method.with_capacity"><code>HashSet::with_capacity</code></a>.</p>
-<h2><a class="header" href="#cow" id="cow"><code>Cow</code></a></h2>
+<h2 id="cow"><a class="header" href="#cow"><code>Cow</code></a></h2>
 <p>Sometimes you have some borrowed data, such as a <code>&amp;str</code>, that is mostly
 read-only but occasionally needs to be modified. Cloning the data every time
 would be wasteful. Instead you can use “clone-on-write” semantics via the
@@ -331,7 +331,7 @@ necessary.</p>
 <a href="https://github.com/rust-lang/rust/pull/50855/commits/ad471452ba6fbbf91ad566dc4bdf1033a7281811"><strong>Example 2</strong></a>,
 <a href="https://github.com/rust-lang/rust/pull/56336/commits/787959c20d062d396b97a5566e0a766d963af022"><strong>Example 3</strong></a>,
 <a href="https://github.com/rust-lang/rust/pull/68848/commits/67da45f5084f98eeb20cc6022d68788510dc832a"><strong>Example 4</strong></a>.</p>
-<h2><a class="header" href="#clone" id="clone"><code>clone</code></a></h2>
+<h2 id="clone"><a class="header" href="#clone"><code>clone</code></a></h2>
 <p>Calling <a href="https://doc.rust-lang.org/std/clone/trait.Clone.html#tymethod.clone"><code>clone</code></a> on a value that contains heap-allocated memory typically
 involves additional allocations. For example, calling <code>clone</code> on a non-empty
 <code>Vec</code> requires a new allocation for the elements (but note that the capacity of
@@ -361,7 +361,7 @@ necessary, sometimes it can simply be removed.
 <a href="https://github.com/rust-lang/rust/pull/37318/commits/e382267cfb9133ef12d59b66a2935ee45b546a61"><strong>Example 1</strong></a>,
 <a href="https://github.com/rust-lang/rust/pull/37705/commits/11c1126688bab32f76dbe1a973906c7586da143f"><strong>Example 2</strong></a>,
 <a href="https://github.com/rust-lang/rust/pull/64302/commits/36b37e22de92b584b9cf4464ed1d4ad317b798be"><strong>Example 3</strong></a>.</p>
-<h2><a class="header" href="#to_owned" id="to_owned"><code>to_owned</code></a></h2>
+<h2 id="to_owned"><a class="header" href="#to_owned"><code>to_owned</code></a></h2>
 <p><a href="https://doc.rust-lang.org/std/borrow/trait.ToOwned.html#tymethod.to_owned"><code>ToOwned::to_owned</code></a> is implemented for many common types. It creates owned
 data from borrowed data, usually by cloning, and therefore often causes heap
 allocations. For example, it can be used to create a <code>String</code> from a <code>&amp;str</code>.</p>
@@ -370,7 +370,7 @@ data in a struct rather than an owned copy. This requires lifetime annotations
 on the struct, complicating the code, and should only be done when profiling
 and benchmarking shows that it is worthwhile.
 <a href="https://github.com/rust-lang/rust/pull/50855/commits/6872377357dbbf373cfd2aae352cb74cfcc66f34"><strong>Example</strong></a>.</p>
-<h2><a class="header" href="#reusing-collections" id="reusing-collections">Reusing Collections</a></h2>
+<h2 id="reusing-collections"><a class="header" href="#reusing-collections">Reusing Collections</a></h2>
 <p>Sometimes you need to build up a collection such as a <code>Vec</code> in stages. It is
 usually better to do this by modifying a single <code>Vec</code> than by building multiple
 <code>Vec</code>s and then combining them.</p>
@@ -404,7 +404,7 @@ each iteration’s usage of the <code>Vec</code> is unrelated to the others.
 <a href="https://github.com/rust-lang/rust/pull/51870/commits/b0c78120e3ecae5f4043781f7a3f79e2277293e7"><strong>Example 2</strong></a>.</p>
 <p>Similarly, it is sometimes worth keeping a “workhorse” collection within a
 struct, to be reused in one or more methods that are called repeatedly.</p>
-<h2><a class="header" href="#using-an-alternative-allocator" id="using-an-alternative-allocator">Using an Alternative Allocator</a></h2>
+<h2 id="using-an-alternative-allocator"><a class="header" href="#using-an-alternative-allocator">Using an Alternative Allocator</a></h2>
 <p>Another option for improving the performance of allocation-heavy Rust programs
 is to replace the default (system) allocator with an alternative allocator. The
 exact effect will depend on the individual program and the alternative

@@ -167,7 +167,7 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1><a class="header" href="#inlining" id="inlining">Inlining</a></h1>
+                        <h1 id="inlining"><a class="header" href="#inlining">Inlining</a></h1>
 <p>Entry to and exit from hot, uninlined functions often accounts for a
 non-trivial fraction of execution time. Inlining these functions can provide
 small but easy speed wins. </p>
@@ -187,7 +187,7 @@ be inlined.</li>
 <p>Inline attributes do not guarantee that a function is inlined or not inlined,
 but in practice, <code>#[inline(always)]</code> will cause inlining in all but the most
 exceptional cases.</p>
-<h2><a class="header" href="#simple-cases" id="simple-cases">Simple Cases</a></h2>
+<h2 id="simple-cases"><a class="header" href="#simple-cases">Simple Cases</a></h2>
 <p>The best candidates for inlining are (a) functions that are very small, or (b)
 functions that have a single call site. The compiler will often inline these
 functions itself even without an inline attribute. But the compiler cannot
@@ -218,7 +218,7 @@ can be unpredictable. Sometimes it has no effect because a nearby function that
 was previously inlined no longer is. Sometimes it slows the code down. Inlining
 can also affect compile times, especially cross-crate inlining which involves
 duplicating internal representations of the functions.</p>
-<h2><a class="header" href="#harder-cases" id="harder-cases">Harder Cases</a></h2>
+<h2 id="harder-cases"><a class="header" href="#harder-cases">Harder Cases</a></h2>
 <p>Sometimes you have a function that is large and has multiple call sites, but
 only one call site is hot. You would like to inline the hot call site for
 speed, but not inline the cold call sites to avoid unnecessary code bloat. The

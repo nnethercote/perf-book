@@ -167,14 +167,14 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1><a class="header" href="#standard-library-types" id="standard-library-types">Standard Library Types</a></h1>
+                        <h1 id="standard-library-types"><a class="header" href="#standard-library-types">Standard Library Types</a></h1>
 <p>It is worth reading through the documentation for common standard library
 types—such as <a href="https://doc.rust-lang.org/std/vec/struct.Vec.html"><code>Vec</code></a>, <a href="https://doc.rust-lang.org/std/option/enum.Option.html"><code>Option</code></a>, <a href="https://doc.rust-lang.org/std/result/enum.Result.html"><code>Result</code></a>, and <a href="https://doc.rust-lang.org/std/rc/struct.Rc.html"><code>Rc</code></a>/<a href="https://doc.rust-lang.org/std/sync/struct.Arc.html"><code>Arc</code></a>—to find interesting
 functions that can sometimes be used to improve performance.</p>
 <p>It is also worth knowing about high-performance alternatives to standard
 library types, such as <a href="https://doc.rust-lang.org/std/sync/struct.Mutex.html"><code>Mutex</code></a>, <a href="https://doc.rust-lang.org/std/sync/struct.RwLock.html"><code>RwLock</code></a>, <a href="https://doc.rust-lang.org/std/sync/struct.Condvar.html"><code>Condvar</code></a>, and
 <a href="https://doc.rust-lang.org/std/sync/struct.Once.html"><code>Once</code></a>.</p>
-<h2><a class="header" href="#vec" id="vec"><code>Vec</code></a></h2>
+<h2 id="vec"><a class="header" href="#vec"><code>Vec</code></a></h2>
 <p><a href="https://doc.rust-lang.org/std/vec/struct.Vec.html#method.remove"><code>Vec::remove</code></a> removes an element at a particular index and shifts all
 subsequent elements one to the left, which makes it O(n). <a href="https://doc.rust-lang.org/std/vec/struct.Vec.html#method.swap_remove"><code>Vec::swap_remove</code></a>
 replaces an element at a particular index with the final element, which does
@@ -182,7 +182,7 @@ not preserve ordering, but is O(1).</p>
 <p><a href="https://doc.rust-lang.org/std/vec/struct.Vec.html#method.retain"><code>Vec::retain</code></a> efficiently removes multiple items from a <code>Vec</code>. There is an
 equivalent method for other collection types such as <code>String</code>, <code>HashSet</code>, and
 <code>HashMap</code>.</p>
-<h2><a class="header" href="#option-and-result" id="option-and-result"><code>Option</code> and <code>Result</code></a></h2>
+<h2 id="option-and-result"><a class="header" href="#option-and-result"><code>Option</code> and <code>Result</code></a></h2>
 <p><a href="https://doc.rust-lang.org/std/option/enum.Option.html#method.ok_or"><code>Option::ok_or</code></a> converts an <code>Option</code> into a <code>Result</code>, and is passed an <code>err</code>
 parameter that is used if the <code>Option</code> value is <code>None</code>. <code>err</code> is computed
 eagerly. If its computation is expensive, you should instead use
@@ -208,7 +208,7 @@ For example, this:</p>
 <p><a href="https://github.com/rust-lang/rust/pull/50051/commits/5070dea2366104fb0b5c344ce7f2a5cf8af176b0"><strong>Example</strong></a>.</p>
 <p>There are similar alternatives for <a href="https://doc.rust-lang.org/std/option/enum.Option.html#method.map_or"><code>Option::map_or</code></a>, <a href="https://doc.rust-lang.org/std/option/enum.Option.html#method.unwrap_or"><code>Option::unwrap_or</code></a>,
 <a href="https://doc.rust-lang.org/std/result/enum.Result.html#method.or"><code>Result::or</code></a>, <a href="https://doc.rust-lang.org/std/result/enum.Result.html#method.map_or"><code>Result::map_or</code></a>, and <a href="https://doc.rust-lang.org/std/result/enum.Result.html#method.unwrap_or"><code>Result::unwrap_or</code></a>.</p>
-<h2><a class="header" href="#rcarc" id="rcarc"><code>Rc</code>/<code>Arc</code></a></h2>
+<h2 id="rcarc"><a class="header" href="#rcarc"><code>Rc</code>/<code>Arc</code></a></h2>
 <p><a href="https://doc.rust-lang.org/std/rc/struct.Rc.html#method.make_mut"><code>Rc::make_mut</code></a>/<a href="https://doc.rust-lang.org/std/sync/struct.Arc.html#method.make_mut"><code>Arc::make_mut</code></a> provide clone-on-write semantics. They make
 a mutable reference to an <code>Rc</code>/<code>Arc</code>. If the refcount is greater than one, they
 will <code>clone</code> the inner value to ensure unique ownership; otherwise, they will
@@ -216,7 +216,7 @@ modify the original value. They are not needed often, but they can be extremely
 useful on occasion.
 <a href="https://github.com/rust-lang/rust/pull/65198/commits/3832a634d3aa6a7c60448906e6656a22f7e35628"><strong>Example 1</strong></a>,
 <a href="https://github.com/rust-lang/rust/pull/65198/commits/75e0078a1703448a19e25eac85daaa5a4e6e68ac"><strong>Example 2</strong></a>.</p>
-<h2><a class="header" href="#mutex-rwlock-condvar-and-once" id="mutex-rwlock-condvar-and-once"><code>Mutex</code>, <code>RwLock</code>, <code>Condvar</code>, and <code>Once</code></a></h2>
+<h2 id="mutex-rwlock-condvar-and-once"><a class="header" href="#mutex-rwlock-condvar-and-once"><code>Mutex</code>, <code>RwLock</code>, <code>Condvar</code>, and <code>Once</code></a></h2>
 <p>The <a href="https://crates.io/crates/parking_lot"><code>parking_lot</code></a> crate provides alternative implementations of these
 synchronization types that are smaller, faster, and more flexible than those in
 the standard library. The APIs and semantics of the <code>parking_lot</code> types are

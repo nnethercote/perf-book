@@ -167,8 +167,8 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1><a class="header" href="#io" id="io">I/O</a></h1>
-<h2><a class="header" href="#locking" id="locking">Locking</a></h2>
+                        <h1 id="io"><a class="header" href="#io">I/O</a></h1>
+<h2 id="locking"><a class="header" href="#locking">Locking</a></h2>
 <p>Rust’s <a href="https://doc.rust-lang.org/std/macro.print.html"><code>print!</code></a> and <a href="https://doc.rust-lang.org/std/macro.println.html"><code>println!</code></a> macros lock stdout on every call. If you
 have repeated calls to these macros it may be better to lock stdout manually.</p>
 <p>For example, change this code:</p>
@@ -199,7 +199,7 @@ for line in lines {
 </span><span class="boring">}
 </span></code></pre></pre>
 <p>stdin and stderr can likewise be locked when doing repeated operations on them.</p>
-<h2><a class="header" href="#buffering" id="buffering">Buffering</a></h2>
+<h2 id="buffering"><a class="header" href="#buffering">Buffering</a></h2>
 <p>Rust file I/O is unbuffered by default. If you have many small and repeated
 read or write calls to a file or network socket, use <a href="https://doc.rust-lang.org/std/io/struct.BufReader.html"><code>BufReader</code></a> or
 <a href="https://doc.rust-lang.org/std/io/struct.BufWriter.html"><code>BufWriter</code></a>. They maintain an in-memory buffer for input and output,
@@ -242,7 +242,7 @@ that occurs on flushing will be ignored, whereas an explicit flush will make
 that error explicit.</p>
 <p>Note that buffering also works with stdout, so you might want to combine manual
 locking <em>and</em> buffering when making many writes to stdout.</p>
-<h2><a class="header" href="#reading-input-as-raw-bytes" id="reading-input-as-raw-bytes">Reading Input as Raw Bytes</a></h2>
+<h2 id="reading-input-as-raw-bytes"><a class="header" href="#reading-input-as-raw-bytes">Reading Input as Raw Bytes</a></h2>
 <p>The built-in <a href="https://doc.rust-lang.org/std/string/struct.String.html">String</a> type uses UTF-8 internally, which adds a small, but
 nonzero overhead caused by UTF-8 validation when you read input into it. If you
 just want to process input bytes without worrying about UTF-8 (for example if

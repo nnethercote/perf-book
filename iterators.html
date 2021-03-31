@@ -167,8 +167,8 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1><a class="header" href="#iterators" id="iterators">Iterators</a></h1>
-<h2><a class="header" href="#collect-and-extend" id="collect-and-extend"><code>collect</code> and <code>extend</code></a></h2>
+                        <h1 id="iterators"><a class="header" href="#iterators">Iterators</a></h1>
+<h2 id="collect-and-extend"><a class="header" href="#collect-and-extend"><code>collect</code> and <code>extend</code></a></h2>
 <p><a href="https://doc.rust-lang.org/std/iter/trait.Iterator.html#method.collect"><code>Iterator::collect</code></a> converts an iterator into a collection such as <code>Vec</code>,
 which typically requires an allocation. You should avoid calling <code>collect</code> if
 the collection is then only iterated over again.</p>
@@ -184,7 +184,7 @@ then using <a href="https://doc.rust-lang.org/std/vec/struct.Vec.html#method.app
 <code>collect</code> and <code>extend</code> calls that use the iterator may then do fewer
 allocations, because they have advance information about the number of elements
 yielded by the iterator.</p>
-<h2><a class="header" href="#chaining" id="chaining">Chaining</a></h2>
+<h2 id="chaining"><a class="header" href="#chaining">Chaining</a></h2>
 <p><a href="https://doc.rust-lang.org/std/iter/trait.Iterator.html#method.chain"><code>chain</code></a> can be very convenient, but it can also be slower than a single
 iterator. It may be worth avoiding for hot iterators, if possible.
 <a href="https://github.com/rust-lang/rust/pull/64801/commits/5ca99b750e455e9b5e13e83d0d7886486231e48a"><strong>Example</strong></a>.</p>

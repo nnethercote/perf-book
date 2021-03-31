@@ -169,10 +169,10 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1><a class="header" href="#span-stylefont-size-150the-rust-performance-bookspan" id="span-stylefont-size-150the-rust-performance-bookspan"><span style="font-size: 150%">The Rust Performance Book</span></a></h1>
+                        <h1 id="span-stylefont-size-150the-rust-performance-bookspan"><a class="header" href="#span-stylefont-size-150the-rust-performance-bookspan"><span style="font-size: 150%">The Rust Performance Book</span></a></h1>
 <p><strong><span style="font-size: 130%">First published in November 2020</span></strong></p>
 <p><strong><span style="font-size: 130%">Written by Nicholas Nethercote and others</span></strong></p>
-<h1><a class="header" href="#introduction" id="introduction">Introduction</a></h1>
+<h1 id="introduction"><a class="header" href="#introduction">Introduction</a></h1>
 <p>Performance is important for many Rust programs. </p>
 <p>This book contains many techniques that can improve the performance—speed and
 memory usage—of Rust programs. The <a href="compile-times.html">Compile Times</a> section also contains some
@@ -191,10 +191,13 @@ technique was used on a real-world Rust program.</p>
 <p>This book is aimed at intermediate and advanced Rust users. Beginner Rust users
 have more than enough to learn and these techniques are likely to be an
 unhelpful distraction to them.</p>
-<h1><a class="header" href="#benchmarking" id="benchmarking">Benchmarking</a></h1>
-<p>When optimizing a program, you need a way to reliably answer the question “did
-this change speed things up?” This process is sometimes called benchmarking.
-Benchmarking is a complex topic and a thorough coverage is beyond the scope of
+<h1 id="benchmarking"><a class="header" href="#benchmarking">Benchmarking</a></h1>
+<p>Benchmarking typically involves comparing the speed of two or more programs
+that do the same thing. Sometimes this might involve comparing two or more
+different programs, e.g. Firefox vs Safari vs Chrome. Sometimes it involves
+comparing two different versions of the same program. This latter case lets us
+reliably answer the question “did this change speed things up?”</p>
+<p>Benchmarking is a complex topic and a thorough coverage is beyond the scope of
 this book, but here are the basics.</p>
 <p>First, you need workloads to measure. Ideally, you would have a variety of
 workloads that represent realistic usage of your program. Workloads using
@@ -221,10 +224,10 @@ having a perfect benchmarking setup, particularly when you start optimizing a
 program. A mediocre setup is far better than no setup. Keep an open mind about
 what you are measuring, and over time you can make benchmarking improvements as
 you learn about the performance characteristics of your program.</p>
-<h1><a class="header" href="#build-configuration" id="build-configuration">Build Configuration</a></h1>
+<h1 id="build-configuration"><a class="header" href="#build-configuration">Build Configuration</a></h1>
 <p>The right build configuration will maximize the performance of your Rust
 program without any changes to its code.</p>
-<h2><a class="header" href="#release-builds" id="release-builds">Release Builds</a></h2>
+<h2 id="release-builds"><a class="header" href="#release-builds">Release Builds</a></h2>
 <p>The single most important Rust performance tip is simple but <a href="https://users.rust-lang.org/t/why-my-rust-program-is-so-slow/47764/5">easy to
 overlook</a>: make sure you are using a release build rather than a debug build
 when you want high performance. This is most often done by specifying the
@@ -253,7 +256,7 @@ compiled code will be placed in the <code>target/release/</code> directory. <cod
 <p>See the <a href="https://doc.rust-lang.org/cargo/reference/profiles.html">Cargo profile documentation</a> for more details about the differences
 between debug builds (which use the <code>dev</code> profile) and release builds (which
 use the <code>release</code> profile).</p>
-<h2><a class="header" href="#link-time-optimization" id="link-time-optimization">Link-time Optimization</a></h2>
+<h2 id="link-time-optimization"><a class="header" href="#link-time-optimization">Link-time Optimization</a></h2>
 <p>Link-time optimization (LTO) is a whole-program optimization technique that can
 improve runtime performance by 10-20% or more, at the cost of increased build
 times. For any individual Rust program it is easy to see if the runtime versus
@@ -270,7 +273,7 @@ less aggressive form of LTO that often works as well as “fat” LTO without
 increasing build times as much.</p>
 <p>See the <a href="https://doc.rust-lang.org/cargo/reference/profiles.html#lto">Cargo LTO documentation</a> for more details about the <code>lto</code> setting, and
 about enabling specific settings for different profiles.</p>
-<h2><a class="header" href="#codegen-units" id="codegen-units">Codegen Units</a></h2>
+<h2 id="codegen-units"><a class="header" href="#codegen-units">Codegen Units</a></h2>
 <p>The Rust compiler splits your crate into multiple <a href="https://doc.rust-lang.org/rustc/codegen-options/index.html#codegen-units">codegen units</a> to
 parallelize (and thus speed up) compilation. However, this might cause it to
 miss some potential optimizations. If you want to potentially improve runtime
@@ -282,7 +285,7 @@ codegen-units = 1
 <p><a href="https://likebike.com/posts/How_To_Write_Fast_Rust_Code.html#emit-asm"><strong>Example</strong></a>.</p>
 <p>Be wary that the codegen unit count is a heuristic and thus a smaller count can
 actually result in a slower program.</p>
-<h2><a class="header" href="#using-cpu-specific-instructions" id="using-cpu-specific-instructions">Using CPU Specific Instructions</a></h2>
+<h2 id="using-cpu-specific-instructions"><a class="header" href="#using-cpu-specific-instructions">Using CPU Specific Instructions</a></h2>
 <p>If you do not care that much about the compatibility of your binary on older
 (or other types of) processors, you can tell the compiler to generate the
 newest (and potentially fastest) instructions specific to a <a href="https://doc.rust-lang.org/1.41.1/rustc/codegen-options/index.html#target-cpu">certain CPU
@@ -293,21 +296,21 @@ instructions for your current CPU:</p>
 </code></pre>
 <p>This can have a large effect, especially if the compiler finds vectorization
 opportunities in your code.</p>
-<h2><a class="header" href="#abort-on-panic" id="abort-on-panic">Abort on <code>panic!</code></a></h2>
+<h2 id="abort-on-panic"><a class="header" href="#abort-on-panic">Abort on <code>panic!</code></a></h2>
 <p>If you do not need to catch or unwind panics, you can tell the compiler to
 simply abort on panics. This might reduce binary size and increase performance
 slightly:</p>
 <pre><code class="language-toml">[profile.release]
 panic = &quot;abort&quot;
 </code></pre>
-<h2><a class="header" href="#profile-guided-optimization" id="profile-guided-optimization">Profile-guided Optimization</a></h2>
+<h2 id="profile-guided-optimization"><a class="header" href="#profile-guided-optimization">Profile-guided Optimization</a></h2>
 <p>Profile-guided optimization (PGO) is a compilation model where you compile
 your program, run it on sample data while collecting profiling data, and then
 use that profiling data to guide a second compilation of the program.
 <a href="https://blog.rust-lang.org/inside-rust/2020/11/11/exploring-pgo-for-the-rust-compiler.html"><strong>Example</strong></a>.</p>
 <p>It is an advanced technique that takes some effort to set up, but is worthwhile
 in some cases. See the <a href="https://doc.rust-lang.org/rustc/profile-guided-optimization.html">rustc PGO documentation</a> for details.</p>
-<h1><a class="header" href="#linting" id="linting">Linting</a></h1>
+<h1 id="linting"><a class="header" href="#linting">Linting</a></h1>
 <p><a href="https://github.com/rust-lang/rust-clippy">Clippy</a> is a collection of lints to catch common mistakes in Rust code. It is
 an excellent tool to run on Rust code in general. It can also help with
 performance, because a number of the lints relate to code patterns that can
@@ -320,11 +323,11 @@ deselecting all the lint groups except for “Perf”.</p>
 <p>As well as making the code faster, the performance lint suggestions usually
 result in code that is simpler and more idiomatic, so they are worth following
 even for code that is not executed frequently.</p>
-<h1><a class="header" href="#profiling" id="profiling">Profiling</a></h1>
+<h1 id="profiling"><a class="header" href="#profiling">Profiling</a></h1>
 <p>When optimizing a program, you also need a way to determine which parts of the
 program are “hot” (executed frequently enough to affect runtime) and worth
 modifying. This is best done via profiling.</p>
-<h2><a class="header" href="#profilers" id="profilers">Profilers</a></h2>
+<h2 id="profilers"><a class="header" href="#profilers">Profilers</a></h2>
 <p>There are many different profilers available, each with their strengths and
 weaknesses. The following profilers have been used successfully on Rust
 programs.</p>
@@ -341,8 +344,9 @@ Windows).</li>
 instruction counts and simulated cache and branch prediction data. They work
 on Linux and some other Unixes.</li>
 <li><a href="https://www.valgrind.org/docs/manual/dh-manual.html">DHAT</a> is good for finding which parts of the code are causing a lot of
-allocations, and for giving insight into peak memory usage. It works on Linux
-and some other Unixes. <a href="https://github.com/nnethercote/dhat-rs/">dhat-rs</a> is an alternative that is a little less
+allocations, and for giving insight into peak memory usage. It can also be
+used to identify hot calls to <code>memcpy</code>. It works on Linux and some other
+Unixes. <a href="https://github.com/nnethercote/dhat-rs/">dhat-rs</a> is an experimental alternative that is a little less
 powerful and requires minor changes to your Rust program, but works on all
 platforms.</li>
 <li><a href="https://github.com/KDE/heaptrack">heaptrack</a> is another heap profiling tool. It works on Linux.</li>
@@ -352,20 +356,20 @@ domain-specific insights into parts of your code. It works on all platforms.</li
 <li><a href="https://github.com/plasma-umass/coz">Coz</a> performs <em>causal profiling</em> to measure optimization potential, and has
 Rust support via <a href="https://github.com/plasma-umass/coz/tree/master/rust">coz-rs</a>. It works on Linux. </li>
 </ul>
-<h2><a class="header" href="#debug-info" id="debug-info">Debug Info</a></h2>
+<h2 id="debug-info"><a class="header" href="#debug-info">Debug Info</a></h2>
 <p>To profile a release build effectively you might need to enable source line
 debug info. To do this, add the following lines to your <code>Cargo.toml</code> file:</p>
 <pre><code class="language-toml">[profile.release]
 debug = 1
 </code></pre>
 <p>See the <a href="https://doc.rust-lang.org/cargo/reference/profiles.html#debug">Cargo documentation</a> for more details about the <code>debug</code> setting.</p>
-<h2><a class="header" href="#symbol-demangling" id="symbol-demangling">Symbol Demangling</a></h2>
+<h2 id="symbol-demangling"><a class="header" href="#symbol-demangling">Symbol Demangling</a></h2>
 <p>Rust uses a mangling scheme to encode function names in compiled code. If a
 profiler is unaware of this scheme, its output may contain symbol names like
 <code>_ZN3foo3barE</code> or <code>_ZN28_$u7b$$u7b$closure$u7d$$u7d$E</code> or
 <code>_ZN88_$LT$core..result..Result$LT$$u21$$C$$u20$E$GT$$u20$as$u20$std..process..Termination$GT$6report17hfc41d0da4a40b3e8E</code>.
 Names like these can be manually demangled using <a href="https://crates.io/crates/rustfilt"><code>rustfilt</code></a>.</p>
-<h1><a class="header" href="#inlining" id="inlining">Inlining</a></h1>
+<h1 id="inlining"><a class="header" href="#inlining">Inlining</a></h1>
 <p>Entry to and exit from hot, uninlined functions often accounts for a
 non-trivial fraction of execution time. Inlining these functions can provide
 small but easy speed wins. </p>
@@ -385,7 +389,7 @@ be inlined.</li>
 <p>Inline attributes do not guarantee that a function is inlined or not inlined,
 but in practice, <code>#[inline(always)]</code> will cause inlining in all but the most
 exceptional cases.</p>
-<h2><a class="header" href="#simple-cases" id="simple-cases">Simple Cases</a></h2>
+<h2 id="simple-cases"><a class="header" href="#simple-cases">Simple Cases</a></h2>
 <p>The best candidates for inlining are (a) functions that are very small, or (b)
 functions that have a single call site. The compiler will often inline these
 functions itself even without an inline attribute. But the compiler cannot
@@ -416,7 +420,7 @@ can be unpredictable. Sometimes it has no effect because a nearby function that
 was previously inlined no longer is. Sometimes it slows the code down. Inlining
 can also affect compile times, especially cross-crate inlining which involves
 duplicating internal representations of the functions.</p>
-<h2><a class="header" href="#harder-cases" id="harder-cases">Harder Cases</a></h2>
+<h2 id="harder-cases"><a class="header" href="#harder-cases">Harder Cases</a></h2>
 <p>Sometimes you have a function that is large and has multiple call sites, but
 only one call site is hot. You would like to inline the hot call site for
 speed, but not inline the cold call sites to avoid unnecessary code bloat. The
@@ -460,7 +464,7 @@ fn uninlined_my_function() {
 </span></code></pre></pre>
 <p><a href="https://github.com/rust-lang/rust/pull/53513/commits/b73843f9422fb487b2d26ac2d65f79f73a4c9ae3"><strong>Example 1</strong></a>,
 <a href="https://github.com/rust-lang/rust/pull/64420/commits/a2261ad66400c3145f96ebff0d9b75e910fa89dd"><strong>Example 2</strong></a>.</p>
-<h1><a class="header" href="#hashing" id="hashing">Hashing</a></h1>
+<h1 id="hashing"><a class="header" href="#hashing">Hashing</a></h1>
 <p><code>HashSet</code> and <code>HashMap</code> are two widely-used types. The default hashing
 algorithm is not specified, but at the time of writing the default is an
 algorithm called <a href="https://en.wikipedia.org/wiki/SipHash">SipHash 1-3</a>. This algorithm is high quality—it provides high
@@ -496,7 +500,7 @@ some places. The presence of <code>SipHasher13</code> code in profiles is a tell
 indicator of this.</p>
 <p>Hash function design is a complex topic and is beyond the scope of this book.
 The <a href="https://github.com/tkaitchuck/aHash/blob/master/compare/readme.md"><code>ahash</code> documentation</a> has a good discussion. </p>
-<h1><a class="header" href="#heap-allocations" id="heap-allocations">Heap Allocations</a></h1>
+<h1 id="heap-allocations"><a class="header" href="#heap-allocations">Heap Allocations</a></h1>
 <p>Heap allocations are moderately expensive. The exact details depend on which
 allocator is in use, but each allocation (and deallocation) typically involves
 acquiring a global lock, doing some non-trivial data structure manipulation,
@@ -506,7 +510,7 @@ structures and operations cause allocations, because avoiding them can greatly
 improve performance.</p>
 <p>The <a href="https://docs.google.com/presentation/d/1q-c7UAyrUlM-eZyTo1pd8SZ0qwA_wYxmPZVOQkoDmH4/">Rust Container Cheat Sheet</a> has visualizations of common Rust types, and
 is an excellent companion to the following sections.</p>
-<h2><a class="header" href="#profiling-1" id="profiling-1">Profiling</a></h2>
+<h2 id="profiling-1"><a class="header" href="#profiling-1">Profiling</a></h2>
 <p>If a general-purpose profiler shows <code>malloc</code>, <code>free</code>, and related functions as
 hot, then it is likely worth trying to reduce the allocation rate and/or using
 an alternative allocator.</p>
@@ -538,7 +542,7 @@ instructions executed can have measurable performance improvements (e.g. ~1%).</
 it should be clear that DHAT gives a wealth of information about allocations,
 such as where and how often they happen, how big they are, how long they live
 for, and how often they are accessed.</p>
-<h2><a class="header" href="#box" id="box"><code>Box</code></a></h2>
+<h2 id="box"><a class="header" href="#box"><code>Box</code></a></h2>
 <p><a href="https://doc.rust-lang.org/std/boxed/struct.Box.html"><code>Box</code></a> is the simplest heap-allocated type. A <code>Box&lt;T&gt;</code> value is a <code>T</code> value
 that is allocated on the heap. </p>
 <p>It is sometimes worth boxing one or more fields in a struct or enum fields to
@@ -546,7 +550,7 @@ make a type smaller. (See the the <a href="type-sizes.html">Type Sizes</a> chapt
 about this.)</p>
 <p>Other than that, <code>Box</code> is straightforward and does not offer much scope for
 optimizations.</p>
-<h2><a class="header" href="#rcarc" id="rcarc"><code>Rc</code>/<code>Arc</code></a></h2>
+<h2 id="rcarc"><a class="header" href="#rcarc"><code>Rc</code>/<code>Arc</code></a></h2>
 <p><a href="https://doc.rust-lang.org/std/rc/struct.Rc.html"><code>Rc</code></a>/<a href="https://doc.rust-lang.org/std/sync/struct.Arc.html"><code>Arc</code></a> are similar to <code>Box</code>, but the value on the heap is accompanied by
 two reference counts. They allow value sharing, which can be an effective way
 to reduce memory usage.</p>
@@ -555,7 +559,7 @@ rates by heap allocating values that might otherwise not be heap-allocated.
 <a href="https://github.com/rust-lang/rust/pull/37373/commits/c440a7ae654fb641e68a9ee53b03bf3f7133c2fe"><strong>Example</strong></a>.</p>
 <p>Unlike <code>Box</code>, calling <code>clone</code> on an <code>Rc</code>/<code>Arc</code> value does not involve an
 allocation. Instead, it merely increments a reference count.</p>
-<h2><a class="header" href="#vec" id="vec"><code>Vec</code></a></h2>
+<h2 id="vec"><a class="header" href="#vec"><code>Vec</code></a></h2>
 <p><a href="https://doc.rust-lang.org/std/vec/struct.Vec.html"><code>Vec</code></a> is a heap-allocated type with a great deal of scope for optimizing the
 number of allocations, and/or minimizing the amount of wasted space. To do this
 requires understanding how its elements are stored.</p>
@@ -570,7 +574,7 @@ the number of elements that could be held without reallocating is the capacity.<
 <p>When the vector needs to grow beyond its current capacity, the elements will be
 copied into a larger heap allocation, and the old heap allocation will be
 freed.</p>
-<h3><a class="header" href="#vec-growth" id="vec-growth"><code>Vec</code> growth</a></h3>
+<h3 id="vec-growth"><a class="header" href="#vec-growth"><code>Vec</code> growth</a></h3>
 <p>A new, empty <code>Vec</code> created by the common means
 (<a href="https://doc.rust-lang.org/std/macro.vec.html"><code>vec![]</code></a>
 or <a href="https://doc.rust-lang.org/std/vec/struct.Vec.html#method.new"><code>Vec::new</code></a> or <a href="https://doc.rust-lang.org/std/default/trait.Default.html#tymethod.default"><code>Vec::default</code></a>) has a length and capacity of zero, and no
@@ -590,7 +594,7 @@ at that site and then doing some post-processing (e.g. with <a href="https://git
 determine the length distribution. For example, you might have many short
 vectors, or you might have a smaller number of very long vectors, and the best
 way to optimize the allocation site will vary accordingly.</p>
-<h3><a class="header" href="#short-vecs" id="short-vecs">Short <code>Vec</code>s</a></h3>
+<h3 id="short-vecs"><a class="header" href="#short-vecs">Short <code>Vec</code>s</a></h3>
 <p>If you have many short vectors, you can use the <code>SmallVec</code> type from the
 <a href="https://crates.io/crates/smallvec"><code>smallvec</code></a> crate. <code>SmallVec&lt;[T; N]&gt;</code> is a drop-in replacement for <code>Vec</code> that
 can store <code>N</code> elements within the <code>SmallVec</code> itself, and then switches to a
@@ -610,7 +614,7 @@ confirm that an optimization is effective.</p>
 does not require the fallback to heap allocation, which makes it a little
 faster.
 <a href="https://github.com/rust-lang/rust/pull/74310/commits/c492ca40a288d8a85353ba112c4d38fe87ef453e"><strong>Example</strong></a>.</p>
-<h3><a class="header" href="#longer-vecs" id="longer-vecs">Longer <code>Vec</code>s</a></h3>
+<h3 id="longer-vecs"><a class="header" href="#longer-vecs">Longer <code>Vec</code>s</a></h3>
 <p>If you know the minimum or exact size of a vector, you can reserve a specific
 capacity with <a href="https://doc.rust-lang.org/std/vec/struct.Vec.html#method.with_capacity"><code>Vec::with_capacity</code></a>, <a href="https://doc.rust-lang.org/std/vec/struct.Vec.html#method.reserve"><code>Vec::reserve</code></a>, or
 <a href="https://doc.rust-lang.org/std/vec/struct.Vec.html#method.reserve_exact"><code>Vec::reserve_exact</code></a>. For example, if you know a vector will grow to have at
@@ -622,7 +626,7 @@ one at a time would result in four allocations (for capacities of 4, 8, 16, and
 <p>If you know the maximum length of a vector, the above functions also let you
 not allocate excess space unnecessary. Similarly, <a href="https://doc.rust-lang.org/std/vec/struct.Vec.html#method.shrink_to_fit"><code>Vec::shrink_to_fit</code></a> can be
 used to minimize wasted space, but note that it may cause a reallocation.</p>
-<h2><a class="header" href="#string" id="string"><code>String</code></a></h2>
+<h2 id="string"><a class="header" href="#string"><code>String</code></a></h2>
 <p>A <a href="https://doc.rust-lang.org/std/string/struct.String.html"><code>String</code></a> contains heap-allocated bytes. The representation and operation of
 <code>String</code> is very similar to a <code>Vec&lt;u8&gt;</code>. Many <code>Vec</code> methods relating to growth
 and capacity have equivalents for <code>String</code>, such as
@@ -638,14 +642,14 @@ worth of characters. On 64-bit platforms, this is any string that is less than
 allocation. If you can avoid a <code>format!</code> call by using a string literal, that
 will avoid this allocation.
 <a href="https://github.com/rust-lang/rust/pull/55905/commits/c6862992d947331cd6556f765f6efbde0a709cf9"><strong>Example</strong></a>.</p>
-<h2><a class="header" href="#hash-tables" id="hash-tables">Hash tables</a></h2>
+<h2 id="hash-tables"><a class="header" href="#hash-tables">Hash tables</a></h2>
 <p><a href="https://doc.rust-lang.org/std/collections/struct.HashSet.html"><code>HashSet</code></a> and <a href="https://doc.rust-lang.org/std/collections/struct.HashMap.html"><code>HashMap</code></a> are hash tables. Their representation and
 operations are similar to those of <code>Vec</code>, in terms of allocations: they have
 a single contiguous heap allocation, holding keys and values, which is
 reallocated as necessary as the table grows. Many <code>Vec</code> methods relating to
 growth and capacity have equivalents for <code>HashSet</code>/<code>HashMap</code>, such as
 <a href="https://doc.rust-lang.org/std/collections/struct.HashSet.html#method.with_capacity"><code>HashSet::with_capacity</code></a>.</p>
-<h2><a class="header" href="#cow" id="cow"><code>Cow</code></a></h2>
+<h2 id="cow"><a class="header" href="#cow"><code>Cow</code></a></h2>
 <p>Sometimes you have some borrowed data, such as a <code>&amp;str</code>, that is mostly
 read-only but occasionally needs to be modified. Cloning the data every time
 would be wasteful. Instead you can use “clone-on-write” semantics via the
@@ -660,7 +664,7 @@ necessary.</p>
 <a href="https://github.com/rust-lang/rust/pull/50855/commits/ad471452ba6fbbf91ad566dc4bdf1033a7281811"><strong>Example 2</strong></a>,
 <a href="https://github.com/rust-lang/rust/pull/56336/commits/787959c20d062d396b97a5566e0a766d963af022"><strong>Example 3</strong></a>,
 <a href="https://github.com/rust-lang/rust/pull/68848/commits/67da45f5084f98eeb20cc6022d68788510dc832a"><strong>Example 4</strong></a>.</p>
-<h2><a class="header" href="#clone" id="clone"><code>clone</code></a></h2>
+<h2 id="clone"><a class="header" href="#clone"><code>clone</code></a></h2>
 <p>Calling <a href="https://doc.rust-lang.org/std/clone/trait.Clone.html#tymethod.clone"><code>clone</code></a> on a value that contains heap-allocated memory typically
 involves additional allocations. For example, calling <code>clone</code> on a non-empty
 <code>Vec</code> requires a new allocation for the elements (but note that the capacity of
@@ -690,7 +694,7 @@ necessary, sometimes it can simply be removed.
 <a href="https://github.com/rust-lang/rust/pull/37318/commits/e382267cfb9133ef12d59b66a2935ee45b546a61"><strong>Example 1</strong></a>,
 <a href="https://github.com/rust-lang/rust/pull/37705/commits/11c1126688bab32f76dbe1a973906c7586da143f"><strong>Example 2</strong></a>,
 <a href="https://github.com/rust-lang/rust/pull/64302/commits/36b37e22de92b584b9cf4464ed1d4ad317b798be"><strong>Example 3</strong></a>.</p>
-<h2><a class="header" href="#to_owned" id="to_owned"><code>to_owned</code></a></h2>
+<h2 id="to_owned"><a class="header" href="#to_owned"><code>to_owned</code></a></h2>
 <p><a href="https://doc.rust-lang.org/std/borrow/trait.ToOwned.html#tymethod.to_owned"><code>ToOwned::to_owned</code></a> is implemented for many common types. It creates owned
 data from borrowed data, usually by cloning, and therefore often causes heap
 allocations. For example, it can be used to create a <code>String</code> from a <code>&amp;str</code>.</p>
@@ -699,7 +703,7 @@ data in a struct rather than an owned copy. This requires lifetime annotations
 on the struct, complicating the code, and should only be done when profiling
 and benchmarking shows that it is worthwhile.
 <a href="https://github.com/rust-lang/rust/pull/50855/commits/6872377357dbbf373cfd2aae352cb74cfcc66f34"><strong>Example</strong></a>.</p>
-<h2><a class="header" href="#reusing-collections" id="reusing-collections">Reusing Collections</a></h2>
+<h2 id="reusing-collections"><a class="header" href="#reusing-collections">Reusing Collections</a></h2>
 <p>Sometimes you need to build up a collection such as a <code>Vec</code> in stages. It is
 usually better to do this by modifying a single <code>Vec</code> than by building multiple
 <code>Vec</code>s and then combining them.</p>
@@ -733,7 +737,7 @@ each iteration’s usage of the <code>Vec</code> is unrelated to the others.
 <a href="https://github.com/rust-lang/rust/pull/51870/commits/b0c78120e3ecae5f4043781f7a3f79e2277293e7"><strong>Example 2</strong></a>.</p>
 <p>Similarly, it is sometimes worth keeping a “workhorse” collection within a
 struct, to be reused in one or more methods that are called repeatedly.</p>
-<h2><a class="header" href="#using-an-alternative-allocator" id="using-an-alternative-allocator">Using an Alternative Allocator</a></h2>
+<h2 id="using-an-alternative-allocator"><a class="header" href="#using-an-alternative-allocator">Using an Alternative Allocator</a></h2>
 <p>Another option for improving the performance of allocation-heavy Rust programs
 is to replace the default (system) allocator with an alternative allocator. The
 exact effect will depend on the individual program and the alternative
@@ -750,16 +754,19 @@ jemallocator = &quot;0.3.2&quot;
 static GLOBAL: jemallocator::Jemalloc = jemallocator::Jemalloc;
 </code></pre>
 <p>Another alternative allocator is <a href="https://github.com/microsoft/mimalloc">mimalloc</a>, usable via the <a href="https://docs.rs/mimalloc/0.1.22/mimalloc/"><code>mimalloc</code></a> crate.</p>
-<h1><a class="header" href="#type-sizes" id="type-sizes">Type Sizes</a></h1>
-<p>Shrinking oft-instantiated types can reduce peak memory usage, and also
-improve performance by reducing memory traffic and cache pressure. (In
-particular, note that types that are larger than 128 bytes are copied with
-<code>memcpy</code> rather than inline code.)</p>
-<p>The Rust compiler automatically sorts the fields in struct and enums to
-minimize their sizes (unless the <code>#[repr(C)]</code> attribute is specified), so you
-do not have to worry about field ordering. But there are still other ways to
-minimize the size of hot types.</p>
-<h2><a class="header" href="#measuring-type-sizes" id="measuring-type-sizes">Measuring Type Sizes</a></h2>
+<h1 id="type-sizes"><a class="header" href="#type-sizes">Type Sizes</a></h1>
+<p>Shrinking oft-instantiated types can help performance.</p>
+<p>For example, if memory usage is high, a heap profiler like <a href="https://www.valgrind.org/docs/manual/dh-manual.html">DHAT</a> or
+<a href="https://github.com/KDE/heaptrack">heaptrack</a> can identify the hot allocation points and the types involved.
+Shrinking these types can reduce peak memory usage, and possibly improve
+performance by reducing memory traffic and cache pressure.</p>
+<p>Furthermore, Rust types that are larger than 128 bytes are copied with <code>memcpy</code>
+rather than inline code. If <code>memcpy</code> shows up in non-trivial amounts in
+profiles, DHAT’s “copy profiling” mode will tell you exactly where the hot
+<code>memcpy</code> calls are and the types involved. Shrinking these types to 128 bytes
+or less can make the code faster by avoiding <code>memcpy</code> calls and reducing meomry
+traffic.</p>
+<h2 id="measuring-type-sizes"><a class="header" href="#measuring-type-sizes">Measuring Type Sizes</a></h2>
 <p><a href="https://doc.rust-lang.org/std/mem/fn.size_of.html"><code>std::mem::size_of</code></a> gives the size of a type, in bytes, but often you want to
 know the exact layout as well. For example, an enum might be surprisingly big,
 which might be caused by one outsized variant.</p>
@@ -811,7 +818,12 @@ reordered variant <code>C</code>‘s fields to minimize the size of <code>E</cod
 <li>The size and location of all padding.</li>
 </ul>
 <p>Once you know the layout of a hot type, there are multiple ways to shrink it.</p>
-<h2><a class="header" href="#smaller-enums" id="smaller-enums">Smaller Enums</a></h2>
+<h2 id="field-ordering"><a class="header" href="#field-ordering">Field Ordering</a></h2>
+<p>The Rust compiler automatically sorts the fields in struct and enums to
+minimize their sizes (unless the <code>#[repr(C)]</code> attribute is specified), so you
+do not have to worry about field ordering. But there are other ways to minimize
+the size of hot types.</p>
+<h2 id="smaller-enums"><a class="header" href="#smaller-enums">Smaller Enums</a></h2>
 <p>If an enum has an outsized variant, consider boxing one or more fields. For
 example, you could change this type:</p>
 <pre><pre class="playground"><code class="language-rust edition2018">
@@ -847,14 +859,14 @@ less ergonomic to use, especially in <code>match</code> patterns.
 <a href="https://github.com/rust-lang/rust/pull/64374/commits/2fcd870711ce267c79408ec631f7eba8e0afcdf6"><strong>Example 4</strong></a>,
 <a href="https://github.com/rust-lang/rust/pull/64394/commits/7f0637da5144c7435e88ea3805021882f077d50c"><strong>Example 5</strong></a>,
 <a href="https://github.com/rust-lang/rust/pull/71942/commits/27ae2f0d60d9201133e1f9ec7a04c05c8e55e665"><strong>Example 6</strong></a>.</p>
-<h2><a class="header" href="#smaller-integers" id="smaller-integers">Smaller Integers</a></h2>
+<h2 id="smaller-integers"><a class="header" href="#smaller-integers">Smaller Integers</a></h2>
 <p>It is often possible to shrink types by using smaller integer types. For
 example, while it is most natural to use <code>usize</code> for indices, it is often
 reasonable to stores indices as <code>u32</code>, <code>u16</code>, or even <code>u8</code>, and then coerce to
 <code>usize</code> at use points.
 <a href="https://github.com/rust-lang/rust/pull/49993/commits/4d34bfd00a57f8a8bdb60ec3f908c5d4256f8a9a"><strong>Example 1</strong></a>,
 <a href="https://github.com/rust-lang/rust/pull/50981/commits/8d0fad5d3832c6c1f14542ea0be038274e454524"><strong>Example 2</strong></a>.</p>
-<h2><a class="header" href="#boxed-slices" id="boxed-slices">Boxed Slices</a></h2>
+<h2 id="boxed-slices"><a class="header" href="#boxed-slices">Boxed Slices</a></h2>
 <p>Rust vectors contain three words: a length, a capacity, and a pointer. If you
 have a vector that is unlikely to be changed in the future, you can convert it
 to a <em>boxed slice</em> with <a href="https://doc.rust-lang.org/std/vec/struct.Vec.html#method.into_boxed_slice"><code>Vec::into_boxed_slice</code></a>. A boxed slice contains only
@@ -873,7 +885,7 @@ assert_eq!(size_of_val(&amp;bs), 2 * size_of::&lt;usize&gt;());
 </span></code></pre></pre>
 <p>The boxed slice can be converted back to a vector with <a href="https://doc.rust-lang.org/std/primitive.slice.html#method.into_vec"><code>slice::into_vec</code></a>
 without any cloning or a reallocation.</p>
-<h2><a class="header" href="#avoiding-regressions" id="avoiding-regressions">Avoiding Regressions</a></h2>
+<h2 id="avoiding-regressions"><a class="header" href="#avoiding-regressions">Avoiding Regressions</a></h2>
 <p>If a type is hot enough that its size can affect performance, it is a good idea
 to use a static assertion to ensure that it does not accidentally regress. The
 following example uses a macro from the <a href="https://crates.io/crates/static_assertions"><code>static_assertions</code></a> crate.</p>
@@ -885,14 +897,14 @@ following example uses a macro from the <a href="https://crates.io/crates/static
 platforms. Restricting the assertion to <code>x86_64</code> (which is typically the most
 widely-used platform) is likely to be good enough to prevent regressions in
 practice.</p>
-<h1><a class="header" href="#standard-library-types" id="standard-library-types">Standard Library Types</a></h1>
+<h1 id="standard-library-types"><a class="header" href="#standard-library-types">Standard Library Types</a></h1>
 <p>It is worth reading through the documentation for common standard library
 types—such as <a href="https://doc.rust-lang.org/std/vec/struct.Vec.html"><code>Vec</code></a>, <a href="https://doc.rust-lang.org/std/option/enum.Option.html"><code>Option</code></a>, <a href="https://doc.rust-lang.org/std/result/enum.Result.html"><code>Result</code></a>, and <a href="https://doc.rust-lang.org/std/rc/struct.Rc.html"><code>Rc</code></a>/<a href="https://doc.rust-lang.org/std/sync/struct.Arc.html"><code>Arc</code></a>—to find interesting
 functions that can sometimes be used to improve performance.</p>
 <p>It is also worth knowing about high-performance alternatives to standard
 library types, such as <a href="https://doc.rust-lang.org/std/sync/struct.Mutex.html"><code>Mutex</code></a>, <a href="https://doc.rust-lang.org/std/sync/struct.RwLock.html"><code>RwLock</code></a>, <a href="https://doc.rust-lang.org/std/sync/struct.Condvar.html"><code>Condvar</code></a>, and
 <a href="https://doc.rust-lang.org/std/sync/struct.Once.html"><code>Once</code></a>.</p>
-<h2><a class="header" href="#vec-1" id="vec-1"><code>Vec</code></a></h2>
+<h2 id="vec-1"><a class="header" href="#vec-1"><code>Vec</code></a></h2>
 <p><a href="https://doc.rust-lang.org/std/vec/struct.Vec.html#method.remove"><code>Vec::remove</code></a> removes an element at a particular index and shifts all
 subsequent elements one to the left, which makes it O(n). <a href="https://doc.rust-lang.org/std/vec/struct.Vec.html#method.swap_remove"><code>Vec::swap_remove</code></a>
 replaces an element at a particular index with the final element, which does
@@ -900,7 +912,7 @@ not preserve ordering, but is O(1).</p>
 <p><a href="https://doc.rust-lang.org/std/vec/struct.Vec.html#method.retain"><code>Vec::retain</code></a> efficiently removes multiple items from a <code>Vec</code>. There is an
 equivalent method for other collection types such as <code>String</code>, <code>HashSet</code>, and
 <code>HashMap</code>.</p>
-<h2><a class="header" href="#option-and-result" id="option-and-result"><code>Option</code> and <code>Result</code></a></h2>
+<h2 id="option-and-result"><a class="header" href="#option-and-result"><code>Option</code> and <code>Result</code></a></h2>
 <p><a href="https://doc.rust-lang.org/std/option/enum.Option.html#method.ok_or"><code>Option::ok_or</code></a> converts an <code>Option</code> into a <code>Result</code>, and is passed an <code>err</code>
 parameter that is used if the <code>Option</code> value is <code>None</code>. <code>err</code> is computed
 eagerly. If its computation is expensive, you should instead use
@@ -926,7 +938,7 @@ For example, this:</p>
 <p><a href="https://github.com/rust-lang/rust/pull/50051/commits/5070dea2366104fb0b5c344ce7f2a5cf8af176b0"><strong>Example</strong></a>.</p>
 <p>There are similar alternatives for <a href="https://doc.rust-lang.org/std/option/enum.Option.html#method.map_or"><code>Option::map_or</code></a>, <a href="https://doc.rust-lang.org/std/option/enum.Option.html#method.unwrap_or"><code>Option::unwrap_or</code></a>,
 <a href="https://doc.rust-lang.org/std/result/enum.Result.html#method.or"><code>Result::or</code></a>, <a href="https://doc.rust-lang.org/std/result/enum.Result.html#method.map_or"><code>Result::map_or</code></a>, and <a href="https://doc.rust-lang.org/std/result/enum.Result.html#method.unwrap_or"><code>Result::unwrap_or</code></a>.</p>
-<h2><a class="header" href="#rcarc-1" id="rcarc-1"><code>Rc</code>/<code>Arc</code></a></h2>
+<h2 id="rcarc-1"><a class="header" href="#rcarc-1"><code>Rc</code>/<code>Arc</code></a></h2>
 <p><a href="https://doc.rust-lang.org/std/rc/struct.Rc.html#method.make_mut"><code>Rc::make_mut</code></a>/<a href="https://doc.rust-lang.org/std/sync/struct.Arc.html#method.make_mut"><code>Arc::make_mut</code></a> provide clone-on-write semantics. They make
 a mutable reference to an <code>Rc</code>/<code>Arc</code>. If the refcount is greater than one, they
 will <code>clone</code> the inner value to ensure unique ownership; otherwise, they will
@@ -934,14 +946,14 @@ modify the original value. They are not needed often, but they can be extremely
 useful on occasion.
 <a href="https://github.com/rust-lang/rust/pull/65198/commits/3832a634d3aa6a7c60448906e6656a22f7e35628"><strong>Example 1</strong></a>,
 <a href="https://github.com/rust-lang/rust/pull/65198/commits/75e0078a1703448a19e25eac85daaa5a4e6e68ac"><strong>Example 2</strong></a>.</p>
-<h2><a class="header" href="#mutex-rwlock-condvar-and-once" id="mutex-rwlock-condvar-and-once"><code>Mutex</code>, <code>RwLock</code>, <code>Condvar</code>, and <code>Once</code></a></h2>
+<h2 id="mutex-rwlock-condvar-and-once"><a class="header" href="#mutex-rwlock-condvar-and-once"><code>Mutex</code>, <code>RwLock</code>, <code>Condvar</code>, and <code>Once</code></a></h2>
 <p>The <a href="https://crates.io/crates/parking_lot"><code>parking_lot</code></a> crate provides alternative implementations of these
 synchronization types that are smaller, faster, and more flexible than those in
 the standard library. The APIs and semantics of the <code>parking_lot</code> types are
 similar but not identical to those of the equivalent types in the standard
 library.</p>
-<h1><a class="header" href="#iterators" id="iterators">Iterators</a></h1>
-<h2><a class="header" href="#collect-and-extend" id="collect-and-extend"><code>collect</code> and <code>extend</code></a></h2>
+<h1 id="iterators"><a class="header" href="#iterators">Iterators</a></h1>
+<h2 id="collect-and-extend"><a class="header" href="#collect-and-extend"><code>collect</code> and <code>extend</code></a></h2>
 <p><a href="https://doc.rust-lang.org/std/iter/trait.Iterator.html#method.collect"><code>Iterator::collect</code></a> converts an iterator into a collection such as <code>Vec</code>,
 which typically requires an allocation. You should avoid calling <code>collect</code> if
 the collection is then only iterated over again.</p>
@@ -957,14 +969,14 @@ then using <a href="https://doc.rust-lang.org/std/vec/struct.Vec.html#method.app
 <code>collect</code> and <code>extend</code> calls that use the iterator may then do fewer
 allocations, because they have advance information about the number of elements
 yielded by the iterator.</p>
-<h2><a class="header" href="#chaining" id="chaining">Chaining</a></h2>
+<h2 id="chaining"><a class="header" href="#chaining">Chaining</a></h2>
 <p><a href="https://doc.rust-lang.org/std/iter/trait.Iterator.html#method.chain"><code>chain</code></a> can be very convenient, but it can also be slower than a single
 iterator. It may be worth avoiding for hot iterators, if possible.
 <a href="https://github.com/rust-lang/rust/pull/64801/commits/5ca99b750e455e9b5e13e83d0d7886486231e48a"><strong>Example</strong></a>.</p>
 <p>Similarly, <a href="https://doc.rust-lang.org/std/iter/trait.Iterator.html#method.filter_map"><code>filter_map</code></a> may be faster than using <a href="https://doc.rust-lang.org/std/iter/trait.Iterator.html#method.filter"><code>filter</code></a> followed by
 <a href="https://doc.rust-lang.org/std/iter/trait.Iterator.html#method.map"><code>map</code></a>.</p>
-<h1><a class="header" href="#io" id="io">I/O</a></h1>
-<h2><a class="header" href="#locking" id="locking">Locking</a></h2>
+<h1 id="io"><a class="header" href="#io">I/O</a></h1>
+<h2 id="locking"><a class="header" href="#locking">Locking</a></h2>
 <p>Rust’s <a href="https://doc.rust-lang.org/std/macro.print.html"><code>print!</code></a> and <a href="https://doc.rust-lang.org/std/macro.println.html"><code>println!</code></a> macros lock stdout on every call. If you
 have repeated calls to these macros it may be better to lock stdout manually.</p>
 <p>For example, change this code:</p>
@@ -995,7 +1007,7 @@ for line in lines {
 </span><span class="boring">}
 </span></code></pre></pre>
 <p>stdin and stderr can likewise be locked when doing repeated operations on them.</p>
-<h2><a class="header" href="#buffering" id="buffering">Buffering</a></h2>
+<h2 id="buffering"><a class="header" href="#buffering">Buffering</a></h2>
 <p>Rust file I/O is unbuffered by default. If you have many small and repeated
 read or write calls to a file or network socket, use <a href="https://doc.rust-lang.org/std/io/struct.BufReader.html"><code>BufReader</code></a> or
 <a href="https://doc.rust-lang.org/std/io/struct.BufWriter.html"><code>BufWriter</code></a>. They maintain an in-memory buffer for input and output,
@@ -1038,14 +1050,14 @@ that occurs on flushing will be ignored, whereas an explicit flush will make
 that error explicit.</p>
 <p>Note that buffering also works with stdout, so you might want to combine manual
 locking <em>and</em> buffering when making many writes to stdout.</p>
-<h2><a class="header" href="#reading-input-as-raw-bytes" id="reading-input-as-raw-bytes">Reading Input as Raw Bytes</a></h2>
+<h2 id="reading-input-as-raw-bytes"><a class="header" href="#reading-input-as-raw-bytes">Reading Input as Raw Bytes</a></h2>
 <p>The built-in <a href="https://doc.rust-lang.org/std/string/struct.String.html">String</a> type uses UTF-8 internally, which adds a small, but
 nonzero overhead caused by UTF-8 validation when you read input into it. If you
 just want to process input bytes without worrying about UTF-8 (for example if
 you handle ASCII text), you can use <a href="https://doc.rust-lang.org/std/io/trait.BufRead.html#method.read_until"><code>BufRead::read_until</code></a>.</p>
 <p>There are also dedicated crates for reading <a href="https://github.com/Freaky/rust-linereader">byte-oriented lines of data</a>
 and working with <a href="https://github.com/BurntSushi/bstr">byte strings</a>.</p>
-<h1><a class="header" href="#logging-and-debugging" id="logging-and-debugging">Logging and Debugging</a></h1>
+<h1 id="logging-and-debugging"><a class="header" href="#logging-and-debugging">Logging and Debugging</a></h1>
 <p>Sometimes logging code or debugging code can slow down a program significantly.
 Either the logging/debugging code itself is slow, or data collection code that
 feeds into logging/debugging code is slow. Make sure that no unnecessary work
@@ -1056,7 +1068,7 @@ is done for logging/debugging purposes when logging/debugging is not enabled.
 debug builds. If you have an assertion that is hot but is not necessary for
 safety, consider making it a <code>debug_assert!</code>.
 <a href="https://github.com/rust-lang/rust/pull/58210/commits/f7ed6e18160bc8fccf27a73c05f3935c9e8f672e"><strong>Example</strong></a>.</p>
-<h1><a class="header" href="#wrapper-types" id="wrapper-types">Wrapper Types</a></h1>
+<h1 id="wrapper-types"><a class="header" href="#wrapper-types">Wrapper Types</a></h1>
 <p>Rust has a variety of “wrapper” types, such as <a href="https://doc.rust-lang.org/std/cell/struct.RefCell.html"><code>RefCell</code></a> and <a href="https://doc.rust-lang.org/std/sync/struct.Mutex.html"><code>Mutex</code></a>, that
 provide special behavior for values. Accessing these values can take a
 non-trivial amount of time. If multiple such values are typically accessed
@@ -1085,7 +1097,7 @@ together, it may be better to put them within a single wrapper.</p>
 <p>Whether or not this helps performance will depend on the exact access patterns
 of the values.
 <a href="https://github.com/rust-lang/rust/pull/68694/commits/7426853ba255940b880f2e7f8026d60b94b42404"><strong>Example</strong></a>.</p>
-<h1><a class="header" href="#machine-code" id="machine-code">Machine Code</a></h1>
+<h1 id="machine-code"><a class="header" href="#machine-code">Machine Code</a></h1>
 <p>When you have a small piece of very hot code, it may be worth inspecting the
 generated machine code to see if it has any inefficiencies. The <a href="https://godbolt.org/">Compiler
 Explorer</a> website is an excellent resource when doing this.</p>
@@ -1097,7 +1109,7 @@ and you should check the generated code to ensure the bounds checks are
 actually removed.
 <a href="https://github.com/rust-random/rand/pull/960/commits/de9dfdd86851032d942eb583d8d438e06085867b"><strong>Example 1</strong></a>,
 <a href="https://github.com/image-rs/jpeg-decoder/pull/167/files"><strong>Example 2</strong></a>.</p>
-<h1><a class="header" href="#parallelism" id="parallelism">Parallelism</a></h1>
+<h1 id="parallelism"><a class="header" href="#parallelism">Parallelism</a></h1>
 <p>Rust provides excellent support for safe parallel programming, which can lead
 to large performance improvements. There are a variety of ways to introduce
 parallelism into a program and the best way for any program will depend greatly
@@ -1105,7 +1117,7 @@ on its design. </p>
 <p>An in-depth treatment of parallelism is beyond the scope of this book. If you
 are interested in this topic, the documentation for the <a href="https://crates.io/crates/rayon"><code>rayon</code></a> and
 <a href="https://crates.io/crates/crossbeam"><code>crossbeam</code></a> crates is a good place to start.</p>
-<h1><a class="header" href="#general-tips" id="general-tips">General Tips</a></h1>
+<h1 id="general-tips"><a class="header" href="#general-tips">General Tips</a></h1>
 <p>The previous sections of this book have discussed Rust-specific techniques.
 This section gives a brief overview of some general performance principles.</p>
 <p>As long as the obvious pitfalls are avoided (e.g. <a href="build-configuration.html">using non-release builds</a>),
@@ -1157,11 +1169,11 @@ small cache in front of a data structure.</p>
 comments are valuable, particularly those that reference profiling
 measurements. A comment like “99% of the time this vector has 0 or 1 elements,
 so handle those cases first” can be illuminating.</p>
-<h1><a class="header" href="#compile-times" id="compile-times">Compile Times</a></h1>
+<h1 id="compile-times"><a class="header" href="#compile-times">Compile Times</a></h1>
 <p>Although this book is primarily about improving the performance of Rust
 programs, this section is about reducing the compile times of Rust programs,
 because that is a related topic of interest to many people.</p>
-<h2><a class="header" href="#linking" id="linking">Linking</a></h2>
+<h2 id="linking"><a class="header" href="#linking">Linking</a></h2>
 <p>A big part of compile time is actually linking time, particularly when
 rebuilding a program after a small change. On Linux and Windows you can select
 lld as the linker, which is much faster than the default linker.</p>
@@ -1174,7 +1186,7 @@ rustflags = [&quot;-C&quot;, &quot;link-arg=-fuse-ld=lld&quot;]
 <p>lld is not fully supported for use with Rust, but it should work for most use
 cases on Linux and Windows. There is a <a href="https://github.com/rust-lang/rust/issues/39915#issuecomment-618726211">GitHub Issue</a> tracking full support for
 lld.</p>
-<h2><a class="header" href="#incremental-compilation" id="incremental-compilation">Incremental Compilation</a></h2>
+<h2 id="incremental-compilation"><a class="header" href="#incremental-compilation">Incremental Compilation</a></h2>
 <p>The Rust compiler supports <a href="https://blog.rust-lang.org/2016/09/08/incremental.html">incremental compilation</a>, which avoids redoing
 work when you recompile a crate. It can greatly speed up compilation, at the
 cost of sometimes making the produced executable run a little more slowly. For
@@ -1186,7 +1198,7 @@ incremental = true
 </code></pre>
 <p>See the <a href="https://doc.rust-lang.org/cargo/reference/profiles.html#incremental">Cargo documentation</a> for more details about the <code>incremental</code> setting, and
 about enabling specific settings for different profiles.</p>
-<h2><a class="header" href="#visualization" id="visualization">Visualization</a></h2>
+<h2 id="visualization"><a class="header" href="#visualization">Visualization</a></h2>
 <p>Cargo has a feature that lets you visualize compilation of your
 program. Build with this command:</p>
 <pre><code class="language-text">cargo +nightly build -Ztimings
@@ -1197,7 +1209,7 @@ various crates in your program. This shows how much parallelism there is in
 your crate graph, which can indicate if any large crates that serialize
 compilation should be broken up. See <a href="https://doc.rust-lang.org/nightly/cargo/reference/unstable.html#timings">the documentation</a> for more
 details on how to read the graphs.</p>
-<h2><a class="header" href="#llvm-ir" id="llvm-ir">LLVM IR</a></h2>
+<h2 id="llvm-ir"><a class="header" href="#llvm-ir">LLVM IR</a></h2>
 <p>The Rust compiler uses <a href="https://llvm.org/">LLVM</a> for its back-end. LLVM’s execution can be a large
 part of compile times, especially when the Rust compiler’s front end generates
 a lot of <a href="https://en.wikipedia.org/wiki/Intermediate_representation">IR</a> which takes LLVM a long time to optimize.</p>

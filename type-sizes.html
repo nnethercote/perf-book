@@ -167,16 +167,19 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1><a class="header" href="#type-sizes" id="type-sizes">Type Sizes</a></h1>
-<p>Shrinking oft-instantiated types can reduce peak memory usage, and also
-improve performance by reducing memory traffic and cache pressure. (In
-particular, note that types that are larger than 128 bytes are copied with
-<code>memcpy</code> rather than inline code.)</p>
-<p>The Rust compiler automatically sorts the fields in struct and enums to
-minimize their sizes (unless the <code>#[repr(C)]</code> attribute is specified), so you
-do not have to worry about field ordering. But there are still other ways to
-minimize the size of hot types.</p>
-<h2><a class="header" href="#measuring-type-sizes" id="measuring-type-sizes">Measuring Type Sizes</a></h2>
+                        <h1 id="type-sizes"><a class="header" href="#type-sizes">Type Sizes</a></h1>
+<p>Shrinking oft-instantiated types can help performance.</p>
+<p>For example, if memory usage is high, a heap profiler like <a href="https://www.valgrind.org/docs/manual/dh-manual.html">DHAT</a> or
+<a href="https://github.com/KDE/heaptrack">heaptrack</a> can identify the hot allocation points and the types involved.
+Shrinking these types can reduce peak memory usage, and possibly improve
+performance by reducing memory traffic and cache pressure.</p>
+<p>Furthermore, Rust types that are larger than 128 bytes are copied with <code>memcpy</code>
+rather than inline code. If <code>memcpy</code> shows up in non-trivial amounts in
+profiles, DHAT’s “copy profiling” mode will tell you exactly where the hot
+<code>memcpy</code> calls are and the types involved. Shrinking these types to 128 bytes
+or less can make the code faster by avoiding <code>memcpy</code> calls and reducing meomry
+traffic.</p>
+<h2 id="measuring-type-sizes"><a class="header" href="#measuring-type-sizes">Measuring Type Sizes</a></h2>
 <p><a href="https://doc.rust-lang.org/std/mem/fn.size_of.html"><code>std::mem::size_of</code></a> gives the size of a type, in bytes, but often you want to
 know the exact layout as well. For example, an enum might be surprisingly big,
 which might be caused by one outsized variant.</p>
@@ -228,7 +231,12 @@ reordered variant <code>C</code>‘s fields to minimize the size of <code>E</cod
 <li>The size and location of all padding.</li>
 </ul>
 <p>Once you know the layout of a hot type, there are multiple ways to shrink it.</p>
-<h2><a class="header" href="#smaller-enums" id="smaller-enums">Smaller Enums</a></h2>
+<h2 id="field-ordering"><a class="header" href="#field-ordering">Field Ordering</a></h2>
+<p>The Rust compiler automatically sorts the fields in struct and enums to
+minimize their sizes (unless the <code>#[repr(C)]</code> attribute is specified), so you
+do not have to worry about field ordering. But there are other ways to minimize
+the size of hot types.</p>
+<h2 id="smaller-enums"><a class="header" href="#smaller-enums">Smaller Enums</a></h2>
 <p>If an enum has an outsized variant, consider boxing one or more fields. For
 example, you could change this type:</p>
 <pre><pre class="playground"><code class="language-rust edition2018">
@@ -264,14 +272,14 @@ less ergonomic to use, especially in <code>match</code> patterns.
 <a href="https://github.com/rust-lang/rust/pull/64374/commits/2fcd870711ce267c79408ec631f7eba8e0afcdf6"><strong>Example 4</strong></a>,
 <a href="https://github.com/rust-lang/rust/pull/64394/commits/7f0637da5144c7435e88ea3805021882f077d50c"><strong>Example 5</strong></a>,
 <a href="https://github.com/rust-lang/rust/pull/71942/commits/27ae2f0d60d9201133e1f9ec7a04c05c8e55e665"><strong>Example 6</strong></a>.</p>
-<h2><a class="header" href="#smaller-integers" id="smaller-integers">Smaller Integers</a></h2>
+<h2 id="smaller-integers"><a class="header" href="#smaller-integers">Smaller Integers</a></h2>
 <p>It is often possible to shrink types by using smaller integer types. For
 example, while it is most natural to use <code>usize</code> for indices, it is often
 reasonable to stores indices as <code>u32</code>, <code>u16</code>, or even <code>u8</code>, and then coerce to
 <code>usize</code> at use points.
 <a href="https://github.com/rust-lang/rust/pull/49993/commits/4d34bfd00a57f8a8bdb60ec3f908c5d4256f8a9a"><strong>Example 1</strong></a>,
 <a href="https://github.com/rust-lang/rust/pull/50981/commits/8d0fad5d3832c6c1f14542ea0be038274e454524"><strong>Example 2</strong></a>.</p>
-<h2><a class="header" href="#boxed-slices" id="boxed-slices">Boxed Slices</a></h2>
+<h2 id="boxed-slices"><a class="header" href="#boxed-slices">Boxed Slices</a></h2>
 <p>Rust vectors contain three words: a length, a capacity, and a pointer. If you
 have a vector that is unlikely to be changed in the future, you can convert it
 to a <em>boxed slice</em> with <a href="https://doc.rust-lang.org/std/vec/struct.Vec.html#method.into_boxed_slice"><code>Vec::into_boxed_slice</code></a>. A boxed slice contains only
@@ -290,7 +298,7 @@ assert_eq!(size_of_val(&amp;bs), 2 * size_of::&lt;usize&gt;());
 </span></code></pre></pre>
 <p>The boxed slice can be converted back to a vector with <a href="https://doc.rust-lang.org/std/primitive.slice.html#method.into_vec"><code>slice::into_vec</code></a>
 without any cloning or a reallocation.</p>
-<h2><a class="header" href="#avoiding-regressions" id="avoiding-regressions">Avoiding Regressions</a></h2>
+<h2 id="avoiding-regressions"><a class="header" href="#avoiding-regressions">Avoiding Regressions</a></h2>
 <p>If a type is hot enough that its size can affect performance, it is a good idea
 to use a static assertion to ensure that it does not accidentally regress. The
 following example uses a macro from the <a href="https://crates.io/crates/static_assertions"><code>static_assertions</code></a> crate.</p>
