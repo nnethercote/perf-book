@@ -30,8 +30,8 @@ When profiling indicates that a function is hot, there are two common ways to
 speed things up: (a) make the function faster, and/or (b) avoid calling it as
 much.
 
-It is usually easier, and often as effective, to avoid silly slowdowns as it
-is to introduce clever speedups.
+It is often easier to eliminate silly slowdowns than it is to introduce clever
+speedups.
 
 Avoid computing things unless necessary. Lazy/on-demand computations are
 often a win.
