@@ -187,8 +187,8 @@ used to minimize wasted space, but note that it may cause a reallocation.
 ## `String`
 
 A [`String`] contains heap-allocated bytes. The representation and operation of
-`String` are very similar to a `Vec<u8>`. Many `Vec` methods relating to growth
-and capacity have equivalents for `String`, such as
+`String` are very similar to that of `Vec<u8>`. Many `Vec` methods relating to
+growth and capacity have equivalents for `String`, such as
 [`String::with_capacity`].
 
 [`String`]: https://doc.rust-lang.org/std/string/struct.String.html
