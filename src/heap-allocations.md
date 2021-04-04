@@ -55,12 +55,12 @@ for, and how often they are accessed.
 ## `Box`
 
 [`Box`] is the simplest heap-allocated type. A `Box<T>` value is a `T` value
-that is allocated on the heap. 
+that is allocated on the heap.
 
 [`Box`]: https://doc.rust-lang.org/std/boxed/struct.Box.html
 
 It is sometimes worth boxing one or more fields in a struct or enum fields to
-make a type smaller. (See the the [Type Sizes](type-sizes.md) chapter for more
+make a type smaller. (See the [Type Sizes](type-sizes.md) chapter for more
 about this.)
 
 Other than that, `Box` is straightforward and does not offer much scope for
@@ -111,7 +111,7 @@ A new, empty `Vec` created by the common means
 or [`Vec::new`] or [`Vec::default`]) has a length and capacity of zero, and no
 heap allocation is required. If you repeatedly push individual elements onto
 the end of the `Vec`, it will periodically reallocate. The growth strategy is
-not specified, but at the time of writing it uses a quasi-doubling stategy
+not specified, but at the time of writing it uses a quasi-doubling strategy
 resulting in the following capacities: 0, 4, 8, 16, 32, 64, and so on. (It
 skips directly from 0 to 4, instead of going via 1 and 2, because this [avoids
 many allocations] in practice.) As a vector grows, the frequency of
@@ -179,7 +179,7 @@ one at a time would result in four allocations (for capacities of 4, 8, 16, and
 [`Vec::reserve_exact`]: https://doc.rust-lang.org/std/vec/struct.Vec.html#method.reserve_exact
 
 If you know the maximum length of a vector, the above functions also let you
-not allocate excess space unnecessary. Similarly, [`Vec::shrink_to_fit`] can be
+not allocate excess space unnecessarily. Similarly, [`Vec::shrink_to_fit`] can be
 used to minimize wasted space, but note that it may cause a reallocation.
 
 [`Vec::shrink_to_fit`]: https://doc.rust-lang.org/std/vec/struct.Vec.html#method.shrink_to_fit
@@ -187,7 +187,7 @@ used to minimize wasted space, but note that it may cause a reallocation.
 ## `String`
 
 A [`String`] contains heap-allocated bytes. The representation and operation of
-`String` is very similar to a `Vec<u8>`. Many `Vec` methods relating to growth
+`String` are very similar to a `Vec<u8>`. Many `Vec` methods relating to growth
 and capacity have equivalents for `String`, such as
 [`String::with_capacity`].
 
