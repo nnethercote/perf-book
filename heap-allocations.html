@@ -211,9 +211,9 @@ such as where and how often they happen, how big they are, how long they live
 for, and how often they are accessed.</p>
 <h2 id="box"><a class="header" href="#box"><code>Box</code></a></h2>
 <p><a href="https://doc.rust-lang.org/std/boxed/struct.Box.html"><code>Box</code></a> is the simplest heap-allocated type. A <code>Box&lt;T&gt;</code> value is a <code>T</code> value
-that is allocated on the heap. </p>
+that is allocated on the heap.</p>
 <p>It is sometimes worth boxing one or more fields in a struct or enum fields to
-make a type smaller. (See the the <a href="type-sizes.html">Type Sizes</a> chapter for more
+make a type smaller. (See the <a href="type-sizes.html">Type Sizes</a> chapter for more
 about this.)</p>
 <p>Other than that, <code>Box</code> is straightforward and does not offer much scope for
 optimizations.</p>
@@ -247,7 +247,7 @@ freed.</p>
 or <a href="https://doc.rust-lang.org/std/vec/struct.Vec.html#method.new"><code>Vec::new</code></a> or <a href="https://doc.rust-lang.org/std/default/trait.Default.html#tymethod.default"><code>Vec::default</code></a>) has a length and capacity of zero, and no
 heap allocation is required. If you repeatedly push individual elements onto
 the end of the <code>Vec</code>, it will periodically reallocate. The growth strategy is
-not specified, but at the time of writing it uses a quasi-doubling stategy
+not specified, but at the time of writing it uses a quasi-doubling strategy
 resulting in the following capacities: 0, 4, 8, 16, 32, 64, and so on. (It
 skips directly from 0 to 4, instead of going via 1 and 2, because this <a href="https://github.com/rust-lang/rust/pull/72227">avoids
 many allocations</a> in practice.) As a vector grows, the frequency of
@@ -291,11 +291,11 @@ one at a time would result in four allocations (for capacities of 4, 8, 16, and
 32).
 <a href="https://github.com/rust-lang/rust/pull/77990/commits/a7f2bb634308a5f05f2af716482b67ba43701681"><strong>Example</strong></a>.</p>
 <p>If you know the maximum length of a vector, the above functions also let you
-not allocate excess space unnecessary. Similarly, <a href="https://doc.rust-lang.org/std/vec/struct.Vec.html#method.shrink_to_fit"><code>Vec::shrink_to_fit</code></a> can be
+not allocate excess space unnecessarily. Similarly, <a href="https://doc.rust-lang.org/std/vec/struct.Vec.html#method.shrink_to_fit"><code>Vec::shrink_to_fit</code></a> can be
 used to minimize wasted space, but note that it may cause a reallocation.</p>
 <h2 id="string"><a class="header" href="#string"><code>String</code></a></h2>
 <p>A <a href="https://doc.rust-lang.org/std/string/struct.String.html"><code>String</code></a> contains heap-allocated bytes. The representation and operation of
-<code>String</code> is very similar to a <code>Vec&lt;u8&gt;</code>. Many <code>Vec</code> methods relating to growth
+<code>String</code> are very similar to a <code>Vec&lt;u8&gt;</code>. Many <code>Vec</code> methods relating to growth
 and capacity have equivalents for <code>String</code>, such as
 <a href="https://doc.rust-lang.org/std/string/struct.String.html#method.with_capacity"><code>String::with_capacity</code></a>.</p>
 <p>The <code>SmallString</code> type from the <a href="https://crates.io/crates/smallstr"><code>smallstr</code></a> crate is similar to the <code>SmallVec</code>
