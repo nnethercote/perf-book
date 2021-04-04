@@ -295,8 +295,8 @@ not allocate excess space unnecessarily. Similarly, <a href="https://doc.rust-la
 used to minimize wasted space, but note that it may cause a reallocation.</p>
 <h2 id="string"><a class="header" href="#string"><code>String</code></a></h2>
 <p>A <a href="https://doc.rust-lang.org/std/string/struct.String.html"><code>String</code></a> contains heap-allocated bytes. The representation and operation of
-<code>String</code> are very similar to a <code>Vec&lt;u8&gt;</code>. Many <code>Vec</code> methods relating to growth
-and capacity have equivalents for <code>String</code>, such as
+<code>String</code> are very similar to that of <code>Vec&lt;u8&gt;</code>. Many <code>Vec</code> methods relating to
+growth and capacity have equivalents for <code>String</code>, such as
 <a href="https://doc.rust-lang.org/std/string/struct.String.html#method.with_capacity"><code>String::with_capacity</code></a>.</p>
 <p>The <code>SmallString</code> type from the <a href="https://crates.io/crates/smallstr"><code>smallstr</code></a> crate is similar to the <code>SmallVec</code>
 type.</p>
