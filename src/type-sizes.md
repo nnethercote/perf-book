@@ -14,7 +14,7 @@ Furthermore, Rust types that are larger than 128 bytes are copied with `memcpy`
 rather than inline code. If `memcpy` shows up in non-trivial amounts in
 profiles, DHAT's "copy profiling" mode will tell you exactly where the hot
 `memcpy` calls are and the types involved. Shrinking these types to 128 bytes
-or less can make the code faster by avoiding `memcpy` calls and reducing meomry
+or less can make the code faster by avoiding `memcpy` calls and reducing memory
 traffic.
 
 ## Measuring Type Sizes
