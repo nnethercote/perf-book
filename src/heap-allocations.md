@@ -214,12 +214,15 @@ will avoid this allocation.
 
 Another way to avoid a `format!` call is to use `format_args!` which will
 produce `fmt::Arguments` that you can pass around without any allocations.
+It is often useful for formatting functions that take formatted arguments.
 ```rust
-// This involves only one allocation
-format!(
-    "{:?}",
-    format_args!("{} + {} = {}", 1, 2, format_args!("{}", 1 + 2))
-);
+use std::fmt;
+// Instead of taking `&str`, this takes `fmt::Arguments`
+// and the `format_args!` call below won't involve an allocation
+fn write_command(args: fmt::Arguments) {
+    println!("$ {}", args);
+}
+write_command(format_args!("cargo {}", "run"));
 ```
 
 ## Hash tables
