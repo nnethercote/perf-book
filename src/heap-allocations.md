@@ -212,6 +212,16 @@ allocation. If you can avoid a `format!` call by using a string literal, that
 will avoid this allocation.
 [**Example**](https://github.com/rust-lang/rust/pull/55905/commits/c6862992d947331cd6556f765f6efbde0a709cf9).
 
+Another way to avoid a `format!` call is to use `format_args!` which will
+produce `fmt::Arguments` that you can pass around without any allocations.
+```rust
+// This involves only one allocation
+format!(
+    "{:?}",
+    format_args!("{} + {} = {}", 1, 2, format_args!("{}", 1 + 2))
+);
+```
+
 ## Hash tables
 
 [`HashSet`] and [`HashMap`] are hash tables. Their representation and
