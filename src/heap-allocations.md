@@ -214,7 +214,7 @@ will avoid this allocation.
 [`std::format_args`] and/or the [`lazy_format`] crate may help with this.
 
 [`std::format_args`]: https://doc.rust-lang.org/std/macro.format_args.html
-[`lazy_format`]: [https://crates.io/crates/lazy_format
+[`lazy_format`]: https://crates.io/crates/lazy_format
 
 ## Hash tables
 
