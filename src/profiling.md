@@ -59,6 +59,19 @@ See the [Cargo documentation] for more details about the `debug` setting.
 
 [Cargo documentation]: https://doc.rust-lang.org/cargo/reference/profiles.html#debug
 
+Unfortunately, even after doing the above step you won't get detailed profiling
+information for standard library code. This is because shipped versions of the
+Rust standard library are not built with debug info. To remedy this, you can
+build your own version of the compiler and standard library, following [these
+instructions], and adding the following lines to the `config.toml` file:
+ ```toml
+[rust]
+debuginfo-level = 1
+```
+This is a hassle, but may be worth the effort in some cases.
+
+[these instructions]: https://github.com/rust-lang/rust
+
 ## Symbol Demangling
 
 Rust uses a mangling scheme to encode function names in compiled code. If a
