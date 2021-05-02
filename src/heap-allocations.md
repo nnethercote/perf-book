@@ -211,6 +211,10 @@ Note that the `format!` macro produces a `String`, which means it performs an
 allocation. If you can avoid a `format!` call by using a string literal, that
 will avoid this allocation.
 [**Example**](https://github.com/rust-lang/rust/pull/55905/commits/c6862992d947331cd6556f765f6efbde0a709cf9).
+[`std::format_args`] and/or the [`lazy_format`] crate may help with this.
+
+[`std::format_args`]: https://doc.rust-lang.org/std/macro.format_args.html
+[`lazy_format`]: [https://crates.io/crates/lazy_format
 
 ## Hash tables
 
