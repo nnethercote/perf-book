@@ -2,13 +2,12 @@
 
 Shrinking oft-instantiated types can help performance.
 
-For example, if memory usage is high, a heap profiler like [DHAT] or
-[heaptrack] can identify the hot allocation points and the types involved.
-Shrinking these types can reduce peak memory usage, and possibly improve
-performance by reducing memory traffic and cache pressure.
+For example, if memory usage is high, a heap profiler like [DHAT] can identify
+the hot allocation points and the types involved. Shrinking these types can
+reduce peak memory usage, and possibly improve performance by reducing memory
+traffic and cache pressure.
 
 [DHAT]: https://www.valgrind.org/docs/manual/dh-manual.html
-[heaptrack]: https://github.com/KDE/heaptrack
 
 Furthermore, Rust types that are larger than 128 bytes are copied with `memcpy`
 rather than inline code. If `memcpy` shows up in non-trivial amounts in

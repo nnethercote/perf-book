@@ -26,7 +26,7 @@ programs.
   Unixes. [dhat-rs] is an experimental alternative that is a little less
   powerful and requires minor changes to your Rust program, but works on all
   platforms.
-- [heaptrack] is another heap profiling tool. It works on Linux.
+- [heaptrack] and [bytehound] are heap profiling tools. They work on Linux.
 - [`counts`] supports ad hoc profiling, which combines the use of `eprintln!`
   statement with frequency-based post-processing, which is good for getting
   domain-specific insights into parts of your code. It works on all platforms.
@@ -43,6 +43,7 @@ programs.
 [DHAT]: https://www.valgrind.org/docs/manual/dh-manual.html
 [dhat-rs]: https://github.com/nnethercote/dhat-rs/
 [heaptrack]: https://github.com/KDE/heaptrack
+[bytehound]: https://github.com/koute/bytehound
 [`counts`]: https://github.com/nnethercote/counts/
 [Coz]: https://github.com/plasma-umass/coz
 [coz-rs]: https://github.com/plasma-umass/coz/tree/master/rust
