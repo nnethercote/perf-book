@@ -75,9 +75,11 @@ This is a hassle, but may be worth the effort in some cases.
 ## Symbol Demangling
 
 Rust uses a mangling scheme to encode function names in compiled code. If a
-profiler is unaware of this scheme, its output may contain symbol names like
-`_ZN3foo3barE` or `_ZN28_$u7b$$u7b$closure$u7d$$u7d$E` or
-`_ZN88_$LT$core..result..Result$LT$$u21$$C$$u20$E$GT$$u20$as$u20$std..process..Termination$GT$6report17hfc41d0da4a40b3e8E`.
+profiler is unaware of this scheme, its output may contain symbol names
+beginning with `_ZN` or `_R`, such as `_ZN3foo3barE` or
+`_ZN28_$u7b$$u7b$closure$u7d$$u7d$E` or
+`_RMCsno73SFvQKx_1cINtB0_3StrKRe616263_E`
+
 Names like these can be manually demangled using [`rustfilt`].
 
 [`rustfilt`]: https://crates.io/crates/rustfilt

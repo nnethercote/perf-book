@@ -18,6 +18,7 @@
 - [Wrapper Types](wrapper-types.md)
 - [Machine Code](machine-code.md)
 - [Parallelism](parallelism.md)
+- [Binary Size](binary-size.md)
 - [General Tips](general-tips.md)
 - [Compile Times](compile-times.md)
 

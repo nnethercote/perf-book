@@ -17,7 +17,7 @@ provide large speed wins.
   out-perform all other hash algorithms within rustc. ([`fxhash`] is an older,
   less well maintained implementation of the same algorithm and types.)
 - [`fnv`] provides `FnvHashSet` and `FnvHashMap` types. Its hashing algorithm
-  is higher quality than `fxhash`'s but a little slower.
+  is higher quality than `rustc-hash`'s but a little slower.
 - [`ahash`] provides `AHashSet` and `AHashMap`. Its hashing algorithm can take
   advantage of AES instruction support that is available on some processors.
 

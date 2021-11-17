@@ -341,9 +341,10 @@ struct, to be reused in one or more methods that are called repeatedly.
 Another option for improving the performance of allocation-heavy Rust programs
 is to replace the default (system) allocator with an alternative allocator. The
 exact effect will depend on the individual program and the alternative
-allocator chosen. It will also vary across platforms, because each platform's
-system allocator has its own strengths and weaknesses. The use of an
-alternative allocator can also affect binary size.
+allocator chosen, but large improvements in speed and very large reductions in
+memory usage have been seen in practice. The effect will also vary across
+platforms, because each platform's system allocator has its own strengths and
+weaknesses. The use of an alternative allocator can also affect binary size.
 
 One popular alternative allocator is [jemalloc], usable via the
 [`jemallocator`] crate. To use it, add a dependency to your `Cargo.toml` file:
