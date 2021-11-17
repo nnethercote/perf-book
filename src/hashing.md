@@ -42,8 +42,9 @@ rustc.
 
 If you decide to universally use one of the alternatives, such as
 `FxHashSet`/`FxHashMap`, it is easy to accidentally use `HashSet`/`HashMap` in
-some places. The presence of `SipHasher13` code in profiles is a tell-tale
-indicator of this.
+some places. You can [use `clippy`] to avoid this problem.
+
+[use `clippy`]: linting.md#disallowing-types
 
 Hash function design is a complex topic and is beyond the scope of this book.
 The [`ahash` documentation] has a good discussion. 

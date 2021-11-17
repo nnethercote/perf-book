@@ -88,3 +88,9 @@ similar but not identical to those of the equivalent types in the standard
 library.
 
 [`parking_lot`]: https://crates.io/crates/parking_lot
+
+If you decide to universally use the `parking_lot` types it is easy to
+accidentally use the standard library equivalents in some places. You can [use
+`clippy`] to avoid this problem.
+
+[use `clippy`]: linting.md#disallowing-types
