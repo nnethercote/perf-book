@@ -14,7 +14,7 @@ To specify lld from the command line, precede your build command with `RUSTFLAGS
 
 To specify lld from a [config.toml] file (for one or more projects), add these
 lines:
-```text
+```toml
 [build]
 rustflags = ["-C", "link-arg=-fuse-ld=lld"]
 ```
@@ -23,6 +23,17 @@ rustflags = ["-C", "link-arg=-fuse-ld=lld"]
 lld is not fully supported for use with Rust, but it should work for most use
 cases on Linux and Windows. There is a [GitHub Issue] tracking full support for
 lld.
+
+Another linker to look at is [mold](https://github.com/rui314/mold). Its a new linker that is several time faster than lld but is currently only usable on linux.
+
+To specify mold from a [config.toml] file (for one or more projects), add these
+lines:
+```toml
+[target.x86_64-unknown-linux-gnu]
+linker = "/usr/bin/clang"
+rustflags = ["-Clink-arg=-fuse-ld=mold"]
+```
+[config.toml]: https://doc.rust-lang.org/cargo/reference/config.html
 
 [GitHub Issue]: https://github.com/rust-lang/rust/issues/39915#issuecomment-618726211
 
