@@ -311,7 +311,7 @@ exception is <code>Rc</code>/<code>Arc</code>, where a <code>clone</code> call j
 count.</p>
 <p><a href="https://doc.rust-lang.org/std/clone/trait.Clone.html#method.clone_from"><code>clone_from</code></a> is an alternative to <code>clone</code>. <code>a.clone_from(&amp;b)</code> is equivalent
 to <code>a = b.clone()</code> but may avoid unnecessary allocations. For example, if you
-want to clone one <code>Vec</code> over the top of an existing <code>Vec</code>, the existing <code>Vec</code>‘s
+want to clone one <code>Vec</code> over the top of an existing <code>Vec</code>, the existing <code>Vec</code>’s
 heap allocation will be reused if possible, as the following example shows.</p>
 <pre><pre class="playground"><code class="language-rust edition2018">
 <span class="boring">#![allow(unused)]
@@ -392,6 +392,9 @@ jemallocator = &quot;0.3.2&quot;
 <pre><code class="language-rust ignore">#[global_allocator]
 static GLOBAL: jemallocator::Jemalloc = jemallocator::Jemalloc;
 </code></pre>
+<p>An alternative is the <a href="https://crates.io/crates/tikv-jemallocator"><code>tikv-jemallocator</code></a> crate, a fork of <code>jemallocator</code>
+that (as of December 2021) uses a more recent version of jemalloc that gives
+slightly better performance.</p>
 <p>Another alternative allocator is <a href="https://github.com/microsoft/mimalloc">mimalloc</a>, usable via the <a href="https://docs.rs/mimalloc/0.1.22/mimalloc/"><code>mimalloc</code></a> crate.</p>
 
                     </main>
