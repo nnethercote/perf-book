@@ -357,9 +357,14 @@ Then add the following somewhere in your Rust code:
 #[global_allocator]
 static GLOBAL: jemallocator::Jemalloc = jemallocator::Jemalloc;
 ```
+An alternative is the [`tikv-jemallocator`] crate, a fork of `jemallocator`
+that (as of December 2021) uses a more recent version of jemalloc that gives
+slightly better performance.
+
 Another alternative allocator is [mimalloc], usable via the [`mimalloc`] crate.
 
 [jemalloc]: https://github.com/jemalloc/jemalloc
 [`jemallocator`]: https://crates.io/crates/jemallocator
+[`tikv-jemallocator`]: https://crates.io/crates/tikv-jemallocator
 [mimalloc]: https://github.com/microsoft/mimalloc
 [`mimalloc`]: https://docs.rs/mimalloc/0.1.22/mimalloc/
