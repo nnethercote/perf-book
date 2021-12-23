@@ -741,19 +741,21 @@ allocator chosen, but large improvements in speed and very large reductions in
 memory usage have been seen in practice. The effect will also vary across
 platforms, because each platform’s system allocator has its own strengths and
 weaknesses. The use of an alternative allocator can also affect binary size.</p>
-<p>One popular alternative allocator is <a href="https://github.com/jemalloc/jemalloc">jemalloc</a>, usable via the
-<a href="https://crates.io/crates/jemallocator"><code>jemallocator</code></a> crate. To use it, add a dependency to your <code>Cargo.toml</code> file:</p>
+<p>One popular alternative allocator for Linux and Mac is <a href="https://github.com/jemalloc/jemalloc">jemalloc</a>, usable via
+the <a href="https://crates.io/crates/tikv-jemallocator"><code>tikv-jemallocator</code></a> crate. To use it, add a dependency to your
+<code>Cargo.toml</code> file:</p>
 <pre><code class="language-toml">[dependencies]
-jemallocator = &quot;0.3.2&quot;
+tikv-jemallocator = &quot;0.4.0&quot;
 </code></pre>
 <p>Then add the following somewhere in your Rust code:</p>
 <pre><code class="language-rust ignore">#[global_allocator]
-static GLOBAL: jemallocator::Jemalloc = jemallocator::Jemalloc;
+static GLOBAL: tikv_jemallocator::Jemalloc = tikv_jemallocator::Jemalloc;
 </code></pre>
-<p>An alternative is the <a href="https://crates.io/crates/tikv-jemallocator"><code>tikv-jemallocator</code></a> crate, a fork of <code>jemallocator</code>
-that (as of December 2021) uses a more recent version of jemalloc that gives
-slightly better performance.</p>
-<p>Another alternative allocator is <a href="https://github.com/microsoft/mimalloc">mimalloc</a>, usable via the <a href="https://docs.rs/mimalloc/0.1.22/mimalloc/"><code>mimalloc</code></a> crate.</p>
+<p><a href="https://crates.io/crates/tikv-jemallocator"><code>tikv-jemallocator</code></a> is a fork of the <code>jemallocator</code> crate. As of December
+2021, <code>tikv-jemallocator</code> uses a jemalloc version that is newer and has <a href="https://github.com/rust-lang/rust/pull/83152">better
+performance</a> than the jemalloc version used by <code>jemallocator</code>.</p>
+<p>Another alternative allocator that works on many platforms is <a href="https://github.com/microsoft/mimalloc">mimalloc</a>,
+usable via the <a href="https://docs.rs/mimalloc/0.1.22/mimalloc/"><code>mimalloc</code></a> crate.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="type-sizes"><a class="header" href="#type-sizes">Type Sizes</a></h1>
 <p>Shrinking oft-instantiated types can help performance.</p>
 <p>For example, if memory usage is high, a heap profiler like <a href="https://www.valgrind.org/docs/manual/dh-manual.html">DHAT</a> can identify
