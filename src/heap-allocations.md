@@ -346,25 +346,28 @@ memory usage have been seen in practice. The effect will also vary across
 platforms, because each platform's system allocator has its own strengths and
 weaknesses. The use of an alternative allocator can also affect binary size.
 
-One popular alternative allocator is [jemalloc], usable via the
-[`jemallocator`] crate. To use it, add a dependency to your `Cargo.toml` file:
+One popular alternative allocator for Linux and Mac is [jemalloc], usable via
+the [`tikv-jemallocator`] crate. To use it, add a dependency to your
+`Cargo.toml` file:
 ```toml
 [dependencies]
-jemallocator = "0.3.2"
+tikv-jemallocator = "0.4.0"
 ```
 Then add the following somewhere in your Rust code:
 ```rust,ignore
 #[global_allocator]
-static GLOBAL: jemallocator::Jemalloc = jemallocator::Jemalloc;
+static GLOBAL: tikv_jemallocator::Jemalloc = tikv_jemallocator::Jemalloc;
 ```
-An alternative is the [`tikv-jemallocator`] crate, a fork of `jemallocator`
-that (as of December 2021) uses a more recent version of jemalloc that gives
-slightly better performance.
+[`tikv-jemallocator`] is a fork of the `jemallocator` crate. As of December
+2021, `tikv-jemallocator` uses a jemalloc version that is newer and has [better
+performance] than the jemalloc version used by `jemallocator`.
 
-Another alternative allocator is [mimalloc], usable via the [`mimalloc`] crate.
+Another alternative allocator that works on many platforms is [mimalloc],
+usable via the [`mimalloc`] crate.
 
 [jemalloc]: https://github.com/jemalloc/jemalloc
 [`jemallocator`]: https://crates.io/crates/jemallocator
 [`tikv-jemallocator`]: https://crates.io/crates/tikv-jemallocator
+[better performance]: https://github.com/rust-lang/rust/pull/83152
 [mimalloc]: https://github.com/microsoft/mimalloc
 [`mimalloc`]: https://docs.rs/mimalloc/0.1.22/mimalloc/
