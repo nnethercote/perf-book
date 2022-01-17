@@ -398,6 +398,11 @@ static GLOBAL: tikv_jemallocator::Jemalloc = tikv_jemallocator::Jemalloc;
 performance</a> than the jemalloc version used by <code>jemallocator</code>.</p>
 <p>Another alternative allocator that works on many platforms is <a href="https://github.com/microsoft/mimalloc">mimalloc</a>,
 usable via the <a href="https://docs.rs/mimalloc/0.1.22/mimalloc/"><code>mimalloc</code></a> crate.</p>
+<h2 id="avoiding-regressions"><a class="header" href="#avoiding-regressions">Avoiding Regressions</a></h2>
+<p>To ensure the number and/or size of allocations done by your code doesn’t
+increase unintentionally, you can use the <em>heap usage testing</em> feature of
+<a href="https://crates.io/crates/dhat">dhat-rs</a> to write tests that check particular code snippets allocate the
+expected amount of heap memory.</p>
 
                     </main>
 

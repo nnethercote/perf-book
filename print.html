@@ -756,6 +756,11 @@ static GLOBAL: tikv_jemallocator::Jemalloc = tikv_jemallocator::Jemalloc;
 performance</a> than the jemalloc version used by <code>jemallocator</code>.</p>
 <p>Another alternative allocator that works on many platforms is <a href="https://github.com/microsoft/mimalloc">mimalloc</a>,
 usable via the <a href="https://docs.rs/mimalloc/0.1.22/mimalloc/"><code>mimalloc</code></a> crate.</p>
+<h2 id="avoiding-regressions"><a class="header" href="#avoiding-regressions">Avoiding Regressions</a></h2>
+<p>To ensure the number and/or size of allocations done by your code doesn’t
+increase unintentionally, you can use the <em>heap usage testing</em> feature of
+<a href="https://crates.io/crates/dhat">dhat-rs</a> to write tests that check particular code snippets allocate the
+expected amount of heap memory.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="type-sizes"><a class="header" href="#type-sizes">Type Sizes</a></h1>
 <p>Shrinking oft-instantiated types can help performance.</p>
 <p>For example, if memory usage is high, a heap profiler like <a href="https://www.valgrind.org/docs/manual/dh-manual.html">DHAT</a> can identify
@@ -887,7 +892,7 @@ assert_eq!(size_of_val(&amp;bs), 2 * size_of::&lt;usize&gt;());
 </span></code></pre></pre>
 <p>The boxed slice can be converted back to a vector with <a href="https://doc.rust-lang.org/std/primitive.slice.html#method.into_vec"><code>slice::into_vec</code></a>
 without any cloning or a reallocation.</p>
-<h2 id="avoiding-regressions"><a class="header" href="#avoiding-regressions">Avoiding Regressions</a></h2>
+<h2 id="avoiding-regressions-1"><a class="header" href="#avoiding-regressions-1">Avoiding Regressions</a></h2>
 <p>If a type is hot enough that its size can affect performance, it is a good idea
 to use a static assertion to ensure that it does not accidentally regress. The
 following example uses a macro from the <a href="https://crates.io/crates/static_assertions"><code>static_assertions</code></a> crate.</p>
