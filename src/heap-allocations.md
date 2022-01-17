@@ -371,3 +371,12 @@ usable via the [`mimalloc`] crate.
 [better performance]: https://github.com/rust-lang/rust/pull/83152
 [mimalloc]: https://github.com/microsoft/mimalloc
 [`mimalloc`]: https://docs.rs/mimalloc/0.1.22/mimalloc/
+
+## Avoiding Regressions
+
+To ensure the number and/or size of allocations done by your code doesn't
+increase unintentionally, you can use the *heap usage testing* feature of
+[dhat-rs] to write tests that check particular code snippets allocate the
+expected amount of heap memory.
+
+[dhat-rs]: https://crates.io/crates/dhat
