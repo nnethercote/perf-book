@@ -7,11 +7,12 @@ modifying. This is best done via profiling.
 ## Profilers
 
 There are many different profilers available, each with their strengths and
-weaknesses. The following profilers have been used successfully on Rust
-programs.
+weaknesses. The following is an incomplete list of profilers that have been
+used successfully on Rust programs.
 - [perf] is a general-purpose profiler that uses hardware performance counters.
   [Hotspot] and [Firefox Profiler] are good for viewing data recorded by perf.
   It works on Linux.
+- [Instruments] is a general-purpose profiler that comes with Xcode on macOS.
 - [AMD μProf] is a general-purpose profiler. It works on Windows and Linux.
 - [flamegraph] is a Cargo command that uses perf/DTrace to profile your
   code and then displays the results in a flame graph. It works on Linux and
@@ -35,6 +36,7 @@ programs.
 
 [perf]: https://perf.wiki.kernel.org/index.php/Main_Page
 [Hotspot]: https://github.com/KDAB/hotspot
+[Instruments]: https://developer.apple.com/forums/tags/instruments
 [Firefox Profiler]: https://profiler.firefox.com/
 [AMD μProf]: https://developer.amd.com/amd-uprof/
 [flamegraph]: https://github.com/flamegraph-rs/flamegraph
