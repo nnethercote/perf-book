@@ -143,12 +143,13 @@ program are “hot” (executed frequently enough to affect runtime) and worth
 modifying. This is best done via profiling.</p>
 <h2 id="profilers"><a class="header" href="#profilers">Profilers</a></h2>
 <p>There are many different profilers available, each with their strengths and
-weaknesses. The following profilers have been used successfully on Rust
-programs.</p>
+weaknesses. The following is an incomplete list of profilers that have been
+used successfully on Rust programs.</p>
 <ul>
 <li><a href="https://perf.wiki.kernel.org/index.php/Main_Page">perf</a> is a general-purpose profiler that uses hardware performance counters.
 <a href="https://github.com/KDAB/hotspot">Hotspot</a> and <a href="https://profiler.firefox.com/">Firefox Profiler</a> are good for viewing data recorded by perf.
 It works on Linux.</li>
+<li><a href="https://developer.apple.com/forums/tags/instruments">Instruments</a> is a general-purpose profiler that comes with Xcode on macOS.</li>
 <li><a href="https://developer.amd.com/amd-uprof/">AMD μProf</a> is a general-purpose profiler. It works on Windows and Linux.</li>
 <li><a href="https://github.com/flamegraph-rs/flamegraph">flamegraph</a> is a Cargo command that uses perf/DTrace to profile your
 code and then displays the results in a flame graph. It works on Linux and
