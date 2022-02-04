@@ -776,8 +776,8 @@ or less can make the code faster by avoiding <code>memcpy</code> calls and reduc
 traffic.</p>
 <h2 id="measuring-type-sizes"><a class="header" href="#measuring-type-sizes">Measuring Type Sizes</a></h2>
 <p><a href="https://doc.rust-lang.org/std/mem/fn.size_of.html"><code>std::mem::size_of</code></a> gives the size of a type, in bytes, but often you want to
-know the exact layout as well. For example, an enum might be surprisingly big,
-which might be caused by one outsized variant.</p>
+know the exact layout as well. For example, an enum might be surprisingly large
+due to a single outsized variant.</p>
 <p>The <code>-Zprint-type-sizes</code> option does exactly this. It isn’t enabled on release
 versions of rustc, so you’ll need to use a nightly version of rustc. Here is
 one possible invocation via Cargo:</p>
