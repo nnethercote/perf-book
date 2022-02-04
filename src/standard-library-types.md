@@ -1,9 +1,10 @@
 # Standard Library Types
 
 It is worth reading through the documentation for common standard library
-types—such as [`Vec`], [`Option`], [`Result`], and [`Rc`]/[`Arc`]—to find interesting
+types—such as [`Box`], [`Vec`], [`Option`], [`Result`], and [`Rc`]/[`Arc`]—to find interesting
 functions that can sometimes be used to improve performance.
 
+[`Box`]: https://doc.rust-lang.org/std/boxed/struct.Box.html
 [`Vec`]: https://doc.rust-lang.org/std/vec/struct.Vec.html
 [`Option`]: https://doc.rust-lang.org/std/option/enum.Option.html
 [`Result`]: https://doc.rust-lang.org/std/result/enum.Result.html
@@ -18,6 +19,16 @@ library types, such as [`Mutex`], [`RwLock`], [`Condvar`], and
 [`RwLock`]: https://doc.rust-lang.org/std/sync/struct.RwLock.html
 [`Condvar`]: https://doc.rust-lang.org/std/sync/struct.Condvar.html
 [`Once`]: https://doc.rust-lang.org/std/sync/struct.Once.html
+
+## `Box`
+
+The expression [`Box::default()`] has the same effect as
+`Box::new(T::default())` but can be faster because the compiler can create the
+value directly on the heap, rather than constructing it on the stack and then
+copying it over.
+[**Example**](https://github.com/komora-io/art/commit/d5dc58338f475709c375e15976d0d77eb5d7f7ef).
+
+[`Box::default()`]: https://doc.rust-lang.org/std/boxed/struct.Box.html#method.default
 
 ## `Vec`
 
