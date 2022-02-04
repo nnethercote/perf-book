@@ -19,8 +19,8 @@ traffic.
 ## Measuring Type Sizes
 
 [`std::mem::size_of`] gives the size of a type, in bytes, but often you want to
-know the exact layout as well. For example, an enum might be surprisingly big,
-which might be caused by one outsized variant.
+know the exact layout as well. For example, an enum might be surprisingly large
+due to a single outsized variant.
 
 [`std::mem::size_of`]: https://doc.rust-lang.org/std/mem/fn.size_of.html
 
