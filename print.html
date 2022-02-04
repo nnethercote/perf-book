@@ -907,11 +907,17 @@ widely-used platform) is likely to be good enough to prevent regressions in
 practice.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="standard-library-types"><a class="header" href="#standard-library-types">Standard Library Types</a></h1>
 <p>It is worth reading through the documentation for common standard library
-types—such as <a href="https://doc.rust-lang.org/std/vec/struct.Vec.html"><code>Vec</code></a>, <a href="https://doc.rust-lang.org/std/option/enum.Option.html"><code>Option</code></a>, <a href="https://doc.rust-lang.org/std/result/enum.Result.html"><code>Result</code></a>, and <a href="https://doc.rust-lang.org/std/rc/struct.Rc.html"><code>Rc</code></a>/<a href="https://doc.rust-lang.org/std/sync/struct.Arc.html"><code>Arc</code></a>—to find interesting
+types—such as <a href="https://doc.rust-lang.org/std/boxed/struct.Box.html"><code>Box</code></a>, <a href="https://doc.rust-lang.org/std/vec/struct.Vec.html"><code>Vec</code></a>, <a href="https://doc.rust-lang.org/std/option/enum.Option.html"><code>Option</code></a>, <a href="https://doc.rust-lang.org/std/result/enum.Result.html"><code>Result</code></a>, and <a href="https://doc.rust-lang.org/std/rc/struct.Rc.html"><code>Rc</code></a>/<a href="https://doc.rust-lang.org/std/sync/struct.Arc.html"><code>Arc</code></a>—to find interesting
 functions that can sometimes be used to improve performance.</p>
 <p>It is also worth knowing about high-performance alternatives to standard
 library types, such as <a href="https://doc.rust-lang.org/std/sync/struct.Mutex.html"><code>Mutex</code></a>, <a href="https://doc.rust-lang.org/std/sync/struct.RwLock.html"><code>RwLock</code></a>, <a href="https://doc.rust-lang.org/std/sync/struct.Condvar.html"><code>Condvar</code></a>, and
 <a href="https://doc.rust-lang.org/std/sync/struct.Once.html"><code>Once</code></a>.</p>
+<h2 id="box-1"><a class="header" href="#box-1"><code>Box</code></a></h2>
+<p>The expression <a href="https://doc.rust-lang.org/std/boxed/struct.Box.html#method.default"><code>Box::default()</code></a> has the same effect as
+<code>Box::new(T::default())</code> but can be faster because the compiler can create the
+value directly on the heap, rather than constructing it on the stack and then
+copying it over.
+<a href="https://github.com/komora-io/art/commit/d5dc58338f475709c375e15976d0d77eb5d7f7ef"><strong>Example</strong></a>.</p>
 <h2 id="vec-1"><a class="header" href="#vec-1"><code>Vec</code></a></h2>
 <p><a href="https://doc.rust-lang.org/std/vec/struct.Vec.html#method.remove"><code>Vec::remove</code></a> removes an element at a particular index and shifts all
 subsequent elements one to the left, which makes it O(n). <a href="https://doc.rust-lang.org/std/vec/struct.Vec.html#method.swap_remove"><code>Vec::swap_remove</code></a>
