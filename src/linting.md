@@ -29,7 +29,7 @@ certain standard library types in favour of alternatives that are faster. If
 you decide to use these alternatives, it is easy to accidentally use the
 standard library types in some places by mistake.
 
-You can use `clippy`'s [`disallowed_type`] lint, added in Rust 1.55, to avoid
+You can use `clippy`'s [`disallowed_types`] lint, added in Rust 1.55, to avoid
 this problem. For example, to disallow the use of the standard hash tables (for
 reasons explained in the [Hashing] section) add a `clippy.toml` file to your
 code with the following lines.
@@ -38,7 +38,7 @@ disallowed-types = ["std::collections::HashMap", "std::collections::HashSet"]
 ```
 
 [Hashing]: hashing.md
-[`disallowed_type`]: https://rust-lang.github.io/rust-clippy/master/index.html#disallowed_type
+[`disallowed_types`]: https://rust-lang.github.io/rust-clippy/master/index.html#disallowed_types
 
 Then add the following declaration to your Rust code.
 ```
