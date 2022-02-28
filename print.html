@@ -1084,7 +1084,8 @@ is done for logging/debugging purposes when logging/debugging is not enabled.
 <p>Note that <a href="https://doc.rust-lang.org/std/macro.assert.html"><code>assert!</code></a> calls always run, but <a href="https://doc.rust-lang.org/std/macro.debug_assert.html"><code>debug_assert!</code></a> calls only run in
 debug builds. If you have an assertion that is hot but is not necessary for
 safety, consider making it a <code>debug_assert!</code>.
-<a href="https://github.com/rust-lang/rust/pull/58210/commits/f7ed6e18160bc8fccf27a73c05f3935c9e8f672e"><strong>Example</strong></a>.</p>
+<a href="https://github.com/rust-lang/rust/pull/58210/commits/f7ed6e18160bc8fccf27a73c05f3935c9e8f672e"><strong>Example 1</strong></a>,
+<a href="https://github.com/rust-lang/rust/pull/90746/commits/580d357b5adef605fc731d295ca53ab8532e26fb"><strong>Example 2</strong></a>.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="wrapper-types"><a class="header" href="#wrapper-types">Wrapper Types</a></h1>
 <p>Rust has a variety of “wrapper” types, such as <a href="https://doc.rust-lang.org/std/cell/struct.RefCell.html"><code>RefCell</code></a> and <a href="https://doc.rust-lang.org/std/sync/struct.Mutex.html"><code>Mutex</code></a>, that
 provide special behavior for values. Accessing these values can take a
@@ -1240,7 +1241,8 @@ often the most important ones, because they can be instantiated dozens or even
 hundreds of times in large programs.</p>
 <p>If a generic function causes IR bloat, there are several ways to fix it. The
 simplest is to just make the function smaller.
-<a href="https://github.com/rust-lang/rust/pull/72166/commits/5a0ac0552e05c079f252482cfcdaab3c4b39d614"><strong>Example</strong></a>.</p>
+<a href="https://github.com/rust-lang/rust/pull/72166/commits/5a0ac0552e05c079f252482cfcdaab3c4b39d614"><strong>Example 1</strong></a>,
+<a href="https://github.com/rust-lang/rust/pull/91246/commits/f3bda74d363a060ade5e5caeb654ba59bfed51a4"><strong>Example 2</strong></a>.</p>
 <p>Another way is to move the non-generic parts of the function into a separate,
 non-generic function, which will only be instantiated once. Whether or not this
 is possible will depend on the details of the generic function. The non-generic
