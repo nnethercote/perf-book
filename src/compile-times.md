@@ -79,7 +79,8 @@ hundreds of times in large programs.
 
 If a generic function causes IR bloat, there are several ways to fix it. The
 simplest is to just make the function smaller.
-[**Example**](https://github.com/rust-lang/rust/pull/72166/commits/5a0ac0552e05c079f252482cfcdaab3c4b39d614).
+[**Example 1**](https://github.com/rust-lang/rust/pull/72166/commits/5a0ac0552e05c079f252482cfcdaab3c4b39d614),
+[**Example 2**](https://github.com/rust-lang/rust/pull/91246/commits/f3bda74d363a060ade5e5caeb654ba59bfed51a4).
 
 Another way is to move the non-generic parts of the function into a separate,
 non-generic function, which will only be instantiated once. Whether or not this
