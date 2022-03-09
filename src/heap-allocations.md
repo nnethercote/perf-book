@@ -124,7 +124,7 @@ excess capacity will increase exponentially.
 
 This growth strategy is typical for growable data structures and reasonable in
 the general case, but if you know in advance the likely length of a vector you
-can do often do better. If you have a hot vector allocation site (e.g. a hot
+can often do better. If you have a hot vector allocation site (e.g. a hot
 [`Vec::push`] call), it is worth using [`eprintln!`] to print the vector length
 at that site and then doing some post-processing (e.g. with [`counts`]) to
 determine the length distribution. For example, you might have many short
