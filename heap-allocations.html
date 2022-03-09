@@ -225,7 +225,7 @@ reallocations will decrease exponentially, but the amount of possibly-wasted
 excess capacity will increase exponentially.</p>
 <p>This growth strategy is typical for growable data structures and reasonable in
 the general case, but if you know in advance the likely length of a vector you
-can do often do better. If you have a hot vector allocation site (e.g. a hot
+can often do better. If you have a hot vector allocation site (e.g. a hot
 <a href="https://doc.rust-lang.org/std/vec/struct.Vec.html#method.push"><code>Vec::push</code></a> call), it is worth using <a href="https://doc.rust-lang.org/std/macro.eprintln.html"><code>eprintln!</code></a> to print the vector length
 at that site and then doing some post-processing (e.g. with <a href="https://github.com/nnethercote/counts/"><code>counts</code></a>) to
 determine the length distribution. For example, you might have many short
