@@ -46,6 +46,14 @@ some places. You can [use `clippy`] to avoid this problem.
 
 [use `clippy`]: linting.md#disallowing-types
 
+Some types don't need hashing. For example, you might have a newtype that wraps
+an integer and the integer values are random, or close to random. For such a
+type, the distribution of the hashed values won't be that different to the
+distribution of the values themselves. In this case the [`nohash_hasher`] crate
+can be useful.
+
+[`nohash_hasher`]: https://crates.io/crates/nohash-hasher
+
 Hash function design is a complex topic and is beyond the scope of this book.
 The [`ahash` documentation] has a good discussion. 
 
