@@ -7,10 +7,15 @@ because that is a related topic of interest to many people.
 ## Linking
 
 A big part of compile time is actually linking time, particularly when
-rebuilding a program after a small change. On Linux and Windows you can select
-lld as the linker, which is much faster than the default linker.
+rebuilding a program after a small change. It is possible to select a faster
+linker than the default one.
 
-To specify lld from the command line, precede your build command with `RUSTFLAGS="-C link-arg=-fuse-ld=lld"`.
+One option is [lld], which is available on Linux and Windows.
+
+[lld]: https://lld.llvm.org/
+
+To specify lld from the command line, precede your build command with
+`RUSTFLAGS="-C link-arg=-fuse-ld=lld"`.
 
 To specify lld from a [config.toml] file (for one or more projects), add these
 lines:
@@ -23,6 +28,15 @@ rustflags = ["-C", "link-arg=-fuse-ld=lld"]
 lld is not fully supported for use with Rust, but it should work for most use
 cases on Linux and Windows. There is a [GitHub Issue] tracking full support for
 lld.
+
+Another option is [mold], which is currently only available on Linux. It is
+specified in much the same way as lld. Simply substitute `mold` for `lld` in
+the instructions above.
+
+[mold]: https://github.com/rui314/mold
+
+mold is often faster than lld. It is also much newer and may not work in all
+cases.
 
 [GitHub Issue]: https://github.com/rust-lang/rust/issues/39915#issuecomment-618726211
 
