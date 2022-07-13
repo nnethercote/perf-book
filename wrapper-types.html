@@ -143,8 +143,7 @@ provide special behavior for values. Accessing these values can take a
 non-trivial amount of time. If multiple such values are typically accessed
 together, it may be better to put them within a single wrapper.</p>
 <p>For example, a struct like this:</p>
-<pre><pre class="playground"><code class="language-rust edition2018">
-<span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust edition2018"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span><span class="boring">use std::sync::{Arc, Mutex};
 </span>struct S {
@@ -154,8 +153,7 @@ together, it may be better to put them within a single wrapper.</p>
 <span class="boring">}
 </span></code></pre></pre>
 <p>may be better represented like this:</p>
-<pre><pre class="playground"><code class="language-rust edition2018">
-<span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust edition2018"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span><span class="boring">use std::sync::{Arc, Mutex};
 </span>struct S {

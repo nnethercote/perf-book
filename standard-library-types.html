@@ -164,8 +164,7 @@ parameter that is used if the <code>Option</code> value is <code>None</code>. <c
 eagerly. If its computation is expensive, you should instead use
 <a href="https://doc.rust-lang.org/std/option/enum.Option.html#method.ok_or_else"><code>Option::ok_or_else</code></a>, which computes the error value lazily via a closure.
 For example, this:</p>
-<pre><pre class="playground"><code class="language-rust edition2018">
-<span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust edition2018"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span><span class="boring">fn expensive() {}
 </span><span class="boring">let o: Option&lt;u32&gt; = None;
@@ -173,8 +172,7 @@ For example, this:</p>
 <span class="boring">}
 </span></code></pre></pre>
 <p>should be changed to this:</p>
-<pre><pre class="playground"><code class="language-rust edition2018">
-<span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust edition2018"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span><span class="boring">fn expensive() {}
 </span><span class="boring">let o: Option&lt;u32&gt; = None;

@@ -163,8 +163,7 @@ one possible invocation via Cargo:</p>
 </code></pre>
 <p>It will print out details of the size, layout, and alignment of all types in
 use. For example, for this type:</p>
-<pre><pre class="playground"><code class="language-rust edition2018">
-<span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust edition2018"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>enum E {
     A,
@@ -209,8 +208,7 @@ the size of hot types.</p>
 <h2 id="smaller-enums"><a class="header" href="#smaller-enums">Smaller Enums</a></h2>
 <p>If an enum has an outsized variant, consider boxing one or more fields. For
 example, you could change this type:</p>
-<pre><pre class="playground"><code class="language-rust edition2018">
-<span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust edition2018"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>type LargeType = [u8; 100];
 enum A {
@@ -221,8 +219,7 @@ enum A {
 <span class="boring">}
 </span></code></pre></pre>
 <p>to this:</p>
-<pre><pre class="playground"><code class="language-rust edition2018">
-<span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust edition2018"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span><span class="boring">type LargeType = [u8; 100];
 </span>enum A {
@@ -255,8 +252,7 @@ have a vector that is unlikely to be changed in the future, you can convert it
 to a <em>boxed slice</em> with <a href="https://doc.rust-lang.org/std/vec/struct.Vec.html#method.into_boxed_slice"><code>Vec::into_boxed_slice</code></a>. A boxed slice contains only
 two words, a length and a pointer. Any excess element capacity is dropped,
 which may cause a reallocation.</p>
-<pre><pre class="playground"><code class="language-rust edition2018">
-<span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust edition2018"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span><span class="boring">use std::mem::{size_of, size_of_val};
 </span>let v: Vec&lt;u32&gt; = vec![1, 2, 3];

@@ -313,8 +313,7 @@ count.</p>
 to <code>a = b.clone()</code> but may avoid unnecessary allocations. For example, if you
 want to clone one <code>Vec</code> over the top of an existing <code>Vec</code>, the existing <code>Vec</code>’s
 heap allocation will be reused if possible, as the following example shows.</p>
-<pre><pre class="playground"><code class="language-rust edition2018">
-<span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust edition2018"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>let mut v1: Vec&lt;u32&gt; = Vec::with_capacity(99);
 let v2: Vec&lt;u32&gt; = vec![1, 2, 3];
@@ -347,8 +346,7 @@ usually better to do this by modifying a single <code>Vec</code> than by buildin
 <code>Vec</code>s and then combining them.</p>
 <p>For example, if you have a function <code>do_stuff</code> that produces a <code>Vec</code> that might
 be called multiple times:</p>
-<pre><pre class="playground"><code class="language-rust edition2018">
-<span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust edition2018"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>fn do_stuff(x: u32, y: u32) -&gt; Vec&lt;u32&gt; {
     vec![x, y]
@@ -356,8 +354,7 @@ be called multiple times:</p>
 <span class="boring">}
 </span></code></pre></pre>
 <p>It might be better to instead modify a passed-in <code>Vec</code>:</p>
-<pre><pre class="playground"><code class="language-rust edition2018">
-<span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust edition2018"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>fn do_stuff(x: u32, y: u32, vec: &amp;mut Vec&lt;u32&gt;) {
     vec.push(x);

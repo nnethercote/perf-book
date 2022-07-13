@@ -195,8 +195,7 @@ speed, but not inline the cold call sites to avoid unnecessary code bloat. The
 way to handle this is to split the function always-inlined and never-inlined
 variants, with the latter calling the former.</p>
 <p>For example, this function:</p>
-<pre><pre class="playground"><code class="language-rust edition2018">
-<span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust edition2018"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span><span class="boring">fn one() {};
 </span><span class="boring">fn two() {};
@@ -209,8 +208,7 @@ variants, with the latter calling the former.</p>
 <span class="boring">}
 </span></code></pre></pre>
 <p>Would become these two functions:</p>
-<pre><pre class="playground"><code class="language-rust edition2018">
-<span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust edition2018"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span><span class="boring">fn one() {};
 </span><span class="boring">fn two() {};

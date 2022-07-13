@@ -265,6 +265,11 @@ instructions for your current CPU:</p>
 </code></pre>
 <p>This can have a large effect, especially if the compiler finds vectorization
 opportunities in your code.</p>
+<p>As of July 2022, on M1 Macs there is an <a href="https://github.com/rust-lang/rust/issues/93889">issue</a> where using <code>-C target-cpu=native</code> doesn’t detect all the CPU features. You need to use <code>-C target-cpu=apple-m1</code> instead.</p>
+<p>If you are unsure whether <code>-C target-cpu=native</code> is working optimally, compare
+the output of <code>rustc --print cfg</code> and <code>rustc --print cfg -C target-cpu=native</code>
+to see if the CPU features are being detected correctly in the latter case. If
+not, you can use <code>-C target-feature</code> to target specific features.</p>
 <h2 id="abort-on-panic"><a class="header" href="#abort-on-panic">Abort on <code>panic!</code></a></h2>
 <p>If you do not need to catch or unwind panics, you can tell the compiler to
 simply abort on panics. This might reduce binary size and increase performance
@@ -424,8 +429,7 @@ speed, but not inline the cold call sites to avoid unnecessary code bloat. The
 way to handle this is to split the function always-inlined and never-inlined
 variants, with the latter calling the former.</p>
 <p>For example, this function:</p>
-<pre><pre class="playground"><code class="language-rust edition2018">
-<span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust edition2018"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span><span class="boring">fn one() {};
 </span><span class="boring">fn two() {};
@@ -438,8 +442,7 @@ variants, with the latter calling the former.</p>
 <span class="boring">}
 </span></code></pre></pre>
 <p>Would become these two functions:</p>
-<pre><pre class="playground"><code class="language-rust edition2018">
-<span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust edition2018"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span><span class="boring">fn one() {};
 </span><span class="boring">fn two() {};
@@ -677,8 +680,7 @@ count.</p>
 to <code>a = b.clone()</code> but may avoid unnecessary allocations. For example, if you
 want to clone one <code>Vec</code> over the top of an existing <code>Vec</code>, the existing <code>Vec</code>’s
 heap allocation will be reused if possible, as the following example shows.</p>
-<pre><pre class="playground"><code class="language-rust edition2018">
-<span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust edition2018"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>let mut v1: Vec&lt;u32&gt; = Vec::with_capacity(99);
 let v2: Vec&lt;u32&gt; = vec![1, 2, 3];
@@ -711,8 +713,7 @@ usually better to do this by modifying a single <code>Vec</code> than by buildin
 <code>Vec</code>s and then combining them.</p>
 <p>For example, if you have a function <code>do_stuff</code> that produces a <code>Vec</code> that might
 be called multiple times:</p>
-<pre><pre class="playground"><code class="language-rust edition2018">
-<span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust edition2018"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>fn do_stuff(x: u32, y: u32) -&gt; Vec&lt;u32&gt; {
     vec![x, y]
@@ -720,8 +721,7 @@ be called multiple times:</p>
 <span class="boring">}
 </span></code></pre></pre>
 <p>It might be better to instead modify a passed-in <code>Vec</code>:</p>
-<pre><pre class="playground"><code class="language-rust edition2018">
-<span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust edition2018"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>fn do_stuff(x: u32, y: u32, vec: &amp;mut Vec&lt;u32&gt;) {
     vec.push(x);
@@ -793,8 +793,7 @@ one possible invocation via Cargo:</p>
 </code></pre>
 <p>It will print out details of the size, layout, and alignment of all types in
 use. For example, for this type:</p>
-<pre><pre class="playground"><code class="language-rust edition2018">
-<span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust edition2018"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>enum E {
     A,
@@ -839,8 +838,7 @@ the size of hot types.</p>
 <h2 id="smaller-enums"><a class="header" href="#smaller-enums">Smaller Enums</a></h2>
 <p>If an enum has an outsized variant, consider boxing one or more fields. For
 example, you could change this type:</p>
-<pre><pre class="playground"><code class="language-rust edition2018">
-<span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust edition2018"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>type LargeType = [u8; 100];
 enum A {
@@ -851,8 +849,7 @@ enum A {
 <span class="boring">}
 </span></code></pre></pre>
 <p>to this:</p>
-<pre><pre class="playground"><code class="language-rust edition2018">
-<span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust edition2018"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span><span class="boring">type LargeType = [u8; 100];
 </span>enum A {
@@ -885,8 +882,7 @@ have a vector that is unlikely to be changed in the future, you can convert it
 to a <em>boxed slice</em> with <a href="https://doc.rust-lang.org/std/vec/struct.Vec.html#method.into_boxed_slice"><code>Vec::into_boxed_slice</code></a>. A boxed slice contains only
 two words, a length and a pointer. Any excess element capacity is dropped,
 which may cause a reallocation.</p>
-<pre><pre class="playground"><code class="language-rust edition2018">
-<span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust edition2018"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span><span class="boring">use std::mem::{size_of, size_of_val};
 </span>let v: Vec&lt;u32&gt; = vec![1, 2, 3];
@@ -937,8 +933,7 @@ parameter that is used if the <code>Option</code> value is <code>None</code>. <c
 eagerly. If its computation is expensive, you should instead use
 <a href="https://doc.rust-lang.org/std/option/enum.Option.html#method.ok_or_else"><code>Option::ok_or_else</code></a>, which computes the error value lazily via a closure.
 For example, this:</p>
-<pre><pre class="playground"><code class="language-rust edition2018">
-<span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust edition2018"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span><span class="boring">fn expensive() {}
 </span><span class="boring">let o: Option&lt;u32&gt; = None;
@@ -946,8 +941,7 @@ For example, this:</p>
 <span class="boring">}
 </span></code></pre></pre>
 <p>should be changed to this:</p>
-<pre><pre class="playground"><code class="language-rust edition2018">
-<span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust edition2018"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span><span class="boring">fn expensive() {}
 </span><span class="boring">let o: Option&lt;u32&gt; = None;
@@ -1002,8 +996,7 @@ iterator. It may be worth avoiding for hot iterators, if possible.
 <p>Rust’s <a href="https://doc.rust-lang.org/std/macro.print.html"><code>print!</code></a> and <a href="https://doc.rust-lang.org/std/macro.println.html"><code>println!</code></a> macros lock stdout on every call. If you
 have repeated calls to these macros it may be better to lock stdout manually.</p>
 <p>For example, change this code:</p>
-<pre><pre class="playground"><code class="language-rust edition2018">
-<span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust edition2018"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span><span class="boring">let lines = vec![&quot;one&quot;, &quot;two&quot;, &quot;three&quot;];
 </span>for line in lines {
@@ -1012,8 +1005,7 @@ have repeated calls to these macros it may be better to lock stdout manually.</p
 <span class="boring">}
 </span></code></pre></pre>
 <p>to this:</p>
-<pre><pre class="playground"><code class="language-rust edition2018">
-<span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust edition2018"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span><span class="boring">fn blah() -&gt; Result&lt;(), std::io::Error&gt; {
 </span><span class="boring">let lines = vec![&quot;one&quot;, &quot;two&quot;, &quot;three&quot;];
@@ -1035,8 +1027,7 @@ read or write calls to a file or network socket, use <a href="https://doc.rust-l
 <a href="https://doc.rust-lang.org/std/io/struct.BufWriter.html"><code>BufWriter</code></a>. They maintain an in-memory buffer for input and output,
 minimizing the number of system calls required.</p>
 <p>For example, change this unbuffered output code:</p>
-<pre><pre class="playground"><code class="language-rust edition2018">
-<span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust edition2018"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span><span class="boring">fn blah() -&gt; Result&lt;(), std::io::Error&gt; {
 </span><span class="boring">let lines = vec![&quot;one&quot;, &quot;two&quot;, &quot;three&quot;];
@@ -1050,8 +1041,7 @@ for line in lines {
 </span><span class="boring">}
 </span></code></pre></pre>
 <p>to this:</p>
-<pre><pre class="playground"><code class="language-rust edition2018">
-<span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust edition2018"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span><span class="boring">fn blah() -&gt; Result&lt;(), std::io::Error&gt; {
 </span><span class="boring">let lines = vec![&quot;one&quot;, &quot;two&quot;, &quot;three&quot;];
@@ -1097,8 +1087,7 @@ provide special behavior for values. Accessing these values can take a
 non-trivial amount of time. If multiple such values are typically accessed
 together, it may be better to put them within a single wrapper.</p>
 <p>For example, a struct like this:</p>
-<pre><pre class="playground"><code class="language-rust edition2018">
-<span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust edition2018"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span><span class="boring">use std::sync::{Arc, Mutex};
 </span>struct S {
@@ -1108,8 +1097,7 @@ together, it may be better to put them within a single wrapper.</p>
 <span class="boring">}
 </span></code></pre></pre>
 <p>may be better represented like this:</p>
-<pre><pre class="playground"><code class="language-rust edition2018">
-<span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust edition2018"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span><span class="boring">use std::sync::{Arc, Mutex};
 </span>struct S {
