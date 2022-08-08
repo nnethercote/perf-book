@@ -3,7 +3,7 @@
 `HashSet` and `HashMap` are two widely-used types. The default hashing
 algorithm is not specified, but at the time of writing the default is an
 algorithm called [SipHash 1-3]. This algorithm is high quality—it provides high
-protection against collisions—but is relatively slow, particular for short keys
+protection against collisions—but is relatively slow, particularly for short keys
 such as integers.
 
 [SipHash 1-3]: https://en.wikipedia.org/wiki/SipHash
