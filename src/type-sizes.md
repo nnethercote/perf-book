@@ -141,6 +141,19 @@ without any cloning or a reallocation.
 [`Vec::into_boxed_slice`]: https://doc.rust-lang.org/std/vec/struct.Vec.html#method.into_boxed_slice
 [`slice::into_vec`]: https://doc.rust-lang.org/std/primitive.slice.html#method.into_vec
 
+## `ThinVec`
+
+An alternative to boxed slices is `ThinVec`, from the [`thin_vec`] crate. It is
+functionally equivalent to `Vec`, but stores the length and capacity in the
+same allocation as the elements (if there are any). This means that
+`size_of::<ThinVec<T>>` is only one word.
+
+`ThinVec` is a good choice within oft-instantiated types for vectors that are
+often empty. It can also be used to shrink the largest variant of an enum, if
+that variant contains a `Vec`.
+
+[`thin_vec`]: https://crates.io/crates/thin-vec
+
 ## Avoiding Regressions
 
 If a type is hot enough that its size can affect performance, it is a good idea
