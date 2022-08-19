@@ -264,6 +264,14 @@ assert_eq!(size_of_val(&amp;bs), 2 * size_of::&lt;usize&gt;());
 </span></code></pre></pre>
 <p>The boxed slice can be converted back to a vector with <a href="https://doc.rust-lang.org/std/primitive.slice.html#method.into_vec"><code>slice::into_vec</code></a>
 without any cloning or a reallocation.</p>
+<h2 id="thinvec"><a class="header" href="#thinvec"><code>ThinVec</code></a></h2>
+<p>An alternative to boxed slices is <code>ThinVec</code>, from the <a href="https://crates.io/crates/thin-vec"><code>thin_vec</code></a> crate. It is
+functionally equivalent to <code>Vec</code>, but stores the length and capacity in the
+same allocation as the elements (if there are any). This means that
+<code>size_of::&lt;ThinVec&lt;T&gt;&gt;</code> is only one word.</p>
+<p><code>ThinVec</code> is a good choice within oft-instantiated types for vectors that are
+often empty. It can also be used to shrink the largest variant of an enum, if
+that variant contains a <code>Vec</code>.</p>
 <h2 id="avoiding-regressions"><a class="header" href="#avoiding-regressions">Avoiding Regressions</a></h2>
 <p>If a type is hot enough that its size can affect performance, it is a good idea
 to use a static assertion to ensure that it does not accidentally regress. The
