@@ -29,8 +29,9 @@ lld is not fully supported for use with Rust, but it should work for most use
 cases on Linux and Windows. There is a [GitHub Issue] tracking full support for
 lld.
 
-Another option is [mold], which is currently only available on Linux. It is
-specified in much the same way as lld. Simply substitute `mold` for `lld` in
+Another option is [mold], which is currently only available on Linux and macOS.
+Though as of mold 1.4.2, the support for macOS is an alpha feature.
+It is specified in much the same way as lld. Simply substitute `mold` for `lld` in
 the instructions above.
 
 [mold]: https://github.com/rui314/mold
