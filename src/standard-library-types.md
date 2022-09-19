@@ -93,10 +93,14 @@ useful on occasion.
 ## `Mutex`, `RwLock`, `Condvar`, and `Once`
 
 The [`parking_lot`] crate provides alternative implementations of these
-synchronization types that are smaller, faster, and more flexible than those in
-the standard library. The APIs and semantics of the `parking_lot` types are
+synchronization types. The APIs and semantics of the `parking_lot` types are
 similar but not identical to those of the equivalent types in the standard
 library.
+
+The `parking_lot` versions used to be reliably smaller, faster, and more
+flexible than those in the standard library, but the standard library versions
+have greatly improved on some platforms. So you should measure before switching
+to `parking_lot`. 
 
 [`parking_lot`]: https://crates.io/crates/parking_lot
 
