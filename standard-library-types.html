@@ -192,10 +192,13 @@ useful on occasion.
 <a href="https://github.com/rust-lang/rust/pull/65198/commits/75e0078a1703448a19e25eac85daaa5a4e6e68ac"><strong>Example 2</strong></a>.</p>
 <h2 id="mutex-rwlock-condvar-and-once"><a class="header" href="#mutex-rwlock-condvar-and-once"><code>Mutex</code>, <code>RwLock</code>, <code>Condvar</code>, and <code>Once</code></a></h2>
 <p>The <a href="https://crates.io/crates/parking_lot"><code>parking_lot</code></a> crate provides alternative implementations of these
-synchronization types that are smaller, faster, and more flexible than those in
-the standard library. The APIs and semantics of the <code>parking_lot</code> types are
+synchronization types. The APIs and semantics of the <code>parking_lot</code> types are
 similar but not identical to those of the equivalent types in the standard
 library.</p>
+<p>The <code>parking_lot</code> versions used to be reliably smaller, faster, and more
+flexible than those in the standard library, but the standard library versions
+have greatly improved on some platforms. So you should measure before switching
+to <code>parking_lot</code>. </p>
 <p>If you decide to universally use the <code>parking_lot</code> types it is easy to
 accidentally use the standard library equivalents in some places. You can <a href="linting.html#disallowing-types">use
 <code>clippy</code></a> to avoid this problem.</p>
