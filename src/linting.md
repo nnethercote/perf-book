@@ -42,7 +42,7 @@ disallowed-types = ["std::collections::HashMap", "std::collections::HashSet"]
 
 Then add the following declaration to your Rust code.
 ```
-#![warn(clippy::disallowed_type)]
+#![warn(clippy::disallowed_types)]
 ```
-This is necessary because `disallowed_type` is (at the time of writing) a
+This is necessary because `disallowed_types` is (at the time of writing) a
 "nursery" (under development) lint. This may change in the future.
