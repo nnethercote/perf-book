@@ -163,9 +163,9 @@ code with the following lines.</p>
 <pre><code class="language-toml">disallowed-types = [&quot;std::collections::HashMap&quot;, &quot;std::collections::HashSet&quot;]
 </code></pre>
 <p>Then add the following declaration to your Rust code.</p>
-<pre><code>#![warn(clippy::disallowed_type)]
+<pre><code>#![warn(clippy::disallowed_types)]
 </code></pre>
-<p>This is necessary because <code>disallowed_type</code> is (at the time of writing) a
+<p>This is necessary because <code>disallowed_types</code> is (at the time of writing) a
 “nursery” (under development) lint. This may change in the future.</p>
 
                     </main>

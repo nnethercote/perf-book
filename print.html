@@ -311,9 +311,9 @@ code with the following lines.</p>
 <pre><code class="language-toml">disallowed-types = [&quot;std::collections::HashMap&quot;, &quot;std::collections::HashSet&quot;]
 </code></pre>
 <p>Then add the following declaration to your Rust code.</p>
-<pre><code>#![warn(clippy::disallowed_type)]
+<pre><code>#![warn(clippy::disallowed_types)]
 </code></pre>
-<p>This is necessary because <code>disallowed_type</code> is (at the time of writing) a
+<p>This is necessary because <code>disallowed_types</code> is (at the time of writing) a
 “nursery” (under development) lint. This may change in the future.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="profiling"><a class="header" href="#profiling">Profiling</a></h1>
 <p>When optimizing a program, you also need a way to determine which parts of the
@@ -1212,8 +1212,9 @@ rustflags = [&quot;-C&quot;, &quot;link-arg=-fuse-ld=lld&quot;]
 <p>lld is not fully supported for use with Rust, but it should work for most use
 cases on Linux and Windows. There is a <a href="https://github.com/rust-lang/rust/issues/39915#issuecomment-618726211">GitHub Issue</a> tracking full support for
 lld.</p>
-<p>Another option is <a href="https://github.com/rui314/mold">mold</a>, which is currently only available on Linux. It is
-specified in much the same way as lld. Simply substitute <code>mold</code> for <code>lld</code> in
+<p>Another option is <a href="https://github.com/rui314/mold">mold</a>, which is currently only available on Linux and macOS.
+Though as of mold 1.4.2, the support for macOS is an alpha feature.
+It is specified in much the same way as lld. Simply substitute <code>mold</code> for <code>lld</code> in
 the instructions above.</p>
 <p>mold is often faster than lld. It is also much newer and may not work in all
 cases.</p>
