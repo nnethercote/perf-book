@@ -67,6 +67,8 @@ buf.flush()?;
 # Ok(())
 # }
 ```
+[**Example**](https://github.com/nnethercote/dhat-rs/pull/22/commits/8c3ae26f1219474ee55c30bc9981e6af2e869be2).
+
 The explicit call to [`flush`] is not strictly necessary, as flushing will
 happen automatically when `buf` is dropped. However, in that case any error
 that occurs on flushing will be ignored, whereas an explicit flush will make
