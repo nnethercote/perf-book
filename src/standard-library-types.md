@@ -42,7 +42,7 @@ equivalent method for other collection types such as `String`, `HashSet`, and
 `HashMap`.
 
 If you need to create a `Vec` filled with zeroes, the fastest way to do so
-is `vec![0; lenght]`(https://doc.rust-lang.org/stable/std/macro.vec.html).
+is `vec![0; length]`(https://doc.rust-lang.org/stable/std/macro.vec.html).
 Unlike creating a `Vec` and then filling it with zeroes, this requests
 pre-zeroed memory from the OS, which usually has some on hand,
 so you don't have to spend time zeroing it yourself.
