@@ -168,11 +168,9 @@ iterator. It may be worth avoiding for hot iterators, if possible.
 <p>Similarly, <a href="https://doc.rust-lang.org/std/iter/trait.Iterator.html#method.filter_map"><code>filter_map</code></a> may be faster than using <a href="https://doc.rust-lang.org/std/iter/trait.Iterator.html#method.filter"><code>filter</code></a> followed by
 <a href="https://doc.rust-lang.org/std/iter/trait.Iterator.html#method.map"><code>map</code></a>.</p>
 <h2 id="chunks"><a class="header" href="#chunks">Chunks</a></h2>
-<p>Prefer <a href="https://doc.rust-lang.org/stable/std/primitive.slice.html#method.chunks_exact"><code>slice::chunks_exact</code></a> to [<code>slice::chunks</code>].</p>
-<p><code>chunks_exact</code> guarantees that that all chunks are the same size, which allows for
-more efficient code in the code that processes each chunk.
-Specifically, it eliminates bounds checks and allows loop unrolling,
-which may make a difference in hot loops.</p>
+<p>When a chunking iterator is required, use <a href="https://doc.rust-lang.org/stable/std/primitive.slice.html#method.chunks_exact"><code>slice::chunks_exact</code></a> when the
+chunk size is known to exactly divide the slice length. It is equivalent to but
+faster than <a href="https://doc.rust-lang.org/stable/std/primitive.slice.html#method.chunks"><code>slice::chunks</code></a> in this case.</p>
 
                     </main>
 
