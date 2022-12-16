@@ -1001,6 +1001,12 @@ iterator. It may be worth avoiding for hot iterators, if possible.
 <a href="https://github.com/rust-lang/rust/pull/64801/commits/5ca99b750e455e9b5e13e83d0d7886486231e48a"><strong>Example</strong></a>.</p>
 <p>Similarly, <a href="https://doc.rust-lang.org/std/iter/trait.Iterator.html#method.filter_map"><code>filter_map</code></a> may be faster than using <a href="https://doc.rust-lang.org/std/iter/trait.Iterator.html#method.filter"><code>filter</code></a> followed by
 <a href="https://doc.rust-lang.org/std/iter/trait.Iterator.html#method.map"><code>map</code></a>.</p>
+<h2 id="chunks"><a class="header" href="#chunks">Chunks</a></h2>
+<p>Prefer <a href="https://doc.rust-lang.org/stable/std/primitive.slice.html#method.chunks_exact"><code>slice::chunks_exact</code></a> to [<code>slice::chunks</code>].</p>
+<p><code>chunks_exact</code> guarantees that that all chunks are the same size, which allows for
+more efficient code in the code that processes each chunk.
+Specifically, it eliminates bounds checks and allows loop unrolling,
+which may make a difference in hot loops.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="io"><a class="header" href="#io">I/O</a></h1>
 <h2 id="locking"><a class="header" href="#locking">Locking</a></h2>
 <p>Rust’s <a href="https://doc.rust-lang.org/std/macro.print.html"><code>print!</code></a> and <a href="https://doc.rust-lang.org/std/macro.println.html"><code>println!</code></a> macros lock stdout on every call. If you
