@@ -4,8 +4,10 @@
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
         <title>Standard Library Types - The Rust Performance Book</title>
+
+
         <!-- Custom HTML head -->
-        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="theme-color" content="#ffffff" />
@@ -16,25 +18,28 @@
         <link rel="stylesheet" href="css/general.css">
         <link rel="stylesheet" href="css/chrome.css">
         <link rel="stylesheet" href="css/print.css" media="print">
+
         <!-- Fonts -->
         <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
         <link rel="stylesheet" href="fonts/fonts.css">
+
         <!-- Highlight.js Stylesheets -->
         <link rel="stylesheet" href="highlight.css">
         <link rel="stylesheet" href="tomorrow-night.css">
         <link rel="stylesheet" href="ayu-highlight.css">
 
         <!-- Custom theme stylesheets -->
+
     </head>
     <body>
         <!-- Provide site root to javascript -->
-        <script type="text/javascript">
+        <script>
             var path_to_root = "";
             var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "rust";
         </script>
 
         <!-- Work around some values being stored in localStorage wrapped in quotes -->
-        <script type="text/javascript">
+        <script>
             try {
                 var theme = localStorage.getItem('mdbook-theme');
                 var sidebar = localStorage.getItem('mdbook-sidebar');
@@ -50,7 +55,7 @@
         </script>
 
         <!-- Set the theme before any content is loaded, prevents flash -->
-        <script type="text/javascript">
+        <script>
             var theme;
             try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
             if (theme === null || theme === undefined) { theme = default_theme; }
@@ -62,7 +67,7 @@
         </script>
 
         <!-- Hide / unhide sidebar before it is displayed -->
-        <script type="text/javascript">
+        <script>
             var html = document.querySelector('html');
             var sidebar = 'hidden';
             if (document.body.clientWidth >= 1080) {
@@ -83,7 +88,7 @@
         <div id="page-wrapper" class="page-wrapper">
 
             <div class="page">
-                <div id="menu-bar-hover-placeholder"></div>
+                                <div id="menu-bar-hover-placeholder"></div>
                 <div id="menu-bar" class="menu-bar sticky bordered">
                     <div class="left-buttons">
                         <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
@@ -94,7 +99,7 @@
                         </button>
                         <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
                             <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
@@ -113,6 +118,7 @@
                         <a href="https://github.com/nnethercote/perf-book" title="Git repository" aria-label="Git repository">
                             <i id="git-repository-button" class="fa fa-github"></i>
                         </a>
+
                     </div>
                 </div>
 
@@ -126,8 +132,9 @@
                         </ul>
                     </div>
                 </div>
+
                 <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
-                <script type="text/javascript">
+                <script>
                     document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
                     document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
                     Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
@@ -151,6 +158,10 @@ value directly on the heap, rather than constructing it on the stack and then
 copying it over.
 <a href="https://github.com/komora-io/art/commit/d5dc58338f475709c375e15976d0d77eb5d7f7ef"><strong>Example</strong></a>.</p>
 <h2 id="vec"><a class="header" href="#vec"><code>Vec</code></a></h2>
+<p>The best way to create a zero-filled <code>Vec</code> of length <code>n</code> is with <code>vec![0; n]</code>.
+This is simple and probably <a href="https://github.com/rust-lang/rust/issues/54628">as fast or faster</a> than alternatives, such as
+using <code>resize</code>, <code>extend</code>, or anything involving <code>unsafe</code>, because it can use OS
+assistance.</p>
 <p><a href="https://doc.rust-lang.org/std/vec/struct.Vec.html#method.remove"><code>Vec::remove</code></a> removes an element at a particular index and shifts all
 subsequent elements one to the left, which makes it O(n). <a href="https://doc.rust-lang.org/std/vec/struct.Vec.html#method.swap_remove"><code>Vec::swap_remove</code></a>
 replaces an element at a particular index with the final element, which does
@@ -169,16 +180,14 @@ For example, this:</p>
 </span><span class="boring">fn expensive() {}
 </span><span class="boring">let o: Option&lt;u32&gt; = None;
 </span>let r = o.ok_or(expensive()); // always evaluates `expensive()`
-<span class="boring">}
-</span></code></pre></pre>
+<span class="boring">}</span></code></pre></pre>
 <p>should be changed to this:</p>
 <pre><pre class="playground"><code class="language-rust edition2018"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span><span class="boring">fn expensive() {}
 </span><span class="boring">let o: Option&lt;u32&gt; = None;
 </span>let r = o.ok_or_else(|| expensive()); // evaluates `expensive()` only when needed
-<span class="boring">}
-</span></code></pre></pre>
+<span class="boring">}</span></code></pre></pre>
 <p><a href="https://github.com/rust-lang/rust/pull/50051/commits/5070dea2366104fb0b5c344ce7f2a5cf8af176b0"><strong>Example</strong></a>.</p>
 <p>There are similar alternatives for <a href="https://doc.rust-lang.org/std/option/enum.Option.html#method.map_or"><code>Option::map_or</code></a>, <a href="https://doc.rust-lang.org/std/option/enum.Option.html#method.unwrap_or"><code>Option::unwrap_or</code></a>,
 <a href="https://doc.rust-lang.org/std/result/enum.Result.html#method.or"><code>Result::or</code></a>, <a href="https://doc.rust-lang.org/std/result/enum.Result.html#method.map_or"><code>Result::map_or</code></a>, and <a href="https://doc.rust-lang.org/std/result/enum.Result.html#method.unwrap_or"><code>Result::unwrap_or</code></a>.</p>
@@ -210,9 +219,11 @@ accidentally use the standard library equivalents in some places. You can <a hre
                             <a rel="prev" href="type-sizes.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
+
                             <a rel="next" href="iterators.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
+
                         <div style="clear: both"></div>
                     </nav>
                 </div>
@@ -222,6 +233,7 @@ accidentally use the standard library equivalents in some places. You can <a hre
                     <a rel="prev" href="type-sizes.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
+
                     <a rel="next" href="iterators.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
@@ -229,16 +241,24 @@ accidentally use the standard library equivalents in some places. You can <a hre
 
         </div>
 
-        <script type="text/javascript">
+
+
+
+        <script>
             window.playground_copyable = true;
         </script>
-        <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
-        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
-        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
-        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
-        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
-        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
 
         <!-- Custom JS scripts -->
+
+
     </body>
 </html>

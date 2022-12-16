@@ -4,8 +4,10 @@
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
         <title>Type Sizes - The Rust Performance Book</title>
+
+
         <!-- Custom HTML head -->
-        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="theme-color" content="#ffffff" />
@@ -16,25 +18,28 @@
         <link rel="stylesheet" href="css/general.css">
         <link rel="stylesheet" href="css/chrome.css">
         <link rel="stylesheet" href="css/print.css" media="print">
+
         <!-- Fonts -->
         <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
         <link rel="stylesheet" href="fonts/fonts.css">
+
         <!-- Highlight.js Stylesheets -->
         <link rel="stylesheet" href="highlight.css">
         <link rel="stylesheet" href="tomorrow-night.css">
         <link rel="stylesheet" href="ayu-highlight.css">
 
         <!-- Custom theme stylesheets -->
+
     </head>
     <body>
         <!-- Provide site root to javascript -->
-        <script type="text/javascript">
+        <script>
             var path_to_root = "";
             var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "rust";
         </script>
 
         <!-- Work around some values being stored in localStorage wrapped in quotes -->
-        <script type="text/javascript">
+        <script>
             try {
                 var theme = localStorage.getItem('mdbook-theme');
                 var sidebar = localStorage.getItem('mdbook-sidebar');
@@ -50,7 +55,7 @@
         </script>
 
         <!-- Set the theme before any content is loaded, prevents flash -->
-        <script type="text/javascript">
+        <script>
             var theme;
             try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
             if (theme === null || theme === undefined) { theme = default_theme; }
@@ -62,7 +67,7 @@
         </script>
 
         <!-- Hide / unhide sidebar before it is displayed -->
-        <script type="text/javascript">
+        <script>
             var html = document.querySelector('html');
             var sidebar = 'hidden';
             if (document.body.clientWidth >= 1080) {
@@ -83,7 +88,7 @@
         <div id="page-wrapper" class="page-wrapper">
 
             <div class="page">
-                <div id="menu-bar-hover-placeholder"></div>
+                                <div id="menu-bar-hover-placeholder"></div>
                 <div id="menu-bar" class="menu-bar sticky bordered">
                     <div class="left-buttons">
                         <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
@@ -94,7 +99,7 @@
                         </button>
                         <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
                             <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
@@ -113,6 +118,7 @@
                         <a href="https://github.com/nnethercote/perf-book" title="Git repository" aria-label="Git repository">
                             <i id="git-repository-button" class="fa fa-github"></i>
                         </a>
+
                     </div>
                 </div>
 
@@ -126,8 +132,9 @@
                         </ul>
                     </div>
                 </div>
+
                 <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
-                <script type="text/javascript">
+                <script>
                     document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
                     document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
                     Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
@@ -171,8 +178,7 @@ use. For example, for this type:</p>
     C(u64, u8, u64, u8),
     D(Vec&lt;u32&gt;),
 }
-<span class="boring">}
-</span></code></pre></pre>
+<span class="boring">}</span></code></pre></pre>
 <p>it prints the following, plus information about a few built-in types.</p>
 <pre><code class="language-text">print-type-size type: `E`: 32 bytes, alignment: 8 bytes
 print-type-size     discriminant: 1 bytes
@@ -216,8 +222,7 @@ enum A {
     Y(i32),
     Z(i32, LargeType),
 }
-<span class="boring">}
-</span></code></pre></pre>
+<span class="boring">}</span></code></pre></pre>
 <p>to this:</p>
 <pre><pre class="playground"><code class="language-rust edition2018"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
@@ -227,8 +232,7 @@ enum A {
     Y(i32),
     Z(Box&lt;(i32, LargeType)&gt;),
 }
-<span class="boring">}
-</span></code></pre></pre>
+<span class="boring">}</span></code></pre></pre>
 <p>This reduces the type size at the cost of requiring an extra heap allocation
 for the <code>A::Z</code> variant. This is more likely to be a net performance win if the
 <code>A::Z</code> variant is relatively rare. The <code>Box</code> will also make <code>A::Z</code> slightly
@@ -260,8 +264,7 @@ assert_eq!(size_of_val(&amp;v), 3 * size_of::&lt;usize&gt;());
 
 let bs: Box&lt;[u32]&gt; = v.into_boxed_slice();
 assert_eq!(size_of_val(&amp;bs), 2 * size_of::&lt;usize&gt;());
-<span class="boring">}
-</span></code></pre></pre>
+<span class="boring">}</span></code></pre></pre>
 <p>The boxed slice can be converted back to a vector with <a href="https://doc.rust-lang.org/std/primitive.slice.html#method.into_vec"><code>slice::into_vec</code></a>
 without any cloning or a reallocation.</p>
 <h2 id="thinvec"><a class="header" href="#thinvec"><code>ThinVec</code></a></h2>
@@ -278,8 +281,7 @@ to use a static assertion to ensure that it does not accidentally regress. The
 following example uses a macro from the <a href="https://crates.io/crates/static_assertions"><code>static_assertions</code></a> crate.</p>
 <pre><code class="language-rust ignore">  // This type is used a lot. Make sure it doesn't unintentionally get bigger.
   #[cfg(target_arch = &quot;x86_64&quot;)]
-  static_assertions::assert_eq_size!(HotType, [u8; 64]);
-</code></pre>
+  static_assertions::assert_eq_size!(HotType, [u8; 64]);</code></pre>
 <p>The <code>cfg</code> attribute is important, because type sizes can vary on different
 platforms. Restricting the assertion to <code>x86_64</code> (which is typically the most
 widely-used platform) is likely to be good enough to prevent regressions in
@@ -292,9 +294,11 @@ practice.</p>
                             <a rel="prev" href="heap-allocations.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
+
                             <a rel="next" href="standard-library-types.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
+
                         <div style="clear: both"></div>
                     </nav>
                 </div>
@@ -304,6 +308,7 @@ practice.</p>
                     <a rel="prev" href="heap-allocations.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
+
                     <a rel="next" href="standard-library-types.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
@@ -311,16 +316,24 @@ practice.</p>
 
         </div>
 
-        <script type="text/javascript">
+
+
+
+        <script>
             window.playground_copyable = true;
         </script>
-        <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
-        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
-        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
-        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
-        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
-        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
 
         <!-- Custom JS scripts -->
+
+
     </body>
 </html>
