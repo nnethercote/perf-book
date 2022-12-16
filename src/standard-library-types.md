@@ -32,6 +32,13 @@ copying it over.
 
 ## `Vec`
 
+The best way to create a zero-filled `Vec` of length `n` is with `vec![0; n]`.
+This is simple and probably [as fast or faster] than alternatives, such as
+using `resize`, `extend`, or anything involving `unsafe`, because it can use OS
+assistance.
+
+[as fast or faster]: https://github.com/rust-lang/rust/issues/54628
+
 [`Vec::remove`] removes an element at a particular index and shifts all
 subsequent elements one to the left, which makes it O(n). [`Vec::swap_remove`]
 replaces an element at a particular index with the final element, which does
