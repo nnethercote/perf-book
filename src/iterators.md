@@ -48,12 +48,9 @@ Similarly, [`filter_map`] may be faster than using [`filter`] followed by
 
 ## Chunks
 
-Prefer [`slice::chunks_exact`] to [`slice::chunks`].
-
-`chunks_exact` guarantees that that all chunks are the same size, which allows for
-more efficient code in the code that processes each chunk.
-Specifically, it eliminates bounds checks and allows loop unrolling,
-which may make a difference in hot loops.
+When a chunking iterator is required, use [`slice::chunks_exact`] when the
+chunk size is known to exactly divide the slice length. It is equivalent to but
+faster than [`slice::chunks`] in this case.
 
 [`slice::chunks_exact`]: https://doc.rust-lang.org/stable/std/primitive.slice.html#method.chunks_exact
-[slice::chunks]: https://doc.rust-lang.org/stable/std/primitive.slice.html#method.chunks
+[`slice::chunks`]: https://doc.rust-lang.org/stable/std/primitive.slice.html#method.chunks
