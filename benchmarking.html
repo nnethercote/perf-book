@@ -157,11 +157,11 @@ workloads that represent realistic usage of your program. Workloads using
 real-world inputs are best, but <a href="https://stackoverflow.com/questions/2842695/what-is-microbenchmarking">microbenchmarks</a> and <a href="https://en.wikipedia.org/wiki/Stress_testing_(software)">stress tests</a> can be
 useful in moderation.</p>
 <p>Second, you need a way to run the workloads, which will also dictate the
-metrics used. Rust’s built-in <a href="https://doc.rust-lang.org/1.16.0/book/benchmark-tests.html">benchmark tests</a> are a simple starting point,
-but they use unstable features and only work on Nightly Rust. The <a href="https://crates.io/crates/bencher"><code>bencher</code></a>
-crate is similar but works with stable Rust. <a href="https://github.com/bheisler/criterion.rs">Criterion</a> is a more
-sophisticated alternative. Custom benchmarking harnesses are also possible. For
-example, <a href="https://github.com/rust-lang/rustc-perf/">rustc-perf</a> is the harness used to benchmark the Rust compiler.</p>
+metrics used. Rust’s built-in <a href="https://doc.rust-lang.org/nightly/unstable-book/library-features/test.html">benchmark tests</a> are a simple starting point,
+but they use unstable features and therefore only work on Nightly Rust.
+<a href="https://github.com/bheisler/criterion.rs">Criterion</a> is a more sophisticated alternative. Custom benchmarking harnesses
+are also possible. For example, <a href="https://github.com/rust-lang/rustc-perf/">rustc-perf</a> is the harness used to benchmark
+the Rust compiler.</p>
 <p>When it comes to metrics, there are many choices, and the right one(s) will
 depend on the nature of the program being benchmarked. For example, metrics
 that make sense for a batch program might not make sense for an interactive
