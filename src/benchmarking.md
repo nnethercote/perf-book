@@ -19,13 +19,12 @@ useful in moderation.
 
 Second, you need a way to run the workloads, which will also dictate the
 metrics used. Rust's built-in [benchmark tests] are a simple starting point,
-but they use unstable features and only work on Nightly Rust. The [`bencher`]
-crate is similar but works with stable Rust. [Criterion] is a more
-sophisticated alternative. Custom benchmarking harnesses are also possible. For
-example, [rustc-perf] is the harness used to benchmark the Rust compiler.
+but they use unstable features and therefore only work on Nightly Rust.
+[Criterion] is a more sophisticated alternative. Custom benchmarking harnesses
+are also possible. For example, [rustc-perf] is the harness used to benchmark
+the Rust compiler.
 
-[benchmark tests]: https://doc.rust-lang.org/1.16.0/book/benchmark-tests.html
-[`bencher`]: https://crates.io/crates/bencher
+[benchmark tests]: https://doc.rust-lang.org/nightly/unstable-book/library-features/test.html
 [Criterion]: https://github.com/bheisler/criterion.rs
 [rustc-perf]: https://github.com/rust-lang/rustc-perf/
 
