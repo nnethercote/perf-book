@@ -81,7 +81,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded affix "><a href="title-page.html">Title Page</a></li><li class="chapter-item expanded "><a href="introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="benchmarking.html"><strong aria-hidden="true">2.</strong> Benchmarking</a></li><li class="chapter-item expanded "><a href="build-configuration.html"><strong aria-hidden="true">3.</strong> Build Configuration</a></li><li class="chapter-item expanded "><a href="linting.html"><strong aria-hidden="true">4.</strong> Linting</a></li><li class="chapter-item expanded "><a href="profiling.html"><strong aria-hidden="true">5.</strong> Profiling</a></li><li class="chapter-item expanded "><a href="inlining.html"><strong aria-hidden="true">6.</strong> Inlining</a></li><li class="chapter-item expanded "><a href="hashing.html"><strong aria-hidden="true">7.</strong> Hashing</a></li><li class="chapter-item expanded "><a href="heap-allocations.html"><strong aria-hidden="true">8.</strong> Heap Allocations</a></li><li class="chapter-item expanded "><a href="type-sizes.html"><strong aria-hidden="true">9.</strong> Type Sizes</a></li><li class="chapter-item expanded "><a href="standard-library-types.html"><strong aria-hidden="true">10.</strong> Standard Library Types</a></li><li class="chapter-item expanded "><a href="iterators.html"><strong aria-hidden="true">11.</strong> Iterators</a></li><li class="chapter-item expanded "><a href="io.html"><strong aria-hidden="true">12.</strong> I/O</a></li><li class="chapter-item expanded "><a href="logging-and-debugging.html"><strong aria-hidden="true">13.</strong> Logging and Debugging</a></li><li class="chapter-item expanded "><a href="wrapper-types.html"><strong aria-hidden="true">14.</strong> Wrapper Types</a></li><li class="chapter-item expanded "><a href="machine-code.html"><strong aria-hidden="true">15.</strong> Machine Code</a></li><li class="chapter-item expanded "><a href="parallelism.html"><strong aria-hidden="true">16.</strong> Parallelism</a></li><li class="chapter-item expanded "><a href="binary-size.html"><strong aria-hidden="true">17.</strong> Binary Size</a></li><li class="chapter-item expanded "><a href="general-tips.html"><strong aria-hidden="true">18.</strong> General Tips</a></li><li class="chapter-item expanded "><a href="compile-times.html"><strong aria-hidden="true">19.</strong> Compile Times</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="title-page.html">Title Page</a></li><li class="chapter-item expanded "><a href="introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="benchmarking.html"><strong aria-hidden="true">2.</strong> Benchmarking</a></li><li class="chapter-item expanded "><a href="build-configuration.html"><strong aria-hidden="true">3.</strong> Build Configuration</a></li><li class="chapter-item expanded "><a href="linting.html"><strong aria-hidden="true">4.</strong> Linting</a></li><li class="chapter-item expanded "><a href="profiling.html"><strong aria-hidden="true">5.</strong> Profiling</a></li><li class="chapter-item expanded "><a href="inlining.html"><strong aria-hidden="true">6.</strong> Inlining</a></li><li class="chapter-item expanded "><a href="hashing.html"><strong aria-hidden="true">7.</strong> Hashing</a></li><li class="chapter-item expanded "><a href="heap-allocations.html"><strong aria-hidden="true">8.</strong> Heap Allocations</a></li><li class="chapter-item expanded "><a href="type-sizes.html"><strong aria-hidden="true">9.</strong> Type Sizes</a></li><li class="chapter-item expanded "><a href="standard-library-types.html"><strong aria-hidden="true">10.</strong> Standard Library Types</a></li><li class="chapter-item expanded "><a href="iterators.html"><strong aria-hidden="true">11.</strong> Iterators</a></li><li class="chapter-item expanded "><a href="bounds-checks.html"><strong aria-hidden="true">12.</strong> Bounds Checks</a></li><li class="chapter-item expanded "><a href="io.html"><strong aria-hidden="true">13.</strong> I/O</a></li><li class="chapter-item expanded "><a href="logging-and-debugging.html"><strong aria-hidden="true">14.</strong> Logging and Debugging</a></li><li class="chapter-item expanded "><a href="wrapper-types.html"><strong aria-hidden="true">15.</strong> Wrapper Types</a></li><li class="chapter-item expanded "><a href="machine-code.html"><strong aria-hidden="true">16.</strong> Machine Code</a></li><li class="chapter-item expanded "><a href="parallelism.html"><strong aria-hidden="true">17.</strong> Parallelism</a></li><li class="chapter-item expanded "><a href="binary-size.html"><strong aria-hidden="true">18.</strong> Binary Size</a></li><li class="chapter-item expanded "><a href="general-tips.html"><strong aria-hidden="true">19.</strong> General Tips</a></li><li class="chapter-item expanded "><a href="compile-times.html"><strong aria-hidden="true">20.</strong> Compile Times</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -1020,6 +1020,24 @@ iterator. It may be worth avoiding for hot iterators, if possible.
 <p>When a chunking iterator is required, use <a href="https://doc.rust-lang.org/stable/std/primitive.slice.html#method.chunks_exact"><code>slice::chunks_exact</code></a> when the
 chunk size is known to exactly divide the slice length. It is equivalent to but
 faster than <a href="https://doc.rust-lang.org/stable/std/primitive.slice.html#method.chunks"><code>slice::chunks</code></a> in this case.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="bounds-checks"><a class="header" href="#bounds-checks">Bounds Checks</a></h1>
+<p>By default, accesses to container types such as slices and vectors involve
+bounds checks in Rust. These can affect performance, e.g. within hot loops,
+though less often than you might expect.</p>
+<p>There are several safe ways to change code so that the compiler knows about
+container lengths and can optimize away bounds checks.</p>
+<ul>
+<li>Replace direct element accesses in a loop by using iteration.</li>
+<li>Instead of indexing into a <code>Vec</code> within a loop, make a slice of the <code>Vec</code>
+before the loop and then index into the slice within the loop.</li>
+<li>Add assertions on the ranges of index variables.
+<a href="https://github.com/rust-random/rand/pull/960/commits/de9dfdd86851032d942eb583d8d438e06085867b"><strong>Example 1</strong></a>,
+<a href="https://github.com/image-rs/jpeg-decoder/pull/167/files"><strong>Example 2</strong></a>.</li>
+</ul>
+<p>Getting these to work can be tricky. The <a href="https://github.com/Shnatsel/bounds-check-cookbook/">Bounds Check Cookbook</a> goes into more
+detail on this topic.</p>
+<p>As a last resort, there are the unsafe methods <a href="https://doc.rust-lang.org/std/primitive.slice.html#method.get_unchecked"><code>get_unchecked</code></a> and
+<a href="https://doc.rust-lang.org/std/primitive.slice.html#method.get_unchecked_mut"><code>get_unchecked_mut</code></a>.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="io"><a class="header" href="#io">I/O</a></h1>
 <h2 id="locking"><a class="header" href="#locking">Locking</a></h2>
 <p>Rust’s <a href="https://doc.rust-lang.org/std/macro.print.html"><code>print!</code></a> and <a href="https://doc.rust-lang.org/std/macro.println.html"><code>println!</code></a> macros lock stdout on every call. If you
@@ -1134,16 +1152,11 @@ of the values.
 <a href="https://github.com/rust-lang/rust/pull/68694/commits/7426853ba255940b880f2e7f8026d60b94b42404"><strong>Example</strong></a>.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="machine-code"><a class="header" href="#machine-code">Machine Code</a></h1>
 <p>When you have a small piece of very hot code, it may be worth inspecting the
-generated machine code to see if it has any inefficiencies. The <a href="https://godbolt.org/">Compiler
-Explorer</a> website is an excellent resource when doing this.</p>
+generated machine code to see if it has any inefficiencies, such as removable
+<a href="bounds-checks.html">bounds checks</a>. The <a href="https://godbolt.org/">Compiler Explorer</a> website is an excellent resource when
+doing this.</p>
 <p>Relatedly, the <a href="https://doc.rust-lang.org/core/arch/index.html"><code>core::arch</code></a> module provides access to architecture-specific
 intrinsics, many of which relate to SIMD instructions.</p>
-<p>It is sometimes possible to avoid bounds checking within loops by adding
-assertions on the ranges of the index variables. This is an advanced technique,
-and you should check the generated code to ensure the bounds checks are
-actually removed.
-<a href="https://github.com/rust-random/rand/pull/960/commits/de9dfdd86851032d942eb583d8d438e06085867b"><strong>Example 1</strong></a>,
-<a href="https://github.com/image-rs/jpeg-decoder/pull/167/files"><strong>Example 2</strong></a>.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="parallelism"><a class="header" href="#parallelism">Parallelism</a></h1>
 <p>Rust provides excellent support for safe parallel programming, which can lead
 to large performance improvements. There are a variety of ways to introduce
