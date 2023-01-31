@@ -113,6 +113,6 @@ to `parking_lot`.
 
 If you decide to universally use the `parking_lot` types it is easy to
 accidentally use the standard library equivalents in some places. You can [use
-`clippy`] to avoid this problem.
+Clippy] to avoid this problem.
 
-[use `clippy`]: linting.md#disallowing-types
+[use Clippy]: linting.md#disallowing-types

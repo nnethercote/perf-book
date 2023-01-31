@@ -42,9 +42,9 @@ rustc.
 
 If you decide to universally use one of the alternatives, such as
 `FxHashSet`/`FxHashMap`, it is easy to accidentally use `HashSet`/`HashMap` in
-some places. You can [use `clippy`] to avoid this problem.
+some places. You can [use Clippy] to avoid this problem.
 
-[use `clippy`]: linting.md#disallowing-types
+[use Clippy]: linting.md#disallowing-types
 
 Some types don't need hashing. For example, you might have a newtype that wraps
 an integer and the integer values are random, or close to random. For such a
