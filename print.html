@@ -298,25 +298,35 @@ use that profiling data to guide a second compilation of the program.
 <p>It is an advanced technique that takes some effort to set up, but is worthwhile
 in some cases. See the <a href="https://doc.rust-lang.org/rustc/profile-guided-optimization.html">rustc PGO documentation</a> for details.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="linting"><a class="header" href="#linting">Linting</a></h1>
-<p><a href="https://github.com/rust-lang/rust-clippy">clippy</a> is a collection of lints to catch common mistakes in Rust code. It is
+<p><a href="https://github.com/rust-lang/rust-clippy">Clippy</a> is a collection of lints to catch common mistakes in Rust code. It is
 an excellent tool to run on Rust code in general. It can also help with
 performance, because a number of the lints relate to code patterns that can
 cause sub-optimal performance.</p>
+<p>Given that automated detection of problems is preferable to manual detection,
+the rest of this book will not mention performance problems that Clippy detects
+by default.</p>
 <h2 id="basics"><a class="header" href="#basics">Basics</a></h2>
 <p>Once installed, it is easy to run:</p>
 <pre><code class="language-text">cargo clippy
 </code></pre>
 <p>The full list of performance lints can be seen by visiting the <a href="https://rust-lang.github.io/rust-clippy/master/">lint list</a> and
-deselecting all the lint groups except for “Perf”.</p>
+deselecting all the lint groups except for “Perf”. </p>
 <p>As well as making the code faster, the performance lint suggestions usually
 result in code that is simpler and more idiomatic, so they are worth following
 even for code that is not executed frequently.</p>
+<p>Conversely, some non-performance lint suggestions can improve performance. For
+example, the <a href="https://rust-lang.github.io/rust-clippy/master/index.html#ptr_arg"><code>ptr_arg</code></a> style lint suggests changing various container
+arguments to slices, such as changing <code>&amp;mut Vec&lt;T&gt;</code> arguments to <code>&amp;mut [T]</code>.
+The primary motivation here is that a slice gives a more flexible API, but it
+may also result in faster code due to less indirection and better optimization
+opportunities for the compiler.
+<a href="https://github.com/fschutt/fastblur/pull/3/files"><strong>Example</strong></a>.</p>
 <h2 id="disallowing-types"><a class="header" href="#disallowing-types">Disallowing Types</a></h2>
 <p>In the following chapters we will see that it is sometimes worth avoiding
 certain standard library types in favour of alternatives that are faster. If
 you decide to use these alternatives, it is easy to accidentally use the
 standard library types in some places by mistake.</p>
-<p>You can use <code>clippy</code>’s <a href="https://rust-lang.github.io/rust-clippy/master/index.html#disallowed_types"><code>disallowed_types</code></a> lint, added in Rust 1.55, to avoid
+<p>You can use Clippy’s <a href="https://rust-lang.github.io/rust-clippy/master/index.html#disallowed_types"><code>disallowed_types</code></a> lint, added in Rust 1.55, to avoid
 this problem. For example, to disallow the use of the standard hash tables (for
 reasons explained in the <a href="hashing.html">Hashing</a> section) add a <code>clippy.toml</code> file to your
 code with the following lines.</p>
@@ -507,7 +517,7 @@ rustc.</p>
 </ul>
 <p>If you decide to universally use one of the alternatives, such as
 <code>FxHashSet</code>/<code>FxHashMap</code>, it is easy to accidentally use <code>HashSet</code>/<code>HashMap</code> in
-some places. You can <a href="linting.html#disallowing-types">use <code>clippy</code></a> to avoid this problem.</p>
+some places. You can <a href="linting.html#disallowing-types">use Clippy</a> to avoid this problem.</p>
 <p>Some types don’t need hashing. For example, you might have a newtype that wraps
 an integer and the integer values are random, or close to random. For such a
 type, the distribution of the hashed values won’t be that different to the
@@ -982,7 +992,7 @@ have greatly improved on some platforms. So you should measure before switching
 to <code>parking_lot</code>. </p>
 <p>If you decide to universally use the <code>parking_lot</code> types it is easy to
 accidentally use the standard library equivalents in some places. You can <a href="linting.html#disallowing-types">use
-<code>clippy</code></a> to avoid this problem.</p>
+Clippy</a> to avoid this problem.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="iterators"><a class="header" href="#iterators">Iterators</a></h1>
 <h2 id="collect-and-extend"><a class="header" href="#collect-and-extend"><code>collect</code> and <code>extend</code></a></h2>
 <p><a href="https://doc.rust-lang.org/std/iter/trait.Iterator.html#method.collect"><code>Iterator::collect</code></a> converts an iterator into a collection such as <code>Vec</code>,

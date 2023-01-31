@@ -176,7 +176,7 @@ rustc.</p>
 </ul>
 <p>If you decide to universally use one of the alternatives, such as
 <code>FxHashSet</code>/<code>FxHashMap</code>, it is easy to accidentally use <code>HashSet</code>/<code>HashMap</code> in
-some places. You can <a href="linting.html#disallowing-types">use <code>clippy</code></a> to avoid this problem.</p>
+some places. You can <a href="linting.html#disallowing-types">use Clippy</a> to avoid this problem.</p>
 <p>Some types don’t need hashing. For example, you might have a newtype that wraps
 an integer and the integer values are random, or close to random. For such a
 type, the distribution of the hashed values won’t be that different to the

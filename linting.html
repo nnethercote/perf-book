@@ -145,25 +145,35 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="linting"><a class="header" href="#linting">Linting</a></h1>
-<p><a href="https://github.com/rust-lang/rust-clippy">clippy</a> is a collection of lints to catch common mistakes in Rust code. It is
+<p><a href="https://github.com/rust-lang/rust-clippy">Clippy</a> is a collection of lints to catch common mistakes in Rust code. It is
 an excellent tool to run on Rust code in general. It can also help with
 performance, because a number of the lints relate to code patterns that can
 cause sub-optimal performance.</p>
+<p>Given that automated detection of problems is preferable to manual detection,
+the rest of this book will not mention performance problems that Clippy detects
+by default.</p>
 <h2 id="basics"><a class="header" href="#basics">Basics</a></h2>
 <p>Once installed, it is easy to run:</p>
 <pre><code class="language-text">cargo clippy
 </code></pre>
 <p>The full list of performance lints can be seen by visiting the <a href="https://rust-lang.github.io/rust-clippy/master/">lint list</a> and
-deselecting all the lint groups except for “Perf”.</p>
+deselecting all the lint groups except for “Perf”. </p>
 <p>As well as making the code faster, the performance lint suggestions usually
 result in code that is simpler and more idiomatic, so they are worth following
 even for code that is not executed frequently.</p>
+<p>Conversely, some non-performance lint suggestions can improve performance. For
+example, the <a href="https://rust-lang.github.io/rust-clippy/master/index.html#ptr_arg"><code>ptr_arg</code></a> style lint suggests changing various container
+arguments to slices, such as changing <code>&amp;mut Vec&lt;T&gt;</code> arguments to <code>&amp;mut [T]</code>.
+The primary motivation here is that a slice gives a more flexible API, but it
+may also result in faster code due to less indirection and better optimization
+opportunities for the compiler.
+<a href="https://github.com/fschutt/fastblur/pull/3/files"><strong>Example</strong></a>.</p>
 <h2 id="disallowing-types"><a class="header" href="#disallowing-types">Disallowing Types</a></h2>
 <p>In the following chapters we will see that it is sometimes worth avoiding
 certain standard library types in favour of alternatives that are faster. If
 you decide to use these alternatives, it is easy to accidentally use the
 standard library types in some places by mistake.</p>
-<p>You can use <code>clippy</code>’s <a href="https://rust-lang.github.io/rust-clippy/master/index.html#disallowed_types"><code>disallowed_types</code></a> lint, added in Rust 1.55, to avoid
+<p>You can use Clippy’s <a href="https://rust-lang.github.io/rust-clippy/master/index.html#disallowed_types"><code>disallowed_types</code></a> lint, added in Rust 1.55, to avoid
 this problem. For example, to disallow the use of the standard hash tables (for
 reasons explained in the <a href="hashing.html">Hashing</a> section) add a <code>clippy.toml</code> file to your
 code with the following lines.</p>
