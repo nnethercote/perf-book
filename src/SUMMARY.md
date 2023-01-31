@@ -13,6 +13,7 @@
 - [Type Sizes](type-sizes.md)
 - [Standard Library Types](standard-library-types.md)
 - [Iterators](iterators.md)
+- [Bounds Checks](bounds-checks.md)
 - [I/O](io.md)
 - [Logging and Debugging](logging-and-debugging.md)
 - [Wrapper Types](wrapper-types.md)
