@@ -48,9 +48,33 @@ Similarly, [`filter_map`] may be faster than using [`filter`] followed by
 
 ## Chunks
 
-When a chunking iterator is required, use [`slice::chunks_exact`] when the
-chunk size is known to exactly divide the slice length. It is equivalent to but
-faster than [`slice::chunks`] in this case.
+When a chunking iterator is required and the chunk size is known to exactly
+divide the slice length, use the faster [`slice::chunks_exact`] instead of [`slice::chunks`].
 
-[`slice::chunks_exact`]: https://doc.rust-lang.org/stable/std/primitive.slice.html#method.chunks_exact
+When the chunk size is not known to exactly divide the slice length, it can
+still be faster to use `slice::chunks_exact` in combination with either
+[`ChunksExact::remainder`] or manual handling of excess elements.
+[**Example 1**](https://github.com/johannesvollmer/exrs/pull/173/files),
+[**Example 2**](https://github.com/johannesvollmer/exrs/pull/175/files).
+
+The same is true for related iterators:
+- [`slice::rchunks`], [`slice::rchunks_exact`], and [`RChunksExact::remainder`];
+- [`slice::chunks_mut`], [`slice::chunks_exact_mut`], and [`ChunksExactMut::into_remainder`];
+- [`slice::rchunks_mut`], [`slice::rchunks_exact_mut`], and [`RChunksExactMut::into_remainder`].
+
 [`slice::chunks`]: https://doc.rust-lang.org/stable/std/primitive.slice.html#method.chunks
+[`slice::chunks_exact`]: https://doc.rust-lang.org/stable/std/primitive.slice.html#method.chunks_exact
+[`ChunksExact::remainder`]: https://doc.rust-lang.org/stable/std/slice/struct.ChunksExact.html#method.remainder
+
+[`slice::rchunks`]: https://doc.rust-lang.org/stable/std/primitive.slice.html#method.rchunks
+[`slice::rchunks_exact`]: https://doc.rust-lang.org/stable/std/primitive.slice.html#method.rchunks_exact
+[`RChunksExact::remainder`]: https://doc.rust-lang.org/stable/std/slice/struct.RChunksExact.html#method.remainder
+
+[`slice::chunks_mut`]: https://doc.rust-lang.org/stable/std/primitive.slice.html#method.chunks_mut
+[`slice::chunks_exact_mut`]: https://doc.rust-lang.org/stable/std/primitive.slice.html#method.chunks_exact_mut
+[`ChunksExactMut::into_remainder`]: https://doc.rust-lang.org/stable/std/slice/struct.ChunksExactMut.html#method.into_remainder
+
+[`slice::rchunks_mut`]: https://doc.rust-lang.org/stable/std/primitive.slice.html#method.rchunks_mut
+[`slice::rchunks_exact_mut`]: https://doc.rust-lang.org/stable/std/primitive.slice.html#method.rchunks_exact_mut
+[`RChunksExactMut::into_remainder`]: https://doc.rust-lang.org/stable/std/slice/struct.RChunksExactMut.html#method.into_remainder
+
