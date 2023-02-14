@@ -32,6 +32,7 @@
 
     </head>
     <body>
+    <div id="body-container">
         <!-- Provide site root to javascript -->
         <script>
             var path_to_root = "";
@@ -158,6 +159,8 @@ used successfully on Rust programs.</p>
 It works on Linux.</li>
 <li><a href="https://developer.apple.com/forums/tags/instruments">Instruments</a> is a general-purpose profiler that comes with Xcode on macOS.</li>
 <li><a href="https://developer.amd.com/amd-uprof/">AMD μProf</a> is a general-purpose profiler. It works on Windows and Linux.</li>
+<li><a href="https://github.com/mstange/samply/">samply</a> is a sampling profiler that produces profiles that can be viewed
+in the Firefox Profiler. It works on Mac and Linux.</li>
 <li><a href="https://github.com/flamegraph-rs/flamegraph">flamegraph</a> is a Cargo command that uses perf/DTrace to profile your
 code and then displays the results in a flame graph. It works on Linux and
 all platforms that support DTrace (macOS, FreeBSD, NetBSD, and possibly
@@ -250,5 +253,6 @@ beginning with <code>_ZN</code> or <code>_R</code>, such as <code>_ZN3foo3barE</
         <!-- Custom JS scripts -->
 
 
+    </div>
     </body>
 </html>
