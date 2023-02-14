@@ -14,6 +14,8 @@ used successfully on Rust programs.
   It works on Linux.
 - [Instruments] is a general-purpose profiler that comes with Xcode on macOS.
 - [AMD μProf] is a general-purpose profiler. It works on Windows and Linux.
+- [samply] is a sampling profiler that produces profiles that can be viewed
+  in the Firefox Profiler. It works on Mac and Linux.
 - [flamegraph] is a Cargo command that uses perf/DTrace to profile your
   code and then displays the results in a flame graph. It works on Linux and
   all platforms that support DTrace (macOS, FreeBSD, NetBSD, and possibly
@@ -39,6 +41,7 @@ used successfully on Rust programs.
 [Instruments]: https://developer.apple.com/forums/tags/instruments
 [Firefox Profiler]: https://profiler.firefox.com/
 [AMD μProf]: https://developer.amd.com/amd-uprof/
+[samply]: https://github.com/mstange/samply/
 [flamegraph]: https://github.com/flamegraph-rs/flamegraph
 [Cachegrind]: https://www.valgrind.org/docs/manual/cg-manual.html
 [Callgrind]: https://www.valgrind.org/docs/manual/cl-manual.html
