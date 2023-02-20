@@ -1112,7 +1112,8 @@ buf.flush()?;
 <span class="boring">Ok(())
 </span><span class="boring">}
 </span><span class="boring">}</span></code></pre></pre>
-<p><a href="https://github.com/nnethercote/dhat-rs/pull/22/commits/8c3ae26f1219474ee55c30bc9981e6af2e869be2"><strong>Example</strong></a>.</p>
+<p><a href="https://github.com/rust-lang/rust/pull/93954"><strong>Example 1</strong></a>,
+<a href="https://github.com/nnethercote/dhat-rs/pull/22/commits/8c3ae26f1219474ee55c30bc9981e6af2e869be2"><strong>Example 2</strong></a>.</p>
 <p>The explicit call to <a href="https://doc.rust-lang.org/std/io/trait.Write.html#tymethod.flush"><code>flush</code></a> is not strictly necessary, as flushing will
 happen automatically when <code>buf</code> is dropped. However, in that case any error
 that occurs on flushing will be ignored, whereas an explicit flush will make
