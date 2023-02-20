@@ -67,7 +67,8 @@ buf.flush()?;
 # Ok(())
 # }
 ```
-[**Example**](https://github.com/nnethercote/dhat-rs/pull/22/commits/8c3ae26f1219474ee55c30bc9981e6af2e869be2).
+[**Example 1**](https://github.com/rust-lang/rust/pull/93954),
+[**Example 2**](https://github.com/nnethercote/dhat-rs/pull/22/commits/8c3ae26f1219474ee55c30bc9981e6af2e869be2).
 
 The explicit call to [`flush`] is not strictly necessary, as flushing will
 happen automatically when `buf` is dropped. However, in that case any error
