@@ -72,6 +72,10 @@ The output shows the following.
 
 Once you know the layout of a hot type, there are multiple ways to shrink it.
 
+`print-type-sizes` produces unordered and cluttered output. The crate [top-type-sizes](https://crates.io/crates/top-type-sizes) can be used to parse the output and refine it to display top types by size in compact form.
+
+The tool 
+
 ## Field Ordering
 
 The Rust compiler automatically sorts the fields in struct and enums to
