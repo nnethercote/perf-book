@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Introduction - The Rust Performance Book</title>
+        <title>Logging and Debugging - The Rust Performance Book</title>
 
 
         <!-- Custom HTML head -->
@@ -70,10 +70,12 @@
         <!-- Hide / unhide sidebar before it is displayed -->
         <script>
             var html = document.querySelector('html');
-            var sidebar = 'hidden';
+            var sidebar = null;
             if (document.body.clientWidth >= 1080) {
                 try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
                 sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
             }
             html.classList.remove('sidebar-visible');
             html.classList.add("sidebar-" + sidebar);
@@ -81,7 +83,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded affix "><a href="title-page.html">Title Page</a></li><li class="chapter-item expanded "><a href="introduction.html" class="active"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="benchmarking.html"><strong aria-hidden="true">2.</strong> Benchmarking</a></li><li class="chapter-item expanded "><a href="build-configuration.html"><strong aria-hidden="true">3.</strong> Build Configuration</a></li><li class="chapter-item expanded "><a href="linting.html"><strong aria-hidden="true">4.</strong> Linting</a></li><li class="chapter-item expanded "><a href="profiling.html"><strong aria-hidden="true">5.</strong> Profiling</a></li><li class="chapter-item expanded "><a href="inlining.html"><strong aria-hidden="true">6.</strong> Inlining</a></li><li class="chapter-item expanded "><a href="hashing.html"><strong aria-hidden="true">7.</strong> Hashing</a></li><li class="chapter-item expanded "><a href="heap-allocations.html"><strong aria-hidden="true">8.</strong> Heap Allocations</a></li><li class="chapter-item expanded "><a href="type-sizes.html"><strong aria-hidden="true">9.</strong> Type Sizes</a></li><li class="chapter-item expanded "><a href="standard-library-types.html"><strong aria-hidden="true">10.</strong> Standard Library Types</a></li><li class="chapter-item expanded "><a href="iterators.html"><strong aria-hidden="true">11.</strong> Iterators</a></li><li class="chapter-item expanded "><a href="bounds-checks.html"><strong aria-hidden="true">12.</strong> Bounds Checks</a></li><li class="chapter-item expanded "><a href="io.html"><strong aria-hidden="true">13.</strong> I/O</a></li><li class="chapter-item expanded "><a href="logging-and-debugging.html"><strong aria-hidden="true">14.</strong> Logging and Debugging</a></li><li class="chapter-item expanded "><a href="wrapper-types.html"><strong aria-hidden="true">15.</strong> Wrapper Types</a></li><li class="chapter-item expanded "><a href="machine-code.html"><strong aria-hidden="true">16.</strong> Machine Code</a></li><li class="chapter-item expanded "><a href="parallelism.html"><strong aria-hidden="true">17.</strong> Parallelism</a></li><li class="chapter-item expanded "><a href="binary-size.html"><strong aria-hidden="true">18.</strong> Binary Size</a></li><li class="chapter-item expanded "><a href="general-tips.html"><strong aria-hidden="true">19.</strong> General Tips</a></li><li class="chapter-item expanded "><a href="compile-times.html"><strong aria-hidden="true">20.</strong> Compile Times</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="title-page.html">Title Page</a></li><li class="chapter-item expanded "><a href="introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="benchmarking.html"><strong aria-hidden="true">2.</strong> Benchmarking</a></li><li class="chapter-item expanded "><a href="build-configuration.html"><strong aria-hidden="true">3.</strong> Build Configuration</a></li><li class="chapter-item expanded "><a href="linting.html"><strong aria-hidden="true">4.</strong> Linting</a></li><li class="chapter-item expanded "><a href="profiling.html"><strong aria-hidden="true">5.</strong> Profiling</a></li><li class="chapter-item expanded "><a href="inlining.html"><strong aria-hidden="true">6.</strong> Inlining</a></li><li class="chapter-item expanded "><a href="hashing.html"><strong aria-hidden="true">7.</strong> Hashing</a></li><li class="chapter-item expanded "><a href="heap-allocations.html"><strong aria-hidden="true">8.</strong> Heap Allocations</a></li><li class="chapter-item expanded "><a href="type-sizes.html"><strong aria-hidden="true">9.</strong> Type Sizes</a></li><li class="chapter-item expanded "><a href="standard-library-types.html"><strong aria-hidden="true">10.</strong> Standard Library Types</a></li><li class="chapter-item expanded "><a href="iterators.html"><strong aria-hidden="true">11.</strong> Iterators</a></li><li class="chapter-item expanded "><a href="bounds-checks.html"><strong aria-hidden="true">12.</strong> Bounds Checks</a></li><li class="chapter-item expanded "><a href="io.html"><strong aria-hidden="true">13.</strong> I/O</a></li><li class="chapter-item expanded "><a href="logging-and-debugging.html" class="active"><strong aria-hidden="true">14.</strong> Logging and Debugging</a></li><li class="chapter-item expanded "><a href="wrapper-types.html"><strong aria-hidden="true">15.</strong> Wrapper Types</a></li><li class="chapter-item expanded "><a href="machine-code.html"><strong aria-hidden="true">16.</strong> Machine Code</a></li><li class="chapter-item expanded "><a href="parallelism.html"><strong aria-hidden="true">17.</strong> Parallelism</a></li><li class="chapter-item expanded "><a href="binary-size.html"><strong aria-hidden="true">18.</strong> Binary Size</a></li><li class="chapter-item expanded "><a href="general-tips.html"><strong aria-hidden="true">19.</strong> General Tips</a></li><li class="chapter-item expanded "><a href="compile-times.html"><strong aria-hidden="true">20.</strong> Compile Times</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -145,38 +147,28 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="introduction"><a class="header" href="#introduction">Introduction</a></h1>
-<p>Performance is important for many Rust programs. </p>
-<p>This book contains many techniques that can improve the performance—speed and
-memory usage—of Rust programs. The <a href="compile-times.html">Compile Times</a> section also contains some
-techniques that will improve the compile times of Rust programs. Some
-techniques only require changing build configurations, but many require
-changing code.</p>
-<p>Some techniques are entirely Rust-specific, and some involve ideas that can be
-applied (often with modifications) to programs written in other languages. The
-<a href="general-tips.html">General Tips</a> section also includes some general principles that apply to any
-programming language. Nonetheless, this book is mostly about the performance of
-Rust programs and is no substitute for a general purpose guide to profiling and
-optimization.</p>
-<p>This book also focuses on techniques that are practical and proven: many are
-accompanied by links to pull requests or other resources that show how the
-technique was used on a real-world Rust program.</p>
-<p>This book is deliberately terse, favouring breadth over depth, so that it is
-quick to read. It links to external sources that provide more depth when
-appropriate.</p>
-<p>This book is aimed at intermediate and advanced Rust users. Beginner Rust users
-have more than enough to learn and these techniques are likely to be an
-unhelpful distraction to them.</p>
+                        <h1 id="logging-and-debugging"><a class="header" href="#logging-and-debugging">Logging and Debugging</a></h1>
+<p>Sometimes logging code or debugging code can slow down a program significantly.
+Either the logging/debugging code itself is slow, or data collection code that
+feeds into logging/debugging code is slow. Make sure that no unnecessary work
+is done for logging/debugging purposes when logging/debugging is not enabled.
+<a href="https://github.com/rust-lang/rust/pull/50246/commits/2e4f66a86f7baa5644d18bb2adc07a8cd1c7409d"><strong>Example 1</strong></a>,
+<a href="https://github.com/rust-lang/rust/pull/75133/commits/eeb4b83289e09956e0dda174047729ca87c709fe"><strong>Example 2</strong></a>.</p>
+<p>Note that <a href="https://doc.rust-lang.org/std/macro.assert.html"><code>assert!</code></a> calls always run, but <a href="https://doc.rust-lang.org/std/macro.debug_assert.html"><code>debug_assert!</code></a> calls only run in
+debug builds. If you have an assertion that is hot but is not necessary for
+safety, consider making it a <code>debug_assert!</code>.
+<a href="https://github.com/rust-lang/rust/pull/58210/commits/f7ed6e18160bc8fccf27a73c05f3935c9e8f672e"><strong>Example 1</strong></a>,
+<a href="https://github.com/rust-lang/rust/pull/90746/commits/580d357b5adef605fc731d295ca53ab8532e26fb"><strong>Example 2</strong></a>.</p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="title-page.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="io.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next" href="benchmarking.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next" href="wrapper-types.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -186,11 +178,11 @@ unhelpful distraction to them.</p>
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="title-page.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="io.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next" href="benchmarking.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next" href="wrapper-types.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>

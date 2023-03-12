@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>I/O - The Rust Performance Book</title>
+        <title>Inlining - The Rust Performance Book</title>
 
 
         <!-- Custom HTML head -->
@@ -70,10 +70,12 @@
         <!-- Hide / unhide sidebar before it is displayed -->
         <script>
             var html = document.querySelector('html');
-            var sidebar = 'hidden';
+            var sidebar = null;
             if (document.body.clientWidth >= 1080) {
                 try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
                 sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
             }
             html.classList.remove('sidebar-visible');
             html.classList.add("sidebar-" + sidebar);
@@ -81,7 +83,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded affix "><a href="title-page.html">Title Page</a></li><li class="chapter-item expanded "><a href="introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="benchmarking.html"><strong aria-hidden="true">2.</strong> Benchmarking</a></li><li class="chapter-item expanded "><a href="build-configuration.html"><strong aria-hidden="true">3.</strong> Build Configuration</a></li><li class="chapter-item expanded "><a href="linting.html"><strong aria-hidden="true">4.</strong> Linting</a></li><li class="chapter-item expanded "><a href="profiling.html"><strong aria-hidden="true">5.</strong> Profiling</a></li><li class="chapter-item expanded "><a href="inlining.html"><strong aria-hidden="true">6.</strong> Inlining</a></li><li class="chapter-item expanded "><a href="hashing.html"><strong aria-hidden="true">7.</strong> Hashing</a></li><li class="chapter-item expanded "><a href="heap-allocations.html"><strong aria-hidden="true">8.</strong> Heap Allocations</a></li><li class="chapter-item expanded "><a href="type-sizes.html"><strong aria-hidden="true">9.</strong> Type Sizes</a></li><li class="chapter-item expanded "><a href="standard-library-types.html"><strong aria-hidden="true">10.</strong> Standard Library Types</a></li><li class="chapter-item expanded "><a href="iterators.html"><strong aria-hidden="true">11.</strong> Iterators</a></li><li class="chapter-item expanded "><a href="bounds-checks.html"><strong aria-hidden="true">12.</strong> Bounds Checks</a></li><li class="chapter-item expanded "><a href="io.html" class="active"><strong aria-hidden="true">13.</strong> I/O</a></li><li class="chapter-item expanded "><a href="logging-and-debugging.html"><strong aria-hidden="true">14.</strong> Logging and Debugging</a></li><li class="chapter-item expanded "><a href="wrapper-types.html"><strong aria-hidden="true">15.</strong> Wrapper Types</a></li><li class="chapter-item expanded "><a href="machine-code.html"><strong aria-hidden="true">16.</strong> Machine Code</a></li><li class="chapter-item expanded "><a href="parallelism.html"><strong aria-hidden="true">17.</strong> Parallelism</a></li><li class="chapter-item expanded "><a href="binary-size.html"><strong aria-hidden="true">18.</strong> Binary Size</a></li><li class="chapter-item expanded "><a href="general-tips.html"><strong aria-hidden="true">19.</strong> General Tips</a></li><li class="chapter-item expanded "><a href="compile-times.html"><strong aria-hidden="true">20.</strong> Compile Times</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="title-page.html">Title Page</a></li><li class="chapter-item expanded "><a href="introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="benchmarking.html"><strong aria-hidden="true">2.</strong> Benchmarking</a></li><li class="chapter-item expanded "><a href="build-configuration.html"><strong aria-hidden="true">3.</strong> Build Configuration</a></li><li class="chapter-item expanded "><a href="linting.html"><strong aria-hidden="true">4.</strong> Linting</a></li><li class="chapter-item expanded "><a href="profiling.html"><strong aria-hidden="true">5.</strong> Profiling</a></li><li class="chapter-item expanded "><a href="inlining.html" class="active"><strong aria-hidden="true">6.</strong> Inlining</a></li><li class="chapter-item expanded "><a href="hashing.html"><strong aria-hidden="true">7.</strong> Hashing</a></li><li class="chapter-item expanded "><a href="heap-allocations.html"><strong aria-hidden="true">8.</strong> Heap Allocations</a></li><li class="chapter-item expanded "><a href="type-sizes.html"><strong aria-hidden="true">9.</strong> Type Sizes</a></li><li class="chapter-item expanded "><a href="standard-library-types.html"><strong aria-hidden="true">10.</strong> Standard Library Types</a></li><li class="chapter-item expanded "><a href="iterators.html"><strong aria-hidden="true">11.</strong> Iterators</a></li><li class="chapter-item expanded "><a href="bounds-checks.html"><strong aria-hidden="true">12.</strong> Bounds Checks</a></li><li class="chapter-item expanded "><a href="io.html"><strong aria-hidden="true">13.</strong> I/O</a></li><li class="chapter-item expanded "><a href="logging-and-debugging.html"><strong aria-hidden="true">14.</strong> Logging and Debugging</a></li><li class="chapter-item expanded "><a href="wrapper-types.html"><strong aria-hidden="true">15.</strong> Wrapper Types</a></li><li class="chapter-item expanded "><a href="machine-code.html"><strong aria-hidden="true">16.</strong> Machine Code</a></li><li class="chapter-item expanded "><a href="parallelism.html"><strong aria-hidden="true">17.</strong> Parallelism</a></li><li class="chapter-item expanded "><a href="binary-size.html"><strong aria-hidden="true">18.</strong> Binary Size</a></li><li class="chapter-item expanded "><a href="general-tips.html"><strong aria-hidden="true">19.</strong> General Tips</a></li><li class="chapter-item expanded "><a href="compile-times.html"><strong aria-hidden="true">20.</strong> Compile Times</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -145,92 +147,107 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="io"><a class="header" href="#io">I/O</a></h1>
-<h2 id="locking"><a class="header" href="#locking">Locking</a></h2>
-<p>Rust’s <a href="https://doc.rust-lang.org/std/macro.print.html"><code>print!</code></a> and <a href="https://doc.rust-lang.org/std/macro.println.html"><code>println!</code></a> macros lock stdout on every call. If you
-have repeated calls to these macros it may be better to lock stdout manually.</p>
-<p>For example, change this code:</p>
+                        <h1 id="inlining"><a class="header" href="#inlining">Inlining</a></h1>
+<p>Entry to and exit from hot, uninlined functions often accounts for a
+non-trivial fraction of execution time. Inlining these functions can provide
+small but easy speed wins. </p>
+<p>There are four inline attributes that can be used on Rust functions.</p>
+<ul>
+<li><strong>None</strong>. The compiler will decide itself if the function should be inlined.
+This will depend on the optimization level, the size of the function, etc. If
+you are not using link-time optimization, functions will never be inlined
+across crates.</li>
+<li><strong><code>#[inline]</code></strong>. This suggests that the function should be inlined, including
+across crate boundaries.</li>
+<li><strong><code>#[inline(always)]</code></strong>. This strongly suggests that the function should be
+inlined, including across crate boundaries.</li>
+<li><strong><code>#[inline(never)]</code></strong>. This strongly suggests that the function should not
+be inlined.</li>
+</ul>
+<p>Inline attributes do not guarantee that a function is inlined or not inlined,
+but in practice, <code>#[inline(always)]</code> will cause inlining in all but the most
+exceptional cases.</p>
+<h2 id="simple-cases"><a class="header" href="#simple-cases">Simple Cases</a></h2>
+<p>The best candidates for inlining are (a) functions that are very small, or (b)
+functions that have a single call site. The compiler will often inline these
+functions itself even without an inline attribute. But the compiler cannot
+always make the best choices, so attributes are sometimes needed.
+<a href="https://github.com/rust-lang/rust/pull/37083/commits/6a4bb35b70862f33ac2491ffe6c55fb210c8490d"><strong>Example 1</strong></a>,
+<a href="https://github.com/rust-lang/rust/pull/50407/commits/e740b97be699c9445b8a1a7af6348ca2d4c460ce"><strong>Example 2</strong></a>,
+<a href="https://github.com/rust-lang/rust/pull/50564/commits/77c40f8c6f8cc472f6438f7724d60bf3b7718a0c"><strong>Example 3</strong></a>,
+<a href="https://github.com/rust-lang/rust/pull/57719/commits/92fd6f9d30d0b6b4ecbcf01534809fb66393f139"><strong>Example 4</strong></a>,
+<a href="https://github.com/rust-lang/rust/pull/69256/commits/e761f3af904b3c275bdebc73bb29ffc45384945d"><strong>Example 5</strong></a>.</p>
+<p>Cachegrind is a good profiler for determining if a function is inlined. When
+looking at Cachegrind’s output, you can tell that a function has been inlined
+if (and only if) its first and last lines are <em>not</em> marked with event counts.
+For example:</p>
+<pre><code class="language-text">      .  #[inline(always)]
+      .  fn inlined(x: u32, y: u32) -&gt; u32 {
+700,000      eprintln!(&quot;inlined: {} + {}&quot;, x, y);
+200,000      x + y
+      .  }
+      .  
+      .  #[inline(never)]
+400,000  fn not_inlined(x: u32, y: u32) -&gt; u32 {
+700,000      eprintln!(&quot;not_inlined: {} + {}&quot;, x, y);
+200,000      x + y
+200,000  }
+</code></pre>
+<p>You should measure again after adding inline attributes, because the effects
+can be unpredictable. Sometimes it has no effect because a nearby function that
+was previously inlined no longer is. Sometimes it slows the code down. Inlining
+can also affect compile times, especially cross-crate inlining which involves
+duplicating internal representations of the functions.</p>
+<h2 id="harder-cases"><a class="header" href="#harder-cases">Harder Cases</a></h2>
+<p>Sometimes you have a function that is large and has multiple call sites, but
+only one call site is hot. You would like to inline the hot call site for
+speed, but not inline the cold call sites to avoid unnecessary code bloat. The
+way to handle this is to split the function always-inlined and never-inlined
+variants, with the latter calling the former.</p>
+<p>For example, this function:</p>
 <pre><pre class="playground"><code class="language-rust edition2018"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
-</span><span class="boring">let lines = vec![&quot;one&quot;, &quot;two&quot;, &quot;three&quot;];
-</span>for line in lines {
-    println!(&quot;{}&quot;, line);
+</span><span class="boring">fn one() {};
+</span><span class="boring">fn two() {};
+</span><span class="boring">fn three() {};
+</span>fn my_function() {
+    one();
+    two();
+    three();
 }
 <span class="boring">}</span></code></pre></pre>
-<p>to this:</p>
+<p>Would become these two functions:</p>
 <pre><pre class="playground"><code class="language-rust edition2018"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
-</span><span class="boring">fn blah() -&gt; Result&lt;(), std::io::Error&gt; {
-</span><span class="boring">let lines = vec![&quot;one&quot;, &quot;two&quot;, &quot;three&quot;];
-</span>use std::io::Write;
-let mut stdout = std::io::stdout();
-let mut lock = stdout.lock();
-for line in lines {
-    writeln!(lock, &quot;{}&quot;, line)?;
+</span><span class="boring">fn one() {};
+</span><span class="boring">fn two() {};
+</span><span class="boring">fn three() {};
+</span>// Use this at the hot call site.
+#[inline(always)]
+fn inlined_my_function() {
+    one();
+    two();
+    three();
 }
-// stdout is unlocked when `lock` is dropped
-<span class="boring">Ok(())
-</span><span class="boring">}
-</span><span class="boring">}</span></code></pre></pre>
-<p>stdin and stderr can likewise be locked when doing repeated operations on them.</p>
-<h2 id="buffering"><a class="header" href="#buffering">Buffering</a></h2>
-<p>Rust file I/O is unbuffered by default. If you have many small and repeated
-read or write calls to a file or network socket, use <a href="https://doc.rust-lang.org/std/io/struct.BufReader.html"><code>BufReader</code></a> or
-<a href="https://doc.rust-lang.org/std/io/struct.BufWriter.html"><code>BufWriter</code></a>. They maintain an in-memory buffer for input and output,
-minimizing the number of system calls required.</p>
-<p>For example, change this unbuffered output code:</p>
-<pre><pre class="playground"><code class="language-rust edition2018"><span class="boring">#![allow(unused)]
-</span><span class="boring">fn main() {
-</span><span class="boring">fn blah() -&gt; Result&lt;(), std::io::Error&gt; {
-</span><span class="boring">let lines = vec![&quot;one&quot;, &quot;two&quot;, &quot;three&quot;];
-</span>use std::io::Write;
-let mut out = std::fs::File::create(&quot;test.txt&quot;).unwrap();
-for line in lines {
-    writeln!(out, &quot;{}&quot;, line)?;
+
+// Use this at the cold call sites.
+#[inline(never)]
+fn uninlined_my_function() {
+    inlined_my_function();
 }
-<span class="boring">Ok(())
-</span><span class="boring">}
-</span><span class="boring">}</span></code></pre></pre>
-<p>to this:</p>
-<pre><pre class="playground"><code class="language-rust edition2018"><span class="boring">#![allow(unused)]
-</span><span class="boring">fn main() {
-</span><span class="boring">fn blah() -&gt; Result&lt;(), std::io::Error&gt; {
-</span><span class="boring">let lines = vec![&quot;one&quot;, &quot;two&quot;, &quot;three&quot;];
-</span>use std::io::{BufWriter, Write};
-let mut out = std::fs::File::create(&quot;test.txt&quot;)?;
-let mut buf = BufWriter::new(out);
-for line in lines {
-    writeln!(buf, &quot;{}&quot;, line)?;
-}
-buf.flush()?;
-<span class="boring">Ok(())
-</span><span class="boring">}
-</span><span class="boring">}</span></code></pre></pre>
-<p><a href="https://github.com/rust-lang/rust/pull/93954"><strong>Example 1</strong></a>,
-<a href="https://github.com/nnethercote/dhat-rs/pull/22/commits/8c3ae26f1219474ee55c30bc9981e6af2e869be2"><strong>Example 2</strong></a>.</p>
-<p>The explicit call to <a href="https://doc.rust-lang.org/std/io/trait.Write.html#tymethod.flush"><code>flush</code></a> is not strictly necessary, as flushing will
-happen automatically when <code>buf</code> is dropped. However, in that case any error
-that occurs on flushing will be ignored, whereas an explicit flush will make
-that error explicit.</p>
-<p>Note that buffering also works with stdout, so you might want to combine manual
-locking <em>and</em> buffering when making many writes to stdout.</p>
-<h2 id="reading-input-as-raw-bytes"><a class="header" href="#reading-input-as-raw-bytes">Reading Input as Raw Bytes</a></h2>
-<p>The built-in <a href="https://doc.rust-lang.org/std/string/struct.String.html">String</a> type uses UTF-8 internally, which adds a small, but
-nonzero overhead caused by UTF-8 validation when you read input into it. If you
-just want to process input bytes without worrying about UTF-8 (for example if
-you handle ASCII text), you can use <a href="https://doc.rust-lang.org/std/io/trait.BufRead.html#method.read_until"><code>BufRead::read_until</code></a>.</p>
-<p>There are also dedicated crates for reading <a href="https://github.com/Freaky/rust-linereader">byte-oriented lines of data</a>
-and working with <a href="https://github.com/BurntSushi/bstr">byte strings</a>.</p>
+<span class="boring">}</span></code></pre></pre>
+<p><a href="https://github.com/rust-lang/rust/pull/53513/commits/b73843f9422fb487b2d26ac2d65f79f73a4c9ae3"><strong>Example 1</strong></a>,
+<a href="https://github.com/rust-lang/rust/pull/64420/commits/a2261ad66400c3145f96ebff0d9b75e910fa89dd"><strong>Example 2</strong></a>.</p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="bounds-checks.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="profiling.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next" href="logging-and-debugging.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next" href="hashing.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -240,11 +257,11 @@ and working with <a href="https://github.com/BurntSushi/bstr">byte strings</a>.<
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="bounds-checks.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="profiling.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next" href="logging-and-debugging.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next" href="hashing.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>

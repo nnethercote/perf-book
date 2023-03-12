@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Profiling - The Rust Performance Book</title>
+        <title>Bounds Checks - The Rust Performance Book</title>
 
 
         <!-- Custom HTML head -->
@@ -70,10 +70,12 @@
         <!-- Hide / unhide sidebar before it is displayed -->
         <script>
             var html = document.querySelector('html');
-            var sidebar = 'hidden';
+            var sidebar = null;
             if (document.body.clientWidth >= 1080) {
                 try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
                 sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
             }
             html.classList.remove('sidebar-visible');
             html.classList.add("sidebar-" + sidebar);
@@ -81,7 +83,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded affix "><a href="title-page.html">Title Page</a></li><li class="chapter-item expanded "><a href="introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="benchmarking.html"><strong aria-hidden="true">2.</strong> Benchmarking</a></li><li class="chapter-item expanded "><a href="build-configuration.html"><strong aria-hidden="true">3.</strong> Build Configuration</a></li><li class="chapter-item expanded "><a href="linting.html"><strong aria-hidden="true">4.</strong> Linting</a></li><li class="chapter-item expanded "><a href="profiling.html" class="active"><strong aria-hidden="true">5.</strong> Profiling</a></li><li class="chapter-item expanded "><a href="inlining.html"><strong aria-hidden="true">6.</strong> Inlining</a></li><li class="chapter-item expanded "><a href="hashing.html"><strong aria-hidden="true">7.</strong> Hashing</a></li><li class="chapter-item expanded "><a href="heap-allocations.html"><strong aria-hidden="true">8.</strong> Heap Allocations</a></li><li class="chapter-item expanded "><a href="type-sizes.html"><strong aria-hidden="true">9.</strong> Type Sizes</a></li><li class="chapter-item expanded "><a href="standard-library-types.html"><strong aria-hidden="true">10.</strong> Standard Library Types</a></li><li class="chapter-item expanded "><a href="iterators.html"><strong aria-hidden="true">11.</strong> Iterators</a></li><li class="chapter-item expanded "><a href="bounds-checks.html"><strong aria-hidden="true">12.</strong> Bounds Checks</a></li><li class="chapter-item expanded "><a href="io.html"><strong aria-hidden="true">13.</strong> I/O</a></li><li class="chapter-item expanded "><a href="logging-and-debugging.html"><strong aria-hidden="true">14.</strong> Logging and Debugging</a></li><li class="chapter-item expanded "><a href="wrapper-types.html"><strong aria-hidden="true">15.</strong> Wrapper Types</a></li><li class="chapter-item expanded "><a href="machine-code.html"><strong aria-hidden="true">16.</strong> Machine Code</a></li><li class="chapter-item expanded "><a href="parallelism.html"><strong aria-hidden="true">17.</strong> Parallelism</a></li><li class="chapter-item expanded "><a href="binary-size.html"><strong aria-hidden="true">18.</strong> Binary Size</a></li><li class="chapter-item expanded "><a href="general-tips.html"><strong aria-hidden="true">19.</strong> General Tips</a></li><li class="chapter-item expanded "><a href="compile-times.html"><strong aria-hidden="true">20.</strong> Compile Times</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="title-page.html">Title Page</a></li><li class="chapter-item expanded "><a href="introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="benchmarking.html"><strong aria-hidden="true">2.</strong> Benchmarking</a></li><li class="chapter-item expanded "><a href="build-configuration.html"><strong aria-hidden="true">3.</strong> Build Configuration</a></li><li class="chapter-item expanded "><a href="linting.html"><strong aria-hidden="true">4.</strong> Linting</a></li><li class="chapter-item expanded "><a href="profiling.html"><strong aria-hidden="true">5.</strong> Profiling</a></li><li class="chapter-item expanded "><a href="inlining.html"><strong aria-hidden="true">6.</strong> Inlining</a></li><li class="chapter-item expanded "><a href="hashing.html"><strong aria-hidden="true">7.</strong> Hashing</a></li><li class="chapter-item expanded "><a href="heap-allocations.html"><strong aria-hidden="true">8.</strong> Heap Allocations</a></li><li class="chapter-item expanded "><a href="type-sizes.html"><strong aria-hidden="true">9.</strong> Type Sizes</a></li><li class="chapter-item expanded "><a href="standard-library-types.html"><strong aria-hidden="true">10.</strong> Standard Library Types</a></li><li class="chapter-item expanded "><a href="iterators.html"><strong aria-hidden="true">11.</strong> Iterators</a></li><li class="chapter-item expanded "><a href="bounds-checks.html" class="active"><strong aria-hidden="true">12.</strong> Bounds Checks</a></li><li class="chapter-item expanded "><a href="io.html"><strong aria-hidden="true">13.</strong> I/O</a></li><li class="chapter-item expanded "><a href="logging-and-debugging.html"><strong aria-hidden="true">14.</strong> Logging and Debugging</a></li><li class="chapter-item expanded "><a href="wrapper-types.html"><strong aria-hidden="true">15.</strong> Wrapper Types</a></li><li class="chapter-item expanded "><a href="machine-code.html"><strong aria-hidden="true">16.</strong> Machine Code</a></li><li class="chapter-item expanded "><a href="parallelism.html"><strong aria-hidden="true">17.</strong> Parallelism</a></li><li class="chapter-item expanded "><a href="binary-size.html"><strong aria-hidden="true">18.</strong> Binary Size</a></li><li class="chapter-item expanded "><a href="general-tips.html"><strong aria-hidden="true">19.</strong> General Tips</a></li><li class="chapter-item expanded "><a href="compile-times.html"><strong aria-hidden="true">20.</strong> Compile Times</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -145,75 +147,34 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="profiling"><a class="header" href="#profiling">Profiling</a></h1>
-<p>When optimizing a program, you also need a way to determine which parts of the
-program are “hot” (executed frequently enough to affect runtime) and worth
-modifying. This is best done via profiling.</p>
-<h2 id="profilers"><a class="header" href="#profilers">Profilers</a></h2>
-<p>There are many different profilers available, each with their strengths and
-weaknesses. The following is an incomplete list of profilers that have been
-used successfully on Rust programs.</p>
+                        <h1 id="bounds-checks"><a class="header" href="#bounds-checks">Bounds Checks</a></h1>
+<p>By default, accesses to container types such as slices and vectors involve
+bounds checks in Rust. These can affect performance, e.g. within hot loops,
+though less often than you might expect.</p>
+<p>There are several safe ways to change code so that the compiler knows about
+container lengths and can optimize away bounds checks.</p>
 <ul>
-<li><a href="https://perf.wiki.kernel.org/index.php/Main_Page">perf</a> is a general-purpose profiler that uses hardware performance counters.
-<a href="https://github.com/KDAB/hotspot">Hotspot</a> and <a href="https://profiler.firefox.com/">Firefox Profiler</a> are good for viewing data recorded by perf.
-It works on Linux.</li>
-<li><a href="https://developer.apple.com/forums/tags/instruments">Instruments</a> is a general-purpose profiler that comes with Xcode on macOS.</li>
-<li><a href="https://developer.amd.com/amd-uprof/">AMD μProf</a> is a general-purpose profiler. It works on Windows and Linux.</li>
-<li><a href="https://github.com/mstange/samply/">samply</a> is a sampling profiler that produces profiles that can be viewed
-in the Firefox Profiler. It works on Mac and Linux.</li>
-<li><a href="https://github.com/flamegraph-rs/flamegraph">flamegraph</a> is a Cargo command that uses perf/DTrace to profile your
-code and then displays the results in a flame graph. It works on Linux and
-all platforms that support DTrace (macOS, FreeBSD, NetBSD, and possibly
-Windows).</li>
-<li><a href="https://www.valgrind.org/docs/manual/cg-manual.html">Cachegrind</a> &amp; <a href="https://www.valgrind.org/docs/manual/cl-manual.html">Callgrind</a> give global, per-function, and per-source-line
-instruction counts and simulated cache and branch prediction data. They work
-on Linux and some other Unixes.</li>
-<li><a href="https://www.valgrind.org/docs/manual/dh-manual.html">DHAT</a> is good for finding which parts of the code are causing a lot of
-allocations, and for giving insight into peak memory usage. It can also be
-used to identify hot calls to <code>memcpy</code>. It works on Linux and some other
-Unixes. <a href="https://github.com/nnethercote/dhat-rs/">dhat-rs</a> is an experimental alternative that is a little less
-powerful and requires minor changes to your Rust program, but works on all
-platforms.</li>
-<li><a href="https://github.com/KDE/heaptrack">heaptrack</a> and <a href="https://github.com/koute/bytehound">bytehound</a> are heap profiling tools. They work on Linux.</li>
-<li><a href="https://github.com/nnethercote/counts/"><code>counts</code></a> supports ad hoc profiling, which combines the use of <code>eprintln!</code>
-statement with frequency-based post-processing, which is good for getting
-domain-specific insights into parts of your code. It works on all platforms.</li>
-<li><a href="https://github.com/plasma-umass/coz">Coz</a> performs <em>causal profiling</em> to measure optimization potential, and has
-Rust support via <a href="https://github.com/plasma-umass/coz/tree/master/rust">coz-rs</a>. It works on Linux. </li>
+<li>Replace direct element accesses in a loop by using iteration.</li>
+<li>Instead of indexing into a <code>Vec</code> within a loop, make a slice of the <code>Vec</code>
+before the loop and then index into the slice within the loop.</li>
+<li>Add assertions on the ranges of index variables.
+<a href="https://github.com/rust-random/rand/pull/960/commits/de9dfdd86851032d942eb583d8d438e06085867b"><strong>Example 1</strong></a>,
+<a href="https://github.com/image-rs/jpeg-decoder/pull/167/files"><strong>Example 2</strong></a>.</li>
 </ul>
-<h2 id="debug-info"><a class="header" href="#debug-info">Debug Info</a></h2>
-<p>To profile a release build effectively you might need to enable source line
-debug info. To do this, add the following lines to your <code>Cargo.toml</code> file:</p>
-<pre><code class="language-toml">[profile.release]
-debug = 1
-</code></pre>
-<p>See the <a href="https://doc.rust-lang.org/cargo/reference/profiles.html#debug">Cargo documentation</a> for more details about the <code>debug</code> setting.</p>
-<p>Unfortunately, even after doing the above step you won’t get detailed profiling
-information for standard library code. This is because shipped versions of the
-Rust standard library are not built with debug info. To remedy this, you can
-build your own version of the compiler and standard library, following <a href="https://github.com/rust-lang/rust">these
-instructions</a>, and adding the following lines to the <code>config.toml</code> file:</p>
-<pre><code class="language-toml">[rust]
-debuginfo-level = 1
-</code></pre>
-<p>This is a hassle, but may be worth the effort in some cases.</p>
-<h2 id="symbol-demangling"><a class="header" href="#symbol-demangling">Symbol Demangling</a></h2>
-<p>Rust uses a mangling scheme to encode function names in compiled code. If a
-profiler is unaware of this scheme, its output may contain symbol names
-beginning with <code>_ZN</code> or <code>_R</code>, such as <code>_ZN3foo3barE</code> or
-<code>_ZN28_$u7b$$u7b$closure$u7d$$u7d$E</code> or
-<code>_RMCsno73SFvQKx_1cINtB0_3StrKRe616263_E</code></p>
-<p>Names like these can be manually demangled using <a href="https://crates.io/crates/rustfilt"><code>rustfilt</code></a>.</p>
+<p>Getting these to work can be tricky. The <a href="https://github.com/Shnatsel/bounds-check-cookbook/">Bounds Check Cookbook</a> goes into more
+detail on this topic.</p>
+<p>As a last resort, there are the unsafe methods <a href="https://doc.rust-lang.org/std/primitive.slice.html#method.get_unchecked"><code>get_unchecked</code></a> and
+<a href="https://doc.rust-lang.org/std/primitive.slice.html#method.get_unchecked_mut"><code>get_unchecked_mut</code></a>.</p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="linting.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="iterators.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next" href="inlining.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next" href="io.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -223,11 +184,11 @@ beginning with <code>_ZN</code> or <code>_R</code>, such as <code>_ZN3foo3barE</
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="linting.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="iterators.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next" href="inlining.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next" href="io.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>
