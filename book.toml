@@ -17,6 +17,7 @@ default-theme = "rust"
 git-repository-url = "https://github.com/nnethercote/perf-book"
 site-url = "https://nnethercote.github.io/perf-book/"
 
+# Disabled for now, see issue #58.
 #[output.epub]
 # So epub generation is skipped if mdbook-epub isn't installed.
 #optional = true 

@@ -18,6 +18,7 @@ jobs:
         with:
           mdbook-version: 'latest'
 
+      # Disabled for now, see issue #58.
       #- name: Setup mdbook-epub
       #run: cargo install mdbook-epub
 
