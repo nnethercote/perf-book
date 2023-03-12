@@ -18,6 +18,9 @@ jobs:
         with:
           mdbook-version: 'latest'
 
+      - name: Setup mdbook-epub
+        run: cargo install mdbook-epub
+
       - name: Build
         run: mdbook build
 

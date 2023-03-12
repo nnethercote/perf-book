@@ -16,3 +16,5 @@ curly-quotes = true
 default-theme = "rust"
 git-repository-url = "https://github.com/nnethercote/perf-book"
 site-url = "https://nnethercote.github.io/perf-book/"
+
+[output.epub]
