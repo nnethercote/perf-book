@@ -70,6 +70,11 @@ The output shows the following.
   reordered variant `C`'s fields to minimize the size of `E`.)
 - The size and location of all padding.
 
+Alternatively, the [top-type-sizes] crate can be used to display the output in
+a more compact form.
+
+[top-type-sizes]: https://crates.io/crates/top-type-sizes
+
 Once you know the layout of a hot type, there are multiple ways to shrink it.
 
 ## Field Ordering
