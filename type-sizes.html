@@ -208,6 +208,8 @@ print-type-size     variant `A`: 0 bytes
 reordered variant <code>C</code>’s fields to minimize the size of <code>E</code>.)</li>
 <li>The size and location of all padding.</li>
 </ul>
+<p>Alternatively, the <a href="https://crates.io/crates/top-type-sizes">top-type-sizes</a> crate can be used to display the output in
+a more compact form.</p>
 <p>Once you know the layout of a hot type, there are multiple ways to shrink it.</p>
 <h2 id="field-ordering"><a class="header" href="#field-ordering">Field Ordering</a></h2>
 <p>The Rust compiler automatically sorts the fields in struct and enums to
