@@ -2,11 +2,10 @@
 
 Performance is important for many Rust programs. 
 
-This book contains many techniques that can improve the performance—speed and
-memory usage—of Rust programs. The [Compile Times] section also contains some
-techniques that will improve the compile times of Rust programs. Some
-techniques only require changing build configurations, but many require
-changing code.
+This book contains techniques that can improve the performance—speed and memory
+usage—of Rust programs. The [Compile Times] section also contains techniques
+that will improve the compile times of Rust programs. Some techniques only
+require changing build configurations, but many require changing code.
 
 [Compile Times]: compile-times.md
 
