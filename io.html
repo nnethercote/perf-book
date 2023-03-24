@@ -180,7 +180,7 @@ for line in lines {
 read or write calls to a file or network socket, use <a href="https://doc.rust-lang.org/std/io/struct.BufReader.html"><code>BufReader</code></a> or
 <a href="https://doc.rust-lang.org/std/io/struct.BufWriter.html"><code>BufWriter</code></a>. They maintain an in-memory buffer for input and output,
 minimizing the number of system calls required.</p>
-<p>For example, change this unbuffered output code:</p>
+<p>For example, change this unbuffered writer code:</p>
 <pre><pre class="playground"><code class="language-rust edition2018"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span><span class="boring">fn blah() -&gt; Result&lt;(), std::io::Error&gt; {
@@ -199,23 +199,32 @@ for line in lines {
 </span><span class="boring">fn blah() -&gt; Result&lt;(), std::io::Error&gt; {
 </span><span class="boring">let lines = vec![&quot;one&quot;, &quot;two&quot;, &quot;three&quot;];
 </span>use std::io::{BufWriter, Write};
-let mut out = std::fs::File::create(&quot;test.txt&quot;)?;
-let mut buf = BufWriter::new(out);
+let mut out = BufWriter::new(std::fs::File::create(&quot;test.txt&quot;)?);
 for line in lines {
-    writeln!(buf, &quot;{}&quot;, line)?;
+    writeln!(out, &quot;{}&quot;, line)?;
 }
-buf.flush()?;
+out.flush()?;
 <span class="boring">Ok(())
 </span><span class="boring">}
 </span><span class="boring">}</span></code></pre></pre>
 <p><a href="https://github.com/rust-lang/rust/pull/93954"><strong>Example 1</strong></a>,
 <a href="https://github.com/nnethercote/dhat-rs/pull/22/commits/8c3ae26f1219474ee55c30bc9981e6af2e869be2"><strong>Example 2</strong></a>.</p>
 <p>The explicit call to <a href="https://doc.rust-lang.org/std/io/trait.Write.html#tymethod.flush"><code>flush</code></a> is not strictly necessary, as flushing will
-happen automatically when <code>buf</code> is dropped. However, in that case any error
+happen automatically when <code>out</code> is dropped. However, in that case any error
 that occurs on flushing will be ignored, whereas an explicit flush will make
 that error explicit.</p>
-<p>Note that buffering also works with stdout, so you might want to combine manual
-locking <em>and</em> buffering when making many writes to stdout.</p>
+<p>Forgetting to buffer is more common when writing. Both unbuffered and buffered
+writers implement the <a href="https://doc.rust-lang.org/std/io/trait.Write.html"><code>Write</code></a> trait, which means the code for writing
+to an unbuffered writer and a buffered writer is much the same. In contrast,
+unbuffered readers implement the <a href="https://doc.rust-lang.org/std/io/trait.Read.html"><code>Read</code></a> trait but buffered readers implement
+the <a href="https://doc.rust-lang.org/std/io/trait.BufRead.html"><code>BufRead</code></a> trait, which means the code for reading from an unbuffered reader
+and a buffered reader is different. For example, it is difficult to read a file
+line by line with an unbuffered reader, but it is trivial with a buffered
+reader by using <a href="https://doc.rust-lang.org/std/io/trait.BufRead.html#method.read_line"><code>BufRead::read_line</code></a> or <a href="https://doc.rust-lang.org/std/io/trait.BufRead.html#method.lines"><code>BufRead::lines</code></a>. For this reason,
+it is hard to write an example for readers like the one above for writers,
+where the before and after versions are so similar.</p>
+<p>Finally, note that buffering also works with stdout, so you might want to
+combine manual locking <em>and</em> buffering when making many writes to stdout.</p>
 <h2 id="reading-input-as-raw-bytes"><a class="header" href="#reading-input-as-raw-bytes">Reading Input as Raw Bytes</a></h2>
 <p>The built-in <a href="https://doc.rust-lang.org/std/string/struct.String.html">String</a> type uses UTF-8 internally, which adds a small, but
 nonzero overhead caused by UTF-8 validation when you read input into it. If you
