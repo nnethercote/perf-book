@@ -1,1 +1,4 @@
 book
+
+# Prevent Vim swap files from making `mdbook serve` regenerate HTML frequently.
+*.sw*
