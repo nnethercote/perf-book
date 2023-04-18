@@ -6,9 +6,9 @@ small but easy speed wins.
 
 There are four inline attributes that can be used on Rust functions.
 - **None**. The compiler will decide itself if the function should be inlined.
-  This will depend on the optimization level, the size of the function, etc. If
-  you are not using link-time optimization, functions will never be inlined
-  across crates.
+  This will depend on factors such as the optimization level and the size of
+  the function. Non-generic functions will never be inlined across crate
+  boundaries unless link-time optimization is used; generic functions might be.
 - **`#[inline]`**. This suggests that the function should be inlined, including
   across crate boundaries.
 - **`#[inline(always)]`**. This strongly suggests that the function should be
@@ -17,7 +17,7 @@ There are four inline attributes that can be used on Rust functions.
   be inlined.
 
 Inline attributes do not guarantee that a function is inlined or not inlined,
-but in practice, `#[inline(always)]` will cause inlining in all but the most
+but in practice `#[inline(always)]` will cause inlining in all but the most
 exceptional cases.
 
 ## Simple Cases
