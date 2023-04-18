@@ -35,6 +35,13 @@ To test the code within the book, run this command:
 mdbook test
 ```
 
+## Improvements
+
+Suggestions for improvements are welcome, but I prefer them to be filed as
+issues rather than PRs. This is because I am very particular about the wording
+used in the book. When pull requests are made, I typically take the underlying
+idea of a pull request and rewrite it into my own words anyway.
+
 ## License
 
 Licensed under either of
