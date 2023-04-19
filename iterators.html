@@ -153,7 +153,7 @@
 which typically requires an allocation. You should avoid calling <code>collect</code> if
 the collection is then only iterated over again.</p>
 <p>For this reason, it is often better to return an iterator type like <code>impl Iterator&lt;Item=T&gt;</code> from a function than a <code>Vec&lt;T&gt;</code>. Note that sometimes
-additional lifetimes are required on these return types, as <a href="https://blog.katona.me/2019/12/29/Rust-Lifetimes-and-Iterators/">this post</a>
+additional lifetimes are required on these return types, as <a href="https://blog.katona.me/2019/12/29/Rust-Lifetimes-and-Iterators/">this blog post</a>
 explains.
 <a href="https://github.com/rust-lang/rust/pull/77990/commits/660d8a6550a126797aa66a417137e39a5639451b"><strong>Example</strong></a>.</p>
 <p>Similarly, you can use <a href="https://doc.rust-lang.org/std/iter/trait.Extend.html#tymethod.extend"><code>extend</code></a> to extend an existing collection (such as a
