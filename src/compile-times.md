@@ -101,10 +101,25 @@ simplest is to just make the function smaller.
 [**Example 2**](https://github.com/rust-lang/rust/pull/91246/commits/f3bda74d363a060ade5e5caeb654ba59bfed51a4).
 
 Another way is to move the non-generic parts of the function into a separate,
-non-generic function, which will only be instantiated once. Whether or not this
-is possible will depend on the details of the generic function. The non-generic
-function can often be written as an inner function within the generic function,
-to minimize its exposure to the rest of the code.
+non-generic function, which will only be instantiated once. Whether this is
+possible will depend on the details of the generic function. When it is
+possible, the non-generic function can often be written neatly as an inner
+function within the generic function, as shown by the code for
+[`std::fs::read`]:
+```rust
+pub fn read<P: AsRef<Path>>(path: P) -> io::Result<Vec<u8>> {
+    fn inner(path: &Path) -> io::Result<Vec<u8>> {
+        let mut file = File::open(path)?;
+        let size = file.metadata().map(|m| m.len()).unwrap_or(0);
+        let mut bytes = Vec::with_capacity(size as usize);
+        io::default_read_to_end(&mut file, &mut bytes)?;
+        Ok(bytes)
+    }
+    inner(path.as_ref())
+}
+```
+[`std::fs::read`]: https://doc.rust-lang.org/std/fs/fn.read.html
+
 [**Example**](https://github.com/rust-lang/rust/pull/72013/commits/68b75033ad78d88872450a81745cacfc11e58178).
 
 Sometimes common utility functions like [`Option::map`] and [`Result::map_err`]
