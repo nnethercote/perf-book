@@ -106,7 +106,7 @@ possible will depend on the details of the generic function. When it is
 possible, the non-generic function can often be written neatly as an inner
 function within the generic function, as shown by the code for
 [`std::fs::read`]:
-```rust
+```rust,ignore
 pub fn read<P: AsRef<Path>>(path: P) -> io::Result<Vec<u8>> {
     fn inner(path: &Path) -> io::Result<Vec<u8>> {
         let mut file = File::open(path)?;
