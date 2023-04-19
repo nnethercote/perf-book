@@ -38,9 +38,9 @@ mdbook test
 ## Improvements
 
 Suggestions for improvements are welcome, but I prefer them to be filed as
-issues rather than PRs. This is because I am very particular about the wording
-used in the book. When pull requests are made, I typically take the underlying
-idea of a pull request and rewrite it into my own words anyway.
+issues rather than pull requests. This is because I am very particular about
+the wording used in the book. When pull requests are made, I typically take the
+underlying idea of a pull request and rewrite it into my own words anyway.
 
 ## License
 
