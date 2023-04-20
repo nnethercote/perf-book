@@ -15,6 +15,7 @@ edition = "2018"
 curly-quotes = true
 default-theme = "rust"
 git-repository-url = "https://github.com/nnethercote/perf-book"
+edit-url-template = "https://github.com/nnethercote/perf-book/edit/master/{path}"
 site-url = "https://nnethercote.github.io/perf-book/"
 
 # Disabled for now, see issue #58.
