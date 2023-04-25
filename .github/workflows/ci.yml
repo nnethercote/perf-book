@@ -13,14 +13,13 @@ jobs:
       - name: Clone repository
         uses: actions/checkout@v3
 
-      - name: Setup mdBook
+      - name: Setup mdbook
         uses: peaceiris/actions-mdbook@v1
         with:
           mdbook-version: 'latest'
 
-      # Disabled for now, see issue #58.
-      #- name: Setup mdbook-epub
-      #run: cargo install mdbook-epub
+      - name: Setup mdbook-epub
+        run: cargo install mdbook-epub
 
       - name: Build
         run: mdbook build
@@ -28,10 +27,13 @@ jobs:
       - name: Test
         run: mdbook test
 
+      - name: Copy ePub
+        run: cp book/epub/The\ Rust\ Performance\ Book.epub book/html
+
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./book
+          publish_dir: ./book/html
         # Only deploy on a push to master, not on a pull request.
         if: github.event_name == 'push' && github.ref == 'refs/heads/master' && github.repository == 'nnethercote/perf-book'
