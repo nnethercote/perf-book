@@ -90,8 +90,8 @@ codegen-units = 1
 
 [codegen units]: https://doc.rust-lang.org/rustc/codegen-options/index.html#codegen-units
 
-Be wary that the codegen unit count is a heuristic and thus a smaller count can
-actually result in a slower program.
+Reducing the number of codegen units can also result in a smaller compiled
+binary.
 
 ## Using CPU Specific Instructions
 
