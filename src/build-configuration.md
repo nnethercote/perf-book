@@ -8,14 +8,16 @@ sometimes worsen performance.
 ## Release Builds
 
 The single most important Rust performance tip is simple but [easy to
-overlook]: make sure you are using a release build rather than a debug build
-when you want high performance. This is most often done by specifying the
+overlook]: make sure you are using a [release build] rather than a [dev build]
+when you want high performance. This is usually done by specifying the
 `--release` flag to Cargo.
 
 [easy to overlook]: https://users.rust-lang.org/t/why-my-rust-program-is-so-slow/47764/5
+[release build]: https://doc.rust-lang.org/cargo/reference/profiles.html#release
+[dev build]: https://doc.rust-lang.org/cargo/reference/profiles.html#dev
 
-A release build typically runs *much* faster than a debug build. 10-100x
-speedups over debug builds are common!
+A release build typically runs *much* faster than a dev build. 10-100x speedups
+over dev builds are common!
 
 Debug builds are the default. They are produced if you run `cargo build`,
 `cargo run`, or `rustc` without any additional options. Debug builds are good
@@ -25,16 +27,16 @@ Consider the following final line of output from a `cargo build` run.
 ```text
 Finished dev [unoptimized + debuginfo] target(s) in 29.80s
 ```
-The `[unoptimized + debuginfo]` indicates that a debug build has been produced.
+The `[unoptimized + debuginfo]` indicates that a dev build has been produced.
 The compiled code will be placed in the `target/debug/` directory. `cargo run`
-will run the debug build.
+will run the dev build.
 
-Release builds are more optimized than debug builds. They also omit some
-checks, such as debug assertions and integer overflow checks. Produce one with
-`cargo build --release`, `cargo run --release`, or `rustc -O`. (Alternatively,
-`rustc` has multiple other options for optimized builds, such as `-C
-opt-level`.) This will typically take longer than a debug build because of the
-additional optimizations.
+Release builds are more optimized than dev builds. They also omit some checks,
+such as debug assertions and integer overflow checks. Produce one with `cargo
+build --release`, `cargo run --release`, or `rustc -O`. (Alternatively, `rustc`
+has multiple other options for optimized builds, such as `-C opt-level`.) This
+will typically take longer than a dev build because of the additional
+optimizations.
 
 Consider the following final line of output from a `cargo build --release` run.
 ```text
@@ -45,8 +47,8 @@ compiled code will be placed in the `target/release/` directory. `cargo run
 --release` will run the release build.
 
 See the [Cargo profile documentation] for more details about the differences
-between debug builds (which use the `dev` profile) and release builds (which
-use the `release` profile).
+between dev builds (which use the `dev` profile) and release builds (which use
+the `release` profile).
 
 [Cargo profile documentation]: https://doc.rust-lang.org/cargo/reference/profiles.html
 
