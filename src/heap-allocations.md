@@ -231,27 +231,59 @@ growth and capacity have equivalents for `HashSet`/`HashMap`, such as
 
 ## `Cow`
 
-Sometimes you have some borrowed data, such as a `&str`, that is mostly
-read-only but occasionally needs to be modified. Cloning the data every time
-would be wasteful. Instead you can use "clone-on-write" semantics via the
-[`Cow`] type, which can represent both borrowed and owned data.
+Sometimes code deals with a mixture of borrowed and owned data. Imagine a
+vector of error messages, some of which are static string literals and some of
+which are constructed with `format!`. The obvious representation is
+`Vec<String>`, as the following example shows.
+```rust
+let mut errors: Vec<String> = vec![];
+errors.push("something went wrong".to_string());
+errors.push(format!("something went wrong on line {}", 100));
+```
+That requires a `to_string` call to promote the static string literal to a
+`String`, which incurs an allocation.
+
+Instead you can use the [`Cow`] type, which can hold either borrowed or owned
+data. A borrowed value `x` is wrapped with `Cow::Borrowed(x)`, and an owned
+value `y` is wrapped with `Cow::Owned(y)`. `Cow` also implements the `From<T>`
+trait for various string, slice, and path types, so you can use often use
+`into` as well, as the following example shows.
 
 [`Cow`]: https://doc.rust-lang.org/std/borrow/enum.Cow.html
 
-Typically, when starting with a borrowed value `x` you wrap it in a `Cow` with
-`Cow::Borrowed(x)`. Because `Cow` implements [`Deref`], you can call
-non-mutating methods directly on the data it encloses. If mutation is desired,
+```rust
+use std::borrow::Cow;
+let mut errors: Vec<Cow<'static, str>> = vec![];
+errors.push(Cow::Borrowed("something went wrong"));
+errors.push(Cow::Owned(format!("something went wrong on line {}", 100)));
+errors.push("something else went wrong".into());
+errors.push(format!("something else went wrong on line {}", 101).into());
+```
+`errors` now holds a mixture of borrowed and owned data without requiring any
+extra allocations. This example involves `&str`/`String`, but other
+combinations such as `&[T]`/`Vec<T>` and `&Path`/`PathBuf` are also possible.
+Because `Cow` implements [`Deref`], you can call methods directly on the data
+it encloses. 
+
+[**Example 1**](https://github.com/rust-lang/rust/pull/37064/commits/b043e11de2eb2c60f7bfec5e15960f537b229e20),
+[**Example 2**](https://github.com/rust-lang/rust/pull/56336/commits/787959c20d062d396b97a5566e0a766d963af022).
+
+All of the above applies if the data is immutable. But `Cow` also allows
+borrowed data to be promoted to owned data if it needs to be mutated.
 [`Cow::to_mut`] will obtain a mutable reference to an owned value, cloning if
-necessary.
+necessary. This is called "clone-on-write", which is where the name `Cow` comes
+from.
 
 [`Deref`]: https://doc.rust-lang.org/std/ops/trait.Deref.html
 [`Cow::to_mut`]: https://doc.rust-lang.org/std/borrow/enum.Cow.html#method.to_mut
 
+This clone-on-write behaviour is useful when you have some borrowed data, such
+as a `&str`, that is mostly read-only but occasionally needs to be modified.
+
+[**Example 1**](https://github.com/rust-lang/rust/pull/50855/commits/ad471452ba6fbbf91ad566dc4bdf1033a7281811),
+[**Example 2**](https://github.com/rust-lang/rust/pull/68848/commits/67da45f5084f98eeb20cc6022d68788510dc832a).
+
 `Cow` can be fiddly to get working, but it is often worth the effort.
-[**Example 1**](https://github.com/rust-lang/rust/pull/37064/commits/b043e11de2eb2c60f7bfec5e15960f537b229e20),
-[**Example 2**](https://github.com/rust-lang/rust/pull/50855/commits/ad471452ba6fbbf91ad566dc4bdf1033a7281811),
-[**Example 3**](https://github.com/rust-lang/rust/pull/56336/commits/787959c20d062d396b97a5566e0a766d963af022),
-[**Example 4**](https://github.com/rust-lang/rust/pull/68848/commits/67da45f5084f98eeb20cc6022d68788510dc832a).
 
 ## `clone`
 
