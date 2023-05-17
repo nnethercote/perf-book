@@ -1302,12 +1302,11 @@ the instructions above.</p>
 <p>mold is often faster than lld. It is also much newer and may not work in all
 cases.</p>
 <h2 id="incremental-compilation"><a class="header" href="#incremental-compilation">Incremental Compilation</a></h2>
-<p>The Rust compiler supports <a href="https://blog.rust-lang.org/2016/09/08/incremental.html">incremental compilation</a>, which avoids redoing
-work when you recompile a crate. It can greatly speed up compilation, at the
-cost of sometimes making the produced executable run a little more slowly. For
-this reason, it is only enabled by default for <a href="https://doc.rust-lang.org/cargo/reference/profiles.html#dev">dev builds</a>. If you want to
-enable it for <a href="https://doc.rust-lang.org/cargo/reference/profiles.html#release">release builds</a> as well, add the following lines to the
-<code>Cargo.toml</code> file.</p>
+<p>The Rust compiler supports <a href="https://blog.rust-lang.org/2016/09/08/incremental.html">incremental compilation</a>, which avoids redoing work
+when you recompile a crate. It can greatly speed up compilation, but the
+compiled binary may be larger and run more slowly. For this reason, it is only
+enabled by default for <a href="https://doc.rust-lang.org/cargo/reference/profiles.html#dev">dev builds</a>. If you want to enable it for <a href="https://doc.rust-lang.org/cargo/reference/profiles.html#release">release
+builds</a> as well, add the following lines to the <code>Cargo.toml</code> file.</p>
 <pre><code class="language-toml">[profile.release]
 incremental = true
 </code></pre>
