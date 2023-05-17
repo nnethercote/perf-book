@@ -42,12 +42,11 @@ cases.
 
 ## Incremental Compilation
 
-The Rust compiler supports [incremental compilation], which avoids redoing
-work when you recompile a crate. It can greatly speed up compilation, at the
-cost of sometimes making the produced executable run a little more slowly. For
-this reason, it is only enabled by default for [dev builds]. If you want to
-enable it for [release builds] as well, add the following lines to the
-`Cargo.toml` file.
+The Rust compiler supports [incremental compilation], which avoids redoing work
+when you recompile a crate. It can greatly speed up compilation, but the
+compiled binary may be larger and run more slowly. For this reason, it is only
+enabled by default for [dev builds]. If you want to enable it for [release
+builds] as well, add the following lines to the `Cargo.toml` file.
 ```toml
 [profile.release]
 incremental = true
