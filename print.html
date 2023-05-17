@@ -680,20 +680,49 @@ reallocated as necessary as the table grows. Many <code>Vec</code> methods relat
 growth and capacity have equivalents for <code>HashSet</code>/<code>HashMap</code>, such as
 <a href="https://doc.rust-lang.org/std/collections/struct.HashSet.html#method.with_capacity"><code>HashSet::with_capacity</code></a>.</p>
 <h2 id="cow"><a class="header" href="#cow"><code>Cow</code></a></h2>
-<p>Sometimes you have some borrowed data, such as a <code>&amp;str</code>, that is mostly
-read-only but occasionally needs to be modified. Cloning the data every time
-would be wasteful. Instead you can use “clone-on-write” semantics via the
-<a href="https://doc.rust-lang.org/std/borrow/enum.Cow.html"><code>Cow</code></a> type, which can represent both borrowed and owned data.</p>
-<p>Typically, when starting with a borrowed value <code>x</code> you wrap it in a <code>Cow</code> with
-<code>Cow::Borrowed(x)</code>. Because <code>Cow</code> implements <a href="https://doc.rust-lang.org/std/ops/trait.Deref.html"><code>Deref</code></a>, you can call
-non-mutating methods directly on the data it encloses. If mutation is desired,
+<p>Sometimes code deals with a mixture of borrowed and owned data. Imagine a
+vector of error messages, some of which are static string literals and some of
+which are constructed with <code>format!</code>. The obvious representation is
+<code>Vec&lt;String&gt;</code>, as the following example shows.</p>
+<pre><pre class="playground"><code class="language-rust edition2018"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let mut errors: Vec&lt;String&gt; = vec![];
+errors.push(&quot;something went wrong&quot;.to_string());
+errors.push(format!(&quot;something went wrong on line {}&quot;, 100));
+<span class="boring">}</span></code></pre></pre>
+<p>That requires a <code>to_string</code> call to promote the static string literal to a
+<code>String</code>, which incurs an allocation.</p>
+<p>Instead you can use the <a href="https://doc.rust-lang.org/std/borrow/enum.Cow.html"><code>Cow</code></a> type, which can hold either borrowed or owned
+data. A borrowed value <code>x</code> is wrapped with <code>Cow::Borrowed(x)</code>, and an owned
+value <code>y</code> is wrapped with <code>Cow::Owned(y)</code>. <code>Cow</code> also implements the <code>From&lt;T&gt;</code>
+trait for various string, slice, and path types, so you can use often use
+<code>into</code> as well, as the following example shows.</p>
+<pre><pre class="playground"><code class="language-rust edition2018"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use std::borrow::Cow;
+let mut errors: Vec&lt;Cow&lt;'static, str&gt;&gt; = vec![];
+errors.push(Cow::Borrowed(&quot;something went wrong&quot;));
+errors.push(Cow::Owned(format!(&quot;something went wrong on line {}&quot;, 100)));
+errors.push(&quot;something else went wrong&quot;.into());
+errors.push(format!(&quot;something else went wrong on line {}&quot;, 101).into());
+<span class="boring">}</span></code></pre></pre>
+<p><code>errors</code> now holds a mixture of borrowed and owned data without requiring any
+extra allocations. This example involves <code>&amp;str</code>/<code>String</code>, but other
+combinations such as <code>&amp;[T]</code>/<code>Vec&lt;T&gt;</code> and <code>&amp;Path</code>/<code>PathBuf</code> are also possible.
+Because <code>Cow</code> implements <a href="https://doc.rust-lang.org/std/ops/trait.Deref.html"><code>Deref</code></a>, you can call methods directly on the data
+it encloses. </p>
+<p><a href="https://github.com/rust-lang/rust/pull/37064/commits/b043e11de2eb2c60f7bfec5e15960f537b229e20"><strong>Example 1</strong></a>,
+<a href="https://github.com/rust-lang/rust/pull/56336/commits/787959c20d062d396b97a5566e0a766d963af022"><strong>Example 2</strong></a>.</p>
+<p>All of the above applies if the data is immutable. But <code>Cow</code> also allows
+borrowed data to be promoted to owned data if it needs to be mutated.
 <a href="https://doc.rust-lang.org/std/borrow/enum.Cow.html#method.to_mut"><code>Cow::to_mut</code></a> will obtain a mutable reference to an owned value, cloning if
-necessary.</p>
-<p><code>Cow</code> can be fiddly to get working, but it is often worth the effort.
-<a href="https://github.com/rust-lang/rust/pull/37064/commits/b043e11de2eb2c60f7bfec5e15960f537b229e20"><strong>Example 1</strong></a>,
-<a href="https://github.com/rust-lang/rust/pull/50855/commits/ad471452ba6fbbf91ad566dc4bdf1033a7281811"><strong>Example 2</strong></a>,
-<a href="https://github.com/rust-lang/rust/pull/56336/commits/787959c20d062d396b97a5566e0a766d963af022"><strong>Example 3</strong></a>,
-<a href="https://github.com/rust-lang/rust/pull/68848/commits/67da45f5084f98eeb20cc6022d68788510dc832a"><strong>Example 4</strong></a>.</p>
+necessary. This is called “clone-on-write”, which is where the name <code>Cow</code> comes
+from.</p>
+<p>This clone-on-write behaviour is useful when you have some borrowed data, such
+as a <code>&amp;str</code>, that is mostly read-only but occasionally needs to be modified.</p>
+<p><a href="https://github.com/rust-lang/rust/pull/50855/commits/ad471452ba6fbbf91ad566dc4bdf1033a7281811"><strong>Example 1</strong></a>,
+<a href="https://github.com/rust-lang/rust/pull/68848/commits/67da45f5084f98eeb20cc6022d68788510dc832a"><strong>Example 2</strong></a>.</p>
+<p><code>Cow</code> can be fiddly to get working, but it is often worth the effort.</p>
 <h2 id="clone"><a class="header" href="#clone"><code>clone</code></a></h2>
 <p>Calling <a href="https://doc.rust-lang.org/std/clone/trait.Clone.html#tymethod.clone"><code>clone</code></a> on a value that contains heap-allocated memory typically
 involves additional allocations. For example, calling <code>clone</code> on a non-empty
