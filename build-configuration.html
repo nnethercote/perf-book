@@ -157,33 +157,33 @@ performance after applying any of the following changes, because they can
 sometimes worsen performance.</p>
 <h2 id="release-builds"><a class="header" href="#release-builds">Release Builds</a></h2>
 <p>The single most important Rust performance tip is simple but <a href="https://users.rust-lang.org/t/why-my-rust-program-is-so-slow/47764/5">easy to
-overlook</a>: make sure you are using a release build rather than a debug build
-when you want high performance. This is most often done by specifying the
+overlook</a>: make sure you are using a <a href="https://doc.rust-lang.org/cargo/reference/profiles.html#release">release build</a> rather than a <a href="https://doc.rust-lang.org/cargo/reference/profiles.html#dev">dev build</a>
+when you want high performance. This is usually done by specifying the
 <code>--release</code> flag to Cargo.</p>
-<p>A release build typically runs <em>much</em> faster than a debug build. 10-100x
-speedups over debug builds are common!</p>
+<p>A release build typically runs <em>much</em> faster than a dev build. 10-100x speedups
+over dev builds are common!</p>
 <p>Debug builds are the default. They are produced if you run <code>cargo build</code>,
 <code>cargo run</code>, or <code>rustc</code> without any additional options. Debug builds are good
 for debugging, but are not optimized.</p>
 <p>Consider the following final line of output from a <code>cargo build</code> run.</p>
 <pre><code class="language-text">Finished dev [unoptimized + debuginfo] target(s) in 29.80s
 </code></pre>
-<p>The <code>[unoptimized + debuginfo]</code> indicates that a debug build has been produced.
+<p>The <code>[unoptimized + debuginfo]</code> indicates that a dev build has been produced.
 The compiled code will be placed in the <code>target/debug/</code> directory. <code>cargo run</code>
-will run the debug build.</p>
-<p>Release builds are more optimized than debug builds. They also omit some
-checks, such as debug assertions and integer overflow checks. Produce one with
-<code>cargo build --release</code>, <code>cargo run --release</code>, or <code>rustc -O</code>. (Alternatively,
-<code>rustc</code> has multiple other options for optimized builds, such as <code>-C opt-level</code>.) This will typically take longer than a debug build because of the
-additional optimizations.</p>
+will run the dev build.</p>
+<p>Release builds are more optimized than dev builds. They also omit some checks,
+such as debug assertions and integer overflow checks. Produce one with <code>cargo build --release</code>, <code>cargo run --release</code>, or <code>rustc -O</code>. (Alternatively, <code>rustc</code>
+has multiple other options for optimized builds, such as <code>-C opt-level</code>.) This
+will typically take longer than a dev build because of the additional
+optimizations.</p>
 <p>Consider the following final line of output from a <code>cargo build --release</code> run.</p>
 <pre><code class="language-text">Finished release [optimized] target(s) in 1m 01s
 </code></pre>
 <p>The <code>[optimized]</code> indicates that a release build has been produced. The
 compiled code will be placed in the <code>target/release/</code> directory. <code>cargo run --release</code> will run the release build.</p>
 <p>See the <a href="https://doc.rust-lang.org/cargo/reference/profiles.html">Cargo profile documentation</a> for more details about the differences
-between debug builds (which use the <code>dev</code> profile) and release builds (which
-use the <code>release</code> profile).</p>
+between dev builds (which use the <code>dev</code> profile) and release builds (which use
+the <code>release</code> profile).</p>
 <h2 id="link-time-optimization"><a class="header" href="#link-time-optimization">Link-time Optimization</a></h2>
 <p>Link-time optimization (LTO) is a whole-program optimization technique that can
 improve runtime performance by 10-20% or more, at the cost of increased build
@@ -211,8 +211,8 @@ to one:</p>
 codegen-units = 1
 </code></pre>
 <p><a href="https://likebike.com/posts/How_To_Write_Fast_Rust_Code.html#emit-asm"><strong>Example</strong></a>.</p>
-<p>Be wary that the codegen unit count is a heuristic and thus a smaller count can
-actually result in a slower program.</p>
+<p>Reducing the number of codegen units can also result in a smaller compiled
+binary.</p>
 <h2 id="using-cpu-specific-instructions"><a class="header" href="#using-cpu-specific-instructions">Using CPU Specific Instructions</a></h2>
 <p>If you do not care that much about the compatibility of your binary on older
 (or other types of) processors, you can tell the compiler to generate the
