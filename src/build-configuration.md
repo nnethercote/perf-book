@@ -19,8 +19,8 @@ when you want high performance. This is usually done by specifying the
 A release build typically runs *much* faster than a dev build. 10-100x speedups
 over dev builds are common!
 
-Debug builds are the default. They are produced if you run `cargo build`,
-`cargo run`, or `rustc` without any additional options. Debug builds are good
+Dev builds are the default. They are produced if you run `cargo build`,
+`cargo run`, or `rustc` without any additional options. Dev builds are good
 for debugging, but are not optimized.
 
 Consider the following final line of output from a `cargo build` run.
