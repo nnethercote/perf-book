@@ -297,7 +297,8 @@ Instead you can use the [`Cow`] type, which can hold either borrowed or owned
 data. A borrowed value `x` is wrapped with `Cow::Borrowed(x)`, and an owned
 value `y` is wrapped with `Cow::Owned(y)`. `Cow` also implements the `From<T>`
 trait for various string, slice, and path types, so you can usually use `into`
-as well. The following example puts all this together.
+as well. (Or `Cow::from`, which is longer but results in more readable code,
+because it makes the type clearer.) The following example puts all this together.
 
 [`Cow`]: https://doc.rust-lang.org/std/borrow/enum.Cow.html
 
@@ -306,7 +307,7 @@ use std::borrow::Cow;
 let mut errors: Vec<Cow<'static, str>> = vec![];
 errors.push(Cow::Borrowed("something went wrong"));
 errors.push(Cow::Owned(format!("something went wrong on line {}", 100)));
-errors.push("something else went wrong".into());
+errors.push(Cow::from("something else went wrong"));
 errors.push(format!("something else went wrong on line {}", 101).into());
 ```
 `errors` now holds a mixture of borrowed and owned data without requiring any
