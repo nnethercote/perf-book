@@ -355,14 +355,15 @@ errors.push(format!(&quot;something went wrong on line {}&quot;, 100));
 data. A borrowed value <code>x</code> is wrapped with <code>Cow::Borrowed(x)</code>, and an owned
 value <code>y</code> is wrapped with <code>Cow::Owned(y)</code>. <code>Cow</code> also implements the <code>From&lt;T&gt;</code>
 trait for various string, slice, and path types, so you can usually use <code>into</code>
-as well. The following example puts all this together.</p>
+as well. (Or <code>Cow::from</code>, which is longer but results in more readable code,
+because it makes the type clearer.) The following example puts all this together.</p>
 <pre><pre class="playground"><code class="language-rust edition2018"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>use std::borrow::Cow;
 let mut errors: Vec&lt;Cow&lt;'static, str&gt;&gt; = vec![];
 errors.push(Cow::Borrowed(&quot;something went wrong&quot;));
 errors.push(Cow::Owned(format!(&quot;something went wrong on line {}&quot;, 100)));
-errors.push(&quot;something else went wrong&quot;.into());
+errors.push(Cow::from(&quot;something else went wrong&quot;));
 errors.push(format!(&quot;something else went wrong on line {}&quot;, 101).into());
 <span class="boring">}</span></code></pre></pre>
 <p><code>errors</code> now holds a mixture of borrowed and owned data without requiring any
