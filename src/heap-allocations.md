@@ -104,7 +104,7 @@ When the vector needs to grow beyond its current capacity, the elements will be
 copied into a larger heap allocation, and the old heap allocation will be
 freed.
 
-### `Vec` growth
+### `Vec` Growth
 
 A new, empty `Vec` created by the common means
 ([`vec![]`](https://doc.rust-lang.org/std/macro.vec.html)
@@ -216,7 +216,7 @@ will avoid this allocation.
 [`std::format_args`]: https://doc.rust-lang.org/std/macro.format_args.html
 [`lazy_format`]: https://crates.io/crates/lazy_format
 
-## Hash tables
+## Hash Tables
 
 [`HashSet`] and [`HashMap`] are hash tables. Their representation and
 operations are similar to those of `Vec`, in terms of allocations: they have
