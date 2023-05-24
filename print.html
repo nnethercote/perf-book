@@ -603,7 +603,7 @@ the number of elements that could be held without reallocating is the capacity.<
 <p>When the vector needs to grow beyond its current capacity, the elements will be
 copied into a larger heap allocation, and the old heap allocation will be
 freed.</p>
-<h3 id="vec-growth"><a class="header" href="#vec-growth"><code>Vec</code> growth</a></h3>
+<h3 id="vec-growth"><a class="header" href="#vec-growth"><code>Vec</code> Growth</a></h3>
 <p>A new, empty <code>Vec</code> created by the common means
 (<a href="https://doc.rust-lang.org/std/macro.vec.html"><code>vec![]</code></a>
 or <a href="https://doc.rust-lang.org/std/vec/struct.Vec.html#method.new"><code>Vec::new</code></a> or <a href="https://doc.rust-lang.org/std/default/trait.Default.html#tymethod.default"><code>Vec::default</code></a>) has a length and capacity of zero, and no
@@ -672,7 +672,7 @@ allocation. If you can avoid a <code>format!</code> call by using a string liter
 will avoid this allocation.
 <a href="https://github.com/rust-lang/rust/pull/55905/commits/c6862992d947331cd6556f765f6efbde0a709cf9"><strong>Example</strong></a>.
 <a href="https://doc.rust-lang.org/std/macro.format_args.html"><code>std::format_args</code></a> and/or the <a href="https://crates.io/crates/lazy_format"><code>lazy_format</code></a> crate may help with this.</p>
-<h2 id="hash-tables"><a class="header" href="#hash-tables">Hash tables</a></h2>
+<h2 id="hash-tables"><a class="header" href="#hash-tables">Hash Tables</a></h2>
 <p><a href="https://doc.rust-lang.org/std/collections/struct.HashSet.html"><code>HashSet</code></a> and <a href="https://doc.rust-lang.org/std/collections/struct.HashMap.html"><code>HashMap</code></a> are hash tables. Their representation and
 operations are similar to those of <code>Vec</code>, in terms of allocations: they have
 a single contiguous heap allocation, holding keys and values, which is
