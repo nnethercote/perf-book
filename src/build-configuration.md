@@ -142,6 +142,10 @@ use that profiling data to guide a second compilation of the program.
 [**Example**](https://blog.rust-lang.org/inside-rust/2020/11/11/exploring-pgo-for-the-rust-compiler.html).
 
 It is an advanced technique that takes some effort to set up, but is worthwhile
-in some cases. See the [rustc PGO documentation] for details.
+in some cases. See the [rustc PGO documentation] for details. Also, the
+[`cargo-pgo`] command makes it easier to use PGO (and [BOLT], which is similar)
+to optimize Rust binaries.
 
 [rustc PGO documentation]: https://doc.rust-lang.org/rustc/profile-guided-optimization.html
+[`cargo-pgo`]: https://github.com/Kobzol/cargo-pgo
+[BOLT]: https://github.com/llvm/llvm-project/tree/main/bolt
