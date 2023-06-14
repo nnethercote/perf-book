@@ -241,11 +241,10 @@ compiled code will be placed in the <code>target/release/</code> directory. <cod
 between dev builds (which use the <code>dev</code> profile) and release builds (which use
 the <code>release</code> profile).</p>
 <h2 id="codegen-units"><a class="header" href="#codegen-units">Codegen Units</a></h2>
-<p>The Rust compiler splits your crate into multiple <a href="https://doc.rust-lang.org/rustc/codegen-options/index.html#codegen-units">codegen units</a> to
-parallelize (and thus speed up) compilation. However, this might cause it to
-miss some potential optimizations. If you want to potentially improve runtime
-performance at the cost of larger compile time, you can set the number of units
-to one:</p>
+<p>The Rust compiler splits crates into multiple <a href="https://doc.rust-lang.org/rustc/codegen-options/index.html#codegen-units">codegen units</a> to parallelize
+(and thus speed up) compilation. However, this might cause it to miss some
+potential optimizations. If you want to potentially improve runtime performance
+at the cost of larger compile time, you can set the number of units to one:</p>
 <pre><code class="language-toml">[profile.release]
 codegen-units = 1
 </code></pre>
