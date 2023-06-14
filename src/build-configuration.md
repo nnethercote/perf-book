@@ -54,11 +54,10 @@ the `release` profile).
 
 ## Codegen Units
 
-The Rust compiler splits your crate into multiple [codegen units] to
-parallelize (and thus speed up) compilation. However, this might cause it to
-miss some potential optimizations. If you want to potentially improve runtime
-performance at the cost of larger compile time, you can set the number of units
-to one:
+The Rust compiler splits crates into multiple [codegen units] to parallelize
+(and thus speed up) compilation. However, this might cause it to miss some
+potential optimizations. If you want to potentially improve runtime performance
+at the cost of larger compile time, you can set the number of units to one:
 ```toml
 [profile.release]
 codegen-units = 1
