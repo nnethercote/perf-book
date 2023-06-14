@@ -52,6 +52,24 @@ the `release` profile).
 
 [Cargo profile documentation]: https://doc.rust-lang.org/cargo/reference/profiles.html
 
+## Codegen Units
+
+The Rust compiler splits your crate into multiple [codegen units] to
+parallelize (and thus speed up) compilation. However, this might cause it to
+miss some potential optimizations. If you want to potentially improve runtime
+performance at the cost of larger compile time, you can set the number of units
+to one:
+```toml
+[profile.release]
+codegen-units = 1
+```
+[**Example**](https://likebike.com/posts/How_To_Write_Fast_Rust_Code.html#emit-asm).
+
+[codegen units]: https://doc.rust-lang.org/rustc/codegen-options/index.html#codegen-units
+
+Reducing the number of codegen units can also result in a smaller compiled
+binary.
+
 ## Link-time Optimization
 
 Link-time optimization (LTO) is a whole-program optimization technique that can
@@ -77,25 +95,7 @@ about enabling specific settings for different profiles.
 
 [Cargo LTO documentation]: https://doc.rust-lang.org/cargo/reference/profiles.html#lto
 
-## Codegen Units
-
-The Rust compiler splits your crate into multiple [codegen units] to
-parallelize (and thus speed up) compilation. However, this might cause it to
-miss some potential optimizations. If you want to potentially improve runtime
-performance at the cost of larger compile time, you can set the number of units
-to one:
-```toml
-[profile.release]
-codegen-units = 1
-```
-[**Example**](https://likebike.com/posts/How_To_Write_Fast_Rust_Code.html#emit-asm).
-
-[codegen units]: https://doc.rust-lang.org/rustc/codegen-options/index.html#codegen-units
-
-Reducing the number of codegen units can also result in a smaller compiled
-binary.
-
-## Using CPU Specific Instructions
+## CPU Specific Instructions
 
 If you do not care that much about the compatibility of your binary on older
 (or other types of) processors, you can tell the compiler to generate the
