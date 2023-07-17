@@ -18,8 +18,9 @@ jobs:
         with:
           mdbook-version: 'latest'
 
-      - name: Setup mdbook-epub
-        run: cargo install mdbook-epub
+      # XXX: see https://github.com/Michael-F-Bryan/mdbook-epub/issues/74
+      # - name: Setup mdbook-epub
+      #   run: cargo install mdbook-epub
 
       - name: Build
         run: mdbook build
@@ -27,8 +28,9 @@ jobs:
       - name: Test
         run: mdbook test
 
-      - name: Copy ePub
-        run: cp book/epub/The\ Rust\ Performance\ Book.epub book/html
+      # XXX: see https://github.com/Michael-F-Bryan/mdbook-epub/issues/74
+      # - name: Copy ePub
+      #   run: cp book/epub/The\ Rust\ Performance\ Book.epub book/html
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3

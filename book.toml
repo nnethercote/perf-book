@@ -18,7 +18,7 @@ git-repository-url = "https://github.com/nnethercote/perf-book"
 edit-url-template = "https://github.com/nnethercote/perf-book/edit/master/{path}"
 site-url = "https://nnethercote.github.io/perf-book/"
 
-# Disabled for now, see issue #58.
-[output.epub]
+# XXX: https://github.com/Michael-F-Bryan/mdbook-epub/issues/74
+#[output.epub]
 # So epub generation is skipped if mdbook-epub isn't installed.
-optional = true 
+#optional = true 
