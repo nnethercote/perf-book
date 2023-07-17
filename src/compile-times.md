@@ -17,13 +17,13 @@ One option is [lld], which is available on Linux and Windows.
 To specify lld from the command line, precede your build command with
 `RUSTFLAGS="-C link-arg=-fuse-ld=lld"`.
 
-To specify lld from a [config.toml] file (for one or more projects), add these
+To specify lld from a [`config.toml`] file (for one or more projects), add these
 lines:
 ```text
 [build]
 rustflags = ["-C", "link-arg=-fuse-ld=lld"]
 ```
-[config.toml]: https://doc.rust-lang.org/cargo/reference/config.html
+[`config.toml`]: https://doc.rust-lang.org/cargo/reference/config.html
 
 lld is not fully supported for use with Rust, but it should work for most use
 cases on Linux and Windows. There is a [GitHub Issue] tracking full support for
@@ -59,6 +59,22 @@ details on how to read the graphs.
 
 [Gantt chart]: https://en.wikipedia.org/wiki/Gantt_chart
 [timings]: https://doc.rust-lang.org/nightly/cargo/reference/timings.html
+
+## Fully Disable Link-time Optimization
+
+For release builds the Rust compiler by default does a simple form of
+[link-time optimization] called *thin local LTO*. This can be disabled with the
+following lines in the `Cargo.toml` or [`config.toml`] file:
+```toml
+[profile.release]
+lto = "off"
+```
+This will speed up release builds at the cost of lower code quality.
+
+[link-time optimization]: https://doc.rust-lang.org/cargo/reference/profiles.html#lto
+
+Note that this is different to the `lto = "false"` option, which leaves thin
+local LTO enabled.
 
 ## LLVM IR
 
