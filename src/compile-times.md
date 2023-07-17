@@ -40,25 +40,6 @@ cases.
 
 [GitHub Issue]: https://github.com/rust-lang/rust/issues/39915#issuecomment-618726211
 
-## Incremental Compilation
-
-The Rust compiler supports [incremental compilation], which avoids redoing work
-when you recompile a crate. It can greatly speed up compilation, but the
-compiled binary may be larger and run more slowly. For this reason, it is only
-enabled by default for [dev builds]. If you want to enable it for [release
-builds] as well, add the following lines to the `Cargo.toml` file.
-```toml
-[profile.release]
-incremental = true
-```
-See the [Cargo documentation] for more details about the `incremental` setting, and
-about enabling specific settings for different profiles.
-
-[dev builds]: https://doc.rust-lang.org/cargo/reference/profiles.html#dev
-[release builds]: https://doc.rust-lang.org/cargo/reference/profiles.html#release
-[incremental compilation]: https://blog.rust-lang.org/2016/09/08/incremental.html
-[Cargo documentation]: https://doc.rust-lang.org/cargo/reference/profiles.html#incremental
-
 ## Visualization 
 
 Cargo has a feature that lets you visualize compilation of your
