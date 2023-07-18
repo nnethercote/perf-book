@@ -18,9 +18,9 @@ jobs:
         with:
           mdbook-version: 'latest'
 
-      # XXX: see https://github.com/Michael-F-Bryan/mdbook-epub/issues/74
-      # - name: Setup mdbook-epub
-      #   run: cargo install mdbook-epub
+      # EPUB
+      - name: Setup mdbook-epub
+        run: cargo install mdbook-epub
 
       - name: Build
         run: mdbook build
@@ -28,15 +28,15 @@ jobs:
       - name: Test
         run: mdbook test
 
-      # XXX: see https://github.com/Michael-F-Bryan/mdbook-epub/issues/74
-      # - name: Copy ePub
-      #   run: cp book/epub/The\ Rust\ Performance\ Book.epub book/html
+      # EPUB
+      - name: Copy ePub
+        run: cp book/epub/The\ Rust\ Performance\ Book.epub book/html
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          #publish_dir: ./book/html  # XXX: use this when ePub is enabled
-          publish_dir: ./book
+          publish_dir: ./book/html  # use if EPUB is enabled
+          #publish_dir: ./book      # use if EPUB is disabled
         # Only deploy on a push to master, not on a pull request.
         if: github.event_name == 'push' && github.ref == 'refs/heads/master' && github.repository == 'nnethercote/perf-book'
