@@ -7,7 +7,6 @@ The Rust Performance Book.
 The rendered (HTML) book is [here](https://nnethercote.github.io/perf-book/).
 
 <!-- EPUB -->
-
 An ePub version is available
 [here](https://nnethercote.github.io/perf-book/The%20Rust%20Performance%20Book.epub).
 experimental. The ePub file is generated with

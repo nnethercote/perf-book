@@ -386,22 +386,17 @@ the [`tikv-jemallocator`] crate. To use it, add a dependency to your
 `Cargo.toml` file:
 ```toml
 [dependencies]
-tikv-jemallocator = "0.4.0"
+tikv-jemallocator = "0.5.0"
 ```
 Then add the following somewhere in your Rust code:
 ```rust,ignore
 #[global_allocator]
 static GLOBAL: tikv_jemallocator::Jemalloc = tikv_jemallocator::Jemalloc;
 ```
-[`tikv-jemallocator`] is a fork of the `jemallocator` crate. As of December
-2021, `tikv-jemallocator` uses a jemalloc version that is newer and has [better
-performance] than the jemalloc version used by `jemallocator`.
-
 Another alternative allocator that works on many platforms is [mimalloc],
 usable via the [`mimalloc`] crate.
 
 [jemalloc]: https://github.com/jemalloc/jemalloc
-[`jemallocator`]: https://crates.io/crates/jemallocator
 [`tikv-jemallocator`]: https://crates.io/crates/tikv-jemallocator
 [better performance]: https://github.com/rust-lang/rust/pull/83152
 [mimalloc]: https://github.com/microsoft/mimalloc
