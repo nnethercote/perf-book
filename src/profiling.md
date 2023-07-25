@@ -13,6 +13,8 @@ used successfully on Rust programs.
   [Hotspot] and [Firefox Profiler] are good for viewing data recorded by perf.
   It works on Linux.
 - [Instruments] is a general-purpose profiler that comes with Xcode on macOS.
+- [Intel VTune Profiler] is a general-purpose profiler. It works on Windows,
+  Linux, and macOS.
 - [AMD μProf] is a general-purpose profiler. It works on Windows and Linux.
 - [samply] is a sampling profiler that produces profiles that can be viewed
   in the Firefox Profiler. It works on Mac and Linux.
@@ -38,8 +40,9 @@ used successfully on Rust programs.
 
 [perf]: https://perf.wiki.kernel.org/index.php/Main_Page
 [Hotspot]: https://github.com/KDAB/hotspot
-[Instruments]: https://developer.apple.com/forums/tags/instruments
 [Firefox Profiler]: https://profiler.firefox.com/
+[Instruments]: https://developer.apple.com/forums/tags/instruments
+[Intel VTune Profiler]: https://www.intel.com/content/www/us/en/developer/tools/oneapi/vtune-profiler.html
 [AMD μProf]: https://developer.amd.com/amd-uprof/
 [samply]: https://github.com/mstange/samply/
 [flamegraph]: https://github.com/flamegraph-rs/flamegraph
