@@ -20,6 +20,10 @@ Inline attributes do not guarantee that a function is inlined or not inlined,
 but in practice `#[inline(always)]` will cause inlining in all but the most
 exceptional cases.
 
+Inlining is non-transitive. If a function `f` calls a function `g` and you want
+both functions to be inlined together at a callsite to `f`, both functions
+should be marked with an inline attribute.
+
 ## Simple Cases
 
 The best candidates for inlining are (a) functions that are very small, or (b)
