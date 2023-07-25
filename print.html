@@ -1233,10 +1233,11 @@ together, it may be better to put them within a single wrapper.</p>
 of the values.
 <a href="https://github.com/rust-lang/rust/pull/68694/commits/7426853ba255940b880f2e7f8026d60b94b42404"><strong>Example</strong></a>.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="machine-code"><a class="header" href="#machine-code">Machine Code</a></h1>
-<p>When you have a small piece of very hot code, it may be worth inspecting the
+<p>When you have a small piece of very hot code it may be worth inspecting the
 generated machine code to see if it has any inefficiencies, such as removable
 <a href="bounds-checks.html">bounds checks</a>. The <a href="https://godbolt.org/">Compiler Explorer</a> website is an excellent resource when
-doing this.</p>
+doing this on small snippets. <a href="https://github.com/pacak/cargo-show-asm"><code>cargo-show-asm</code></a> is an alternative tool that
+can be used on full Rust projects.</p>
 <p>Relatedly, the <a href="https://doc.rust-lang.org/core/arch/index.html"><code>core::arch</code></a> module provides access to architecture-specific
 intrinsics, many of which relate to SIMD instructions.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="parallelism"><a class="header" href="#parallelism">Parallelism</a></h1>
