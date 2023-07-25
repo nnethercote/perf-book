@@ -192,6 +192,9 @@ be inlined.</li>
 <p>Inline attributes do not guarantee that a function is inlined or not inlined,
 but in practice <code>#[inline(always)]</code> will cause inlining in all but the most
 exceptional cases.</p>
+<p>Inlining is non-transitive. If a function <code>f</code> calls a function <code>g</code> and you want
+both functions to be inlined together at a callsite to <code>f</code>, both functions
+should be marked with an inline attribute.</p>
 <h2 id="simple-cases"><a class="header" href="#simple-cases">Simple Cases</a></h2>
 <p>The best candidates for inlining are (a) functions that are very small, or (b)
 functions that have a single call site. The compiler will often inline these
