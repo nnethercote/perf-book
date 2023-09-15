@@ -46,7 +46,7 @@ For example, change this unbuffered writer code:
 # fn blah() -> Result<(), std::io::Error> {
 # let lines = vec!["one", "two", "three"];
 use std::io::Write;
-let mut out = std::fs::File::create("test.txt").unwrap();
+let mut out = std::fs::File::create("test.txt")?;
 for line in lines {
     writeln!(out, "{}", line)?;
 }
