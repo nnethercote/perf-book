@@ -46,7 +46,7 @@ standard library types in some places by mistake.
 You can use Clippy's [`disallowed_types`] lint to avoid this problem. For
 example, to disallow the use of the standard hash tables (for reasons explained
 in the [Hashing] section) add a `clippy.toml` file to your code with the
-following lines.
+following line.
 ```toml
 disallowed-types = ["std::collections::HashMap", "std::collections::HashSet"]
 ```
