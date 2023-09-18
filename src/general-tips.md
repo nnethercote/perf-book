@@ -4,8 +4,9 @@ The previous sections of this book have discussed Rust-specific techniques.
 This section gives a brief overview of some general performance principles.
 
 As long as the obvious pitfalls are avoided (e.g. [using non-release builds]),
-Rust generally has good performance. Especially if you are used to
-dynamically-typed languages such as Python and Ruby.
+Rust code generally is fast and uses little memory. Especially if you are used
+to dynamically-typed languages such as Python and Ruby, or statically-types
+languages with a garbage collector such as Java and C#.
 
 [using non-release builds]: build-configuration.md
 
