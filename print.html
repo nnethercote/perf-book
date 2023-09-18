@@ -354,7 +354,7 @@ standard library types in some places by mistake.</p>
 <p>You can use Clippy’s <a href="https://rust-lang.github.io/rust-clippy/master/index.html#disallowed_types"><code>disallowed_types</code></a> lint to avoid this problem. For
 example, to disallow the use of the standard hash tables (for reasons explained
 in the <a href="hashing.html">Hashing</a> section) add a <code>clippy.toml</code> file to your code with the
-following lines.</p>
+following line.</p>
 <pre><code class="language-toml">disallowed-types = [&quot;std::collections::HashMap&quot;, &quot;std::collections::HashSet&quot;]
 </code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="profiling"><a class="header" href="#profiling">Profiling</a></h1>
@@ -1251,8 +1251,9 @@ that case, you should consult the comprehensive documentation in the excellent
 <p>The previous sections of this book have discussed Rust-specific techniques.
 This section gives a brief overview of some general performance principles.</p>
 <p>As long as the obvious pitfalls are avoided (e.g. <a href="build-configuration.html">using non-release builds</a>),
-Rust generally has good performance. Especially if you are used to
-dynamically-typed languages such as Python and Ruby.</p>
+Rust code generally is fast and uses little memory. Especially if you are used
+to dynamically-typed languages such as Python and Ruby, or statically-types
+languages with a garbage collector such as Java and C#.</p>
 <p>Optimized code is often more complex and takes more effort to write than
 unoptimized code. For this reason, it is only worth optimizing hot code.</p>
 <p>The biggest performance improvements often come from changes to algorithms or

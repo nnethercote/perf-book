@@ -204,7 +204,7 @@ standard library types in some places by mistake.</p>
 <p>You can use Clippy’s <a href="https://rust-lang.github.io/rust-clippy/master/index.html#disallowed_types"><code>disallowed_types</code></a> lint to avoid this problem. For
 example, to disallow the use of the standard hash tables (for reasons explained
 in the <a href="hashing.html">Hashing</a> section) add a <code>clippy.toml</code> file to your code with the
-following lines.</p>
+following line.</p>
 <pre><code class="language-toml">disallowed-types = [&quot;std::collections::HashMap&quot;, &quot;std::collections::HashSet&quot;]
 </code></pre>
 
