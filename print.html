@@ -351,17 +351,12 @@ opportunities for the compiler.
 certain standard library types in favour of alternatives that are faster. If
 you decide to use these alternatives, it is easy to accidentally use the
 standard library types in some places by mistake.</p>
-<p>You can use Clippy’s <a href="https://rust-lang.github.io/rust-clippy/master/index.html#disallowed_types"><code>disallowed_types</code></a> lint, added in Rust 1.55, to avoid
-this problem. For example, to disallow the use of the standard hash tables (for
-reasons explained in the <a href="hashing.html">Hashing</a> section) add a <code>clippy.toml</code> file to your
-code with the following lines.</p>
+<p>You can use Clippy’s <a href="https://rust-lang.github.io/rust-clippy/master/index.html#disallowed_types"><code>disallowed_types</code></a> lint to avoid this problem. For
+example, to disallow the use of the standard hash tables (for reasons explained
+in the <a href="hashing.html">Hashing</a> section) add a <code>clippy.toml</code> file to your code with the
+following lines.</p>
 <pre><code class="language-toml">disallowed-types = [&quot;std::collections::HashMap&quot;, &quot;std::collections::HashSet&quot;]
 </code></pre>
-<p>Then add the following declaration to your Rust code.</p>
-<pre><code>#![warn(clippy::disallowed_types)]
-</code></pre>
-<p>This is necessary because <code>disallowed_types</code> is (at the time of writing) a
-“nursery” (under development) lint. This may change in the future.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="profiling"><a class="header" href="#profiling">Profiling</a></h1>
 <p>When optimizing a program, you also need a way to determine which parts of the
 program are “hot” (executed frequently enough to affect runtime) and worth
@@ -1149,7 +1144,7 @@ minimizing the number of system calls required.</p>
 </span><span class="boring">fn blah() -&gt; Result&lt;(), std::io::Error&gt; {
 </span><span class="boring">let lines = vec![&quot;one&quot;, &quot;two&quot;, &quot;three&quot;];
 </span>use std::io::Write;
-let mut out = std::fs::File::create(&quot;test.txt&quot;).unwrap();
+let mut out = std::fs::File::create(&quot;test.txt&quot;)?;
 for line in lines {
     writeln!(out, &quot;{}&quot;, line)?;
 }

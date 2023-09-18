@@ -211,7 +211,7 @@ minimizing the number of system calls required.</p>
 </span><span class="boring">fn blah() -&gt; Result&lt;(), std::io::Error&gt; {
 </span><span class="boring">let lines = vec![&quot;one&quot;, &quot;two&quot;, &quot;three&quot;];
 </span>use std::io::Write;
-let mut out = std::fs::File::create(&quot;test.txt&quot;).unwrap();
+let mut out = std::fs::File::create(&quot;test.txt&quot;)?;
 for line in lines {
     writeln!(out, &quot;{}&quot;, line)?;
 }
