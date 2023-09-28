@@ -1,9 +1,10 @@
 # Build Configuration
 
 The right build configuration will maximize the performance of your Rust
-program without any changes to its code. But you should check your program's
-performance after applying any of the following changes, because they can
-sometimes worsen performance.
+program without any changes to its code. In particular, several build
+configuration options exist that trade longer compile times for higher code
+quality. But you should check your program's performance after applying any of
+the following changes, because they can sometimes worsen performance.
 
 ## Release Builds
 
