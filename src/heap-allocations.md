@@ -368,8 +368,49 @@ each iteration's usage of the `Vec` is unrelated to the others.
 
 [`clear`]: https://doc.rust-lang.org/std/vec/struct.Vec.html#method.clear
 
-Similarly, it is sometimes worth keeping a "workhorse" collection within a
+Similarly, it is sometimes worth keeping a workhorse collection within a
 struct, to be reused in one or more methods that are called repeatedly.
+
+## Reading Lines from a File
+
+[`BufRead::lines`] makes it easy to read a file one line at a time:
+```rust
+# fn blah() -> Result<(), std::io::Error> {
+# fn process(_: &str) {}
+use std::io::{self, BufRead};
+let mut lock = io::stdin().lock();
+for line in lock.lines() {
+    process(&line?);
+}
+# Ok(())
+# }
+```
+But the iterator it produces returns `io::Result<String>`, which means it
+allocates for every line in the file.
+
+[`BufRead::lines`]: https://doc.rust-lang.org/stable/std/io/trait.BufRead.html#method.lines
+
+An alternative is to use a workhorse `String` in a loop over
+[`BufRead::read_line`], reducing the number of allocations to just one:
+```rust
+# fn blah() -> Result<(), std::io::Error> {
+# fn process(_: &str) {}
+use std::io::{self, BufRead};
+let mut lock = io::stdin().lock();
+let mut line = String::new();
+while lock.read_line(&mut line)? != 0 {
+    process(&line);
+    line.clear();
+}
+# Ok(())
+# }
+```
+This will only work if the loop body can operate on a `&str`, rather than a
+`String`.
+
+[`BufRead::read_line`]: https://doc.rust-lang.org/stable/std/io/trait.BufRead.html#method.read_line
+
+[**Example**](https://github.com/nnethercote/counts/commit/7d39bbb1867720ef3b9799fee739cd717ad1539a).
 
 ## Using an Alternative Allocator
 

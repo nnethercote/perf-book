@@ -96,6 +96,14 @@ where the before and after versions are so similar.
 Finally, note that buffering also works with stdout, so you might want to
 combine manual locking *and* buffering when making many writes to stdout.
 
+## Reading Lines from a File
+
+[This section] explains how to avoid excessive allocations when using
+[`BufRead`] to read a file one line at a time.
+
+[This section]: heap-allocations.md#reading-lines-from-a-file
+[`BufRead`]: https://doc.rust-lang.org/std/io/trait.BufRead.html
+
 ## Reading Input as Raw Bytes
 
 The built-in [String] type uses UTF-8 internally, which adds a small, but
