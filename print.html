@@ -304,7 +304,6 @@ instructions for your current CPU:</p>
 </code></pre>
 <p>This can have a large effect, especially if the compiler finds vectorization
 opportunities in your code.</p>
-<p>As of July 2022, on M1 Macs there is an <a href="https://github.com/rust-lang/rust/issues/93889">issue</a> where using <code>-C target-cpu=native</code> doesn’t detect all the CPU features. You need to use <code>-C target-cpu=apple-m1</code> instead.</p>
 <p>If you are unsure whether <code>-C target-cpu=native</code> is working optimally, compare
 the output of <code>rustc --print cfg</code> and <code>rustc --print cfg -C target-cpu=native</code>
 to see if the CPU features are being detected correctly in the latter case. If
