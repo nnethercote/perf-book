@@ -250,6 +250,9 @@ it is hard to write an example for readers like the one above for writers,
 where the before and after versions are so similar.</p>
 <p>Finally, note that buffering also works with stdout, so you might want to
 combine manual locking <em>and</em> buffering when making many writes to stdout.</p>
+<h2 id="reading-lines-from-a-file"><a class="header" href="#reading-lines-from-a-file">Reading Lines from a File</a></h2>
+<p><a href="heap-allocations.html#reading-lines-from-a-file">This section</a> explains how to avoid excessive allocations when using
+<a href="https://doc.rust-lang.org/std/io/trait.BufRead.html"><code>BufRead</code></a> to read a file one line at a time.</p>
 <h2 id="reading-input-as-raw-bytes"><a class="header" href="#reading-input-as-raw-bytes">Reading Input as Raw Bytes</a></h2>
 <p>The built-in <a href="https://doc.rust-lang.org/std/string/struct.String.html">String</a> type uses UTF-8 internally, which adds a small, but
 nonzero overhead caused by UTF-8 validation when you read input into it. If you

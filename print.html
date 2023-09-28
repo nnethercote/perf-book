@@ -813,8 +813,43 @@ its capacity). This avoids allocations at the cost of obscuring the fact that
 each iteration’s usage of the <code>Vec</code> is unrelated to the others.
 <a href="https://github.com/rust-lang/rust/pull/77990/commits/45faeb43aecdc98c9e3f2b24edf2ecc71f39d323"><strong>Example 1</strong></a>,
 <a href="https://github.com/rust-lang/rust/pull/51870/commits/b0c78120e3ecae5f4043781f7a3f79e2277293e7"><strong>Example 2</strong></a>.</p>
-<p>Similarly, it is sometimes worth keeping a “workhorse” collection within a
+<p>Similarly, it is sometimes worth keeping a workhorse collection within a
 struct, to be reused in one or more methods that are called repeatedly.</p>
+<h2 id="reading-lines-from-a-file"><a class="header" href="#reading-lines-from-a-file">Reading Lines from a File</a></h2>
+<p><a href="https://doc.rust-lang.org/stable/std/io/trait.BufRead.html#method.lines"><code>BufRead::lines</code></a> makes it easy to read a file one line at a time:</p>
+<pre><pre class="playground"><code class="language-rust edition2018"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span><span class="boring">fn blah() -&gt; Result&lt;(), std::io::Error&gt; {
+</span><span class="boring">fn process(_: &amp;str) {}
+</span>use std::io::{self, BufRead};
+let mut lock = io::stdin().lock();
+for line in lock.lines() {
+    process(&amp;line?);
+}
+<span class="boring">Ok(())
+</span><span class="boring">}
+</span><span class="boring">}</span></code></pre></pre>
+<p>But the iterator it produces returns <code>io::Result&lt;String&gt;</code>, which means it
+allocates for every line in the file.</p>
+<p>An alternative is to use a workhorse <code>String</code> in a loop over
+<a href="https://doc.rust-lang.org/stable/std/io/trait.BufRead.html#method.read_line"><code>BufRead::read_line</code></a>, reducing the number of allocations to just one:</p>
+<pre><pre class="playground"><code class="language-rust edition2018"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span><span class="boring">fn blah() -&gt; Result&lt;(), std::io::Error&gt; {
+</span><span class="boring">fn process(_: &amp;str) {}
+</span>use std::io::{self, BufRead};
+let mut lock = io::stdin().lock();
+let mut line = String::new();
+while lock.read_line(&amp;mut line)? != 0 {
+    process(&amp;line);
+    line.clear();
+}
+<span class="boring">Ok(())
+</span><span class="boring">}
+</span><span class="boring">}</span></code></pre></pre>
+<p>This will only work if the loop body can operate on a <code>&amp;str</code>, rather than a
+<code>String</code>.</p>
+<p><a href="https://github.com/nnethercote/counts/commit/7d39bbb1867720ef3b9799fee739cd717ad1539a"><strong>Example</strong></a>.</p>
 <h2 id="using-an-alternative-allocator"><a class="header" href="#using-an-alternative-allocator">Using an Alternative Allocator</a></h2>
 <p>Another option for improving the performance of allocation-heavy Rust programs
 is to replace the default (system) allocator with an alternative allocator. The
@@ -1183,6 +1218,9 @@ it is hard to write an example for readers like the one above for writers,
 where the before and after versions are so similar.</p>
 <p>Finally, note that buffering also works with stdout, so you might want to
 combine manual locking <em>and</em> buffering when making many writes to stdout.</p>
+<h2 id="reading-lines-from-a-file-1"><a class="header" href="#reading-lines-from-a-file-1">Reading Lines from a File</a></h2>
+<p><a href="heap-allocations.html#reading-lines-from-a-file">This section</a> explains how to avoid excessive allocations when using
+<a href="https://doc.rust-lang.org/std/io/trait.BufRead.html"><code>BufRead</code></a> to read a file one line at a time.</p>
 <h2 id="reading-input-as-raw-bytes"><a class="header" href="#reading-input-as-raw-bytes">Reading Input as Raw Bytes</a></h2>
 <p>The built-in <a href="https://doc.rust-lang.org/std/string/struct.String.html">String</a> type uses UTF-8 internally, which adds a small, but
 nonzero overhead caused by UTF-8 validation when you read input into it. If you
