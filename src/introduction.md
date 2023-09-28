@@ -20,7 +20,9 @@ optimization.
 
 This book also focuses on techniques that are practical and proven: many are
 accompanied by links to pull requests or other resources that show how the
-technique was used on a real-world Rust program.
+technique was used on a real-world Rust program. It reflects the author's
+background, being somewhat biased towards compiler development and away from
+other areas such as scientific computing.
 
 This book is deliberately terse, favouring breadth over depth, so that it is
 quick to read. It links to external sources that provide more depth when
