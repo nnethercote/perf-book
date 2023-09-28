@@ -188,7 +188,9 @@ Rust programs and is no substitute for a general purpose guide to profiling and
 optimization.</p>
 <p>This book also focuses on techniques that are practical and proven: many are
 accompanied by links to pull requests or other resources that show how the
-technique was used on a real-world Rust program.</p>
+technique was used on a real-world Rust program. It reflects the author’s
+background, being somewhat biased towards compiler development and away from
+other areas such as scientific computing.</p>
 <p>This book is deliberately terse, favouring breadth over depth, so that it is
 quick to read. It links to external sources that provide more depth when
 appropriate.</p>
@@ -230,9 +232,10 @@ what you are measuring, and over time you can make benchmarking improvements as
 you learn about the performance characteristics of your program.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="build-configuration"><a class="header" href="#build-configuration">Build Configuration</a></h1>
 <p>The right build configuration will maximize the performance of your Rust
-program without any changes to its code. But you should check your program’s
-performance after applying any of the following changes, because they can
-sometimes worsen performance.</p>
+program without any changes to its code. In particular, several build
+configuration options exist that trade longer compile times for higher code
+quality. But you should check your program’s performance after applying any of
+the following changes, because they can sometimes worsen performance.</p>
 <h2 id="release-builds"><a class="header" href="#release-builds">Release Builds</a></h2>
 <p>The single most important Rust performance tip is simple but <a href="https://users.rust-lang.org/t/why-my-rust-program-is-so-slow/47764/5">easy to
 overlook</a>: make sure you are using a <a href="https://doc.rust-lang.org/cargo/reference/profiles.html#release">release build</a> rather than a <a href="https://doc.rust-lang.org/cargo/reference/profiles.html#dev">dev build</a>

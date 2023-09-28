@@ -174,9 +174,10 @@
                     <main>
                         <h1 id="build-configuration"><a class="header" href="#build-configuration">Build Configuration</a></h1>
 <p>The right build configuration will maximize the performance of your Rust
-program without any changes to its code. But you should check your program’s
-performance after applying any of the following changes, because they can
-sometimes worsen performance.</p>
+program without any changes to its code. In particular, several build
+configuration options exist that trade longer compile times for higher code
+quality. But you should check your program’s performance after applying any of
+the following changes, because they can sometimes worsen performance.</p>
 <h2 id="release-builds"><a class="header" href="#release-builds">Release Builds</a></h2>
 <p>The single most important Rust performance tip is simple but <a href="https://users.rust-lang.org/t/why-my-rust-program-is-so-slow/47764/5">easy to
 overlook</a>: make sure you are using a <a href="https://doc.rust-lang.org/cargo/reference/profiles.html#release">release build</a> rather than a <a href="https://doc.rust-lang.org/cargo/reference/profiles.html#dev">dev build</a>
