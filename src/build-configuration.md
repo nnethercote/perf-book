@@ -113,12 +113,6 @@ $ RUSTFLAGS="-C target-cpu=native" cargo build --release
 This can have a large effect, especially if the compiler finds vectorization
 opportunities in your code.
 
-As of July 2022, on M1 Macs there is an [issue] where using `-C
-target-cpu=native` doesn't detect all the CPU features. You need to use `-C
-target-cpu=apple-m1` instead.
-
-[issue]: https://github.com/rust-lang/rust/issues/93889
-
 If you are unsure whether `-C target-cpu=native` is working optimally, compare
 the output of `rustc --print cfg` and `rustc --print cfg -C target-cpu=native`
 to see if the CPU features are being detected correctly in the latter case. If
