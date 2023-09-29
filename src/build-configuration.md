@@ -95,6 +95,16 @@ about enabling specific settings for different profiles.
 
 [Cargo LTO documentation]: https://doc.rust-lang.org/cargo/reference/profiles.html#lto
 
+## Abort on `panic!`
+
+If you do not need to catch or unwind panics, you can tell the compiler to
+simply abort on panics. This might reduce binary size and increase performance
+slightly:
+```toml
+[profile.release]
+panic = "abort"
+```
+
 ## CPU Specific Instructions
 
 If you do not care that much about the compatibility of your binary on older
@@ -117,16 +127,6 @@ If you are unsure whether `-C target-cpu=native` is working optimally, compare
 the output of `rustc --print cfg` and `rustc --print cfg -C target-cpu=native`
 to see if the CPU features are being detected correctly in the latter case. If
 not, you can use `-C target-feature` to target specific features.
-
-## Abort on `panic!`
-
-If you do not need to catch or unwind panics, you can tell the compiler to
-simply abort on panics. This might reduce binary size and increase performance
-slightly:
-```toml
-[profile.release]
-panic = "abort"
-```
 
 ## Profile-guided Optimization
 
