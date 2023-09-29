@@ -107,18 +107,25 @@ panic = "abort"
 
 ## CPU Specific Instructions
 
-If you do not care that much about the compatibility of your binary on older
-(or other types of) processors, you can tell the compiler to generate the
-newest (and potentially fastest) instructions specific to a [certain CPU
-architecture].
+If you do not care about the compatibility of your binary on older (or other
+types of) processors, you can tell the compiler to generate the newest (and
+potentially fastest) instructions specific to a [certain CPU architecture].
 
 [certain CPU architecture]: https://doc.rust-lang.org/1.41.1/rustc/codegen-options/index.html#target-cpu
 
-For example, if you pass `-C target-cpu=native` to rustc, it will use the best
-instructions for your current CPU:
+To request these instructions from the command line, use the `-C
+target-cpu=native` flag. For example:
 ```bash
 $ RUSTFLAGS="-C target-cpu=native" cargo build --release
 ```
+
+Alternatively, to request these instructions from a [`config.toml`] file (for
+one or more projects), add these lines:
+```text
+[build]
+rustflags = ["-C", "target-cpu=native"]
+```
+[`config.toml`]: https://doc.rust-lang.org/cargo/reference/config.html
 
 This can have a large effect, especially if the compiler finds vectorization
 opportunities in your code.

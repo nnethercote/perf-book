@@ -14,11 +14,14 @@ One option is [lld], which is available on Linux and Windows.
 
 [lld]: https://lld.llvm.org/
 
-To specify lld from the command line, precede your build command with
-`RUSTFLAGS="-C link-arg=-fuse-ld=lld"`.
+To specify lld from the command line, use the `-C link-arg=-fuse-ld=lld` flag.
+For example:
+```bash
+$ RUSTFLAGS="-C target-cpu=native" cargo build --release
+```
 
-To specify lld from a [`config.toml`] file (for one or more projects), add these
-lines:
+Alternatively, to specify lld from a [`config.toml`] file (for one or more
+projects), add these lines:
 ```text
 [build]
 rustflags = ["-C", "link-arg=-fuse-ld=lld"]
