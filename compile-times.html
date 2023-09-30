@@ -181,10 +181,12 @@ because that is a related topic of interest to many people.</p>
 rebuilding a program after a small change. It is possible to select a faster
 linker than the default one.</p>
 <p>One option is <a href="https://lld.llvm.org/">lld</a>, which is available on Linux and Windows.</p>
-<p>To specify lld from the command line, precede your build command with
-<code>RUSTFLAGS=&quot;-C link-arg=-fuse-ld=lld&quot;</code>.</p>
-<p>To specify lld from a <a href="https://doc.rust-lang.org/cargo/reference/config.html"><code>config.toml</code></a> file (for one or more projects), add these
-lines:</p>
+<p>To specify lld from the command line, use the <code>-C link-arg=-fuse-ld=lld</code> flag.
+For example:</p>
+<pre><code class="language-bash">$ RUSTFLAGS=&quot;-C target-cpu=native&quot; cargo build --release
+</code></pre>
+<p>Alternatively, to specify lld from a <a href="https://doc.rust-lang.org/cargo/reference/config.html"><code>config.toml</code></a> file (for one or more
+projects), add these lines:</p>
 <pre><code class="language-text">[build]
 rustflags = [&quot;-C&quot;, &quot;link-arg=-fuse-ld=lld&quot;]
 </code></pre>

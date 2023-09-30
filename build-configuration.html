@@ -183,27 +183,27 @@ the following changes, because they can sometimes worsen performance.</p>
 overlook</a>: make sure you are using a <a href="https://doc.rust-lang.org/cargo/reference/profiles.html#release">release build</a> rather than a <a href="https://doc.rust-lang.org/cargo/reference/profiles.html#dev">dev build</a>
 when you want high performance. This is usually done by specifying the
 <code>--release</code> flag to Cargo.</p>
-<p>A release build typically runs <em>much</em> faster than a dev build. 10-100x speedups
-over dev builds are common!</p>
-<p>Dev builds are the default. They are produced if you run <code>cargo build</code>,
-<code>cargo run</code>, or <code>rustc</code> without any additional options. Dev builds are good
-for debugging, but are not optimized.</p>
+<p>Dev builds are the default. They are good for debugging, but are not optimized.
+They are produced if you run <code>cargo build</code> or <code>cargo run</code>. (Alternatively,
+running <code>rustc</code> without additional options also produces an unoptimized build.)</p>
 <p>Consider the following final line of output from a <code>cargo build</code> run.</p>
 <pre><code class="language-text">Finished dev [unoptimized + debuginfo] target(s) in 29.80s
 </code></pre>
-<p>The <code>[unoptimized + debuginfo]</code> indicates that a dev build has been produced.
-The compiled code will be placed in the <code>target/debug/</code> directory. <code>cargo run</code>
-will run the dev build.</p>
-<p>Release builds are more optimized than dev builds. They also omit some checks,
-such as debug assertions and integer overflow checks. Produce one with <code>cargo build --release</code>, <code>cargo run --release</code>, or <code>rustc -O</code>. (Alternatively, <code>rustc</code>
-has multiple other options for optimized builds, such as <code>-C opt-level</code>.) This
-will typically take longer than a dev build because of the additional
-optimizations.</p>
+<p>This output indicates that a dev build has been produced. The compiled code
+will be placed in the <code>target/debug/</code> directory. <code>cargo run</code> will run the dev
+build.</p>
+<p>In comparison, release builds are much more optimized, omit debug assertions
+and integer overflow checks, and omit debug info. 10-100x speedups over dev
+builds are common! They are produced if you run <code>cargo build --release</code> or
+<code>cargo run --release</code>. (Alternatively, <code>rustc</code> has multiple options for
+optimized builds, such as <code>-O</code> and <code>-C opt-level</code>.) This will typically take
+longer than a dev build because of the additional optimizations.</p>
 <p>Consider the following final line of output from a <code>cargo build --release</code> run.</p>
 <pre><code class="language-text">Finished release [optimized] target(s) in 1m 01s
 </code></pre>
-<p>The <code>[optimized]</code> indicates that a release build has been produced. The
-compiled code will be placed in the <code>target/release/</code> directory. <code>cargo run --release</code> will run the release build.</p>
+<p>This output indicates that a release build has been produced. The compiled code
+will be placed in the <code>target/release/</code> directory. <code>cargo run --release</code> will
+run the release build.</p>
 <p>See the <a href="https://doc.rust-lang.org/cargo/reference/profiles.html">Cargo profile documentation</a> for more details about the differences
 between dev builds (which use the <code>dev</code> profile) and release builds (which use
 the <code>release</code> profile).</p>
@@ -235,21 +235,6 @@ less aggressive form of LTO that often works as well as “fat” LTO without
 increasing build times as much.</p>
 <p>See the <a href="https://doc.rust-lang.org/cargo/reference/profiles.html#lto">Cargo LTO documentation</a> for more details about the <code>lto</code> setting, and
 about enabling specific settings for different profiles.</p>
-<h2 id="cpu-specific-instructions"><a class="header" href="#cpu-specific-instructions">CPU Specific Instructions</a></h2>
-<p>If you do not care that much about the compatibility of your binary on older
-(or other types of) processors, you can tell the compiler to generate the
-newest (and potentially fastest) instructions specific to a <a href="https://doc.rust-lang.org/1.41.1/rustc/codegen-options/index.html#target-cpu">certain CPU
-architecture</a>.</p>
-<p>For example, if you pass <code>-C target-cpu=native</code> to rustc, it will use the best
-instructions for your current CPU:</p>
-<pre><code class="language-bash">$ RUSTFLAGS=&quot;-C target-cpu=native&quot; cargo build --release
-</code></pre>
-<p>This can have a large effect, especially if the compiler finds vectorization
-opportunities in your code.</p>
-<p>If you are unsure whether <code>-C target-cpu=native</code> is working optimally, compare
-the output of <code>rustc --print cfg</code> and <code>rustc --print cfg -C target-cpu=native</code>
-to see if the CPU features are being detected correctly in the latter case. If
-not, you can use <code>-C target-feature</code> to target specific features.</p>
 <h2 id="abort-on-panic"><a class="header" href="#abort-on-panic">Abort on <code>panic!</code></a></h2>
 <p>If you do not need to catch or unwind panics, you can tell the compiler to
 simply abort on panics. This might reduce binary size and increase performance
@@ -257,6 +242,24 @@ slightly:</p>
 <pre><code class="language-toml">[profile.release]
 panic = &quot;abort&quot;
 </code></pre>
+<h2 id="cpu-specific-instructions"><a class="header" href="#cpu-specific-instructions">CPU Specific Instructions</a></h2>
+<p>If you do not care about the compatibility of your binary on older (or other
+types of) processors, you can tell the compiler to generate the newest (and
+potentially fastest) instructions specific to a <a href="https://doc.rust-lang.org/1.41.1/rustc/codegen-options/index.html#target-cpu">certain CPU architecture</a>.</p>
+<p>To request these instructions from the command line, use the <code>-C target-cpu=native</code> flag. For example:</p>
+<pre><code class="language-bash">$ RUSTFLAGS=&quot;-C target-cpu=native&quot; cargo build --release
+</code></pre>
+<p>Alternatively, to request these instructions from a <a href="https://doc.rust-lang.org/cargo/reference/config.html"><code>config.toml</code></a> file (for
+one or more projects), add these lines:</p>
+<pre><code class="language-text">[build]
+rustflags = [&quot;-C&quot;, &quot;target-cpu=native&quot;]
+</code></pre>
+<p>This can have a large effect, especially if the compiler finds vectorization
+opportunities in your code.</p>
+<p>If you are unsure whether <code>-C target-cpu=native</code> is working optimally, compare
+the output of <code>rustc --print cfg</code> and <code>rustc --print cfg -C target-cpu=native</code>
+to see if the CPU features are being detected correctly in the latter case. If
+not, you can use <code>-C target-feature</code> to target specific features.</p>
 <h2 id="profile-guided-optimization"><a class="header" href="#profile-guided-optimization">Profile-guided Optimization</a></h2>
 <p>Profile-guided optimization (PGO) is a compilation model where you compile
 your program, run it on sample data while collecting profiling data, and then
