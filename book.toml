@@ -19,6 +19,8 @@ edit-url-template = "https://github.com/nnethercote/perf-book/edit/master/{path}
 site-url = "https://nnethercote.github.io/perf-book/"
 
 # EPUB
-[output.epub]
-optional = true  # So epub generation is skipped if mdbook-epub isn't installed.
+# Currently disabled due to
+# https://github.com/nnethercote/perf-book/actions/runs/6358429874/job/17270643057
+#[output.epub]
+#optional = true  # So epub generation is skipped if mdbook-epub isn't installed.
 
