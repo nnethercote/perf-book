@@ -70,9 +70,11 @@ See the [Cargo documentation] for more details about the `debug` setting.
 
 Unfortunately, even after doing the above step you won't get detailed profiling
 information for standard library code. This is because shipped versions of the
-Rust standard library are not built with debug info. To remedy this, you can
-build your own version of the compiler and standard library, following [these
-instructions], and adding the following lines to the `config.toml` file:
+Rust standard library are not built with debug info.
+
+The most reliable way around this is to build your own version of the compiler
+and standard library, following [these instructions], and adding the following
+lines to the `config.toml` file:
  ```toml
 [rust]
 debuginfo-level = 1
@@ -80,6 +82,15 @@ debuginfo-level = 1
 This is a hassle, but may be worth the effort in some cases.
 
 [these instructions]: https://github.com/rust-lang/rust
+
+Alternatively, the unstable [build-std] feature lets you compile the standard
+library as part of your program's normal compilation, with the same build
+configuration. However, filenames present in the debug info for the standard
+library will not point to source code files, because this feature does not also
+download standard library source code. So this approach will not help with
+profilers such as Cachegrind and Samply that require source code to work fully.
+
+[build-std]: https://doc.rust-lang.org/cargo/reference/unstable.html#build-std
 
 ## Symbol Demangling
 
