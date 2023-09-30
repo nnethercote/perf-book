@@ -219,13 +219,20 @@ debug = 1
 <p>See the <a href="https://doc.rust-lang.org/cargo/reference/profiles.html#debug">Cargo documentation</a> for more details about the <code>debug</code> setting.</p>
 <p>Unfortunately, even after doing the above step you won’t get detailed profiling
 information for standard library code. This is because shipped versions of the
-Rust standard library are not built with debug info. To remedy this, you can
-build your own version of the compiler and standard library, following <a href="https://github.com/rust-lang/rust">these
-instructions</a>, and adding the following lines to the <code>config.toml</code> file:</p>
+Rust standard library are not built with debug info.</p>
+<p>The most reliable way around this is to build your own version of the compiler
+and standard library, following <a href="https://github.com/rust-lang/rust">these instructions</a>, and adding the following
+lines to the <code>config.toml</code> file:</p>
 <pre><code class="language-toml">[rust]
 debuginfo-level = 1
 </code></pre>
 <p>This is a hassle, but may be worth the effort in some cases.</p>
+<p>Alternatively, the unstable <a href="https://doc.rust-lang.org/cargo/reference/unstable.html#build-std">build-std</a> feature lets you compile the standard
+library as part of your program’s normal compilation, with the same build
+configuration. However, filenames present in the debug info for the standard
+library will not point to source code files, because this feature does not also
+download standard library source code. So this approach will not help with
+profilers such as Cachegrind and Samply that require source code to work fully.</p>
 <h2 id="symbol-demangling"><a class="header" href="#symbol-demangling">Symbol Demangling</a></h2>
 <p>Rust uses a mangling scheme to encode function names in compiled code. If a
 profiler is unaware of this scheme, its output may contain symbol names
