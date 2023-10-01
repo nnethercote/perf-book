@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-<html lang="en" class="sidebar-visible no-js rust">
+<html lang="en" class="rust" dir="ltr">
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
@@ -10,7 +10,7 @@
         
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="theme-color" content="#ffffff" />
+        <meta name="theme-color" content="#ffffff">
 
         <link rel="icon" href="favicon.svg">
         <link rel="shortcut icon" href="favicon.png">
@@ -31,7 +31,7 @@
         <!-- Custom theme stylesheets -->
 
     </head>
-    <body>
+    <body class="sidebar-visible no-js">
     <div id="body-container">
         <!-- Provide site root to javascript -->
         <script>
@@ -61,29 +61,34 @@
             try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
             if (theme === null || theme === undefined) { theme = default_theme; }
             var html = document.querySelector('html');
-            html.classList.remove('no-js')
             html.classList.remove('rust')
             html.classList.add(theme);
-            html.classList.add('js');
+            var body = document.querySelector('body');
+            body.classList.remove('no-js')
+            body.classList.add('js');
         </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
 
         <!-- Hide / unhide sidebar before it is displayed -->
         <script>
-            var html = document.querySelector('html');
+            var body = document.querySelector('body');
             var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
             if (document.body.clientWidth >= 1080) {
                 try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
                 sidebar = sidebar || 'visible';
             } else {
                 sidebar = 'hidden';
             }
-            html.classList.remove('sidebar-visible');
-            html.classList.add("sidebar-" + sidebar);
+            sidebar_toggle.checked = sidebar === 'visible';
+            body.classList.remove('sidebar-visible');
+            body.classList.add("sidebar-" + sidebar);
         </script>
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded affix "><a href="title-page.html">Title Page</a></li><li class="chapter-item expanded "><a href="introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="benchmarking.html"><strong aria-hidden="true">2.</strong> Benchmarking</a></li><li class="chapter-item expanded "><a href="build-configuration.html"><strong aria-hidden="true">3.</strong> Build Configuration</a></li><li class="chapter-item expanded "><a href="linting.html"><strong aria-hidden="true">4.</strong> Linting</a></li><li class="chapter-item expanded "><a href="profiling.html"><strong aria-hidden="true">5.</strong> Profiling</a></li><li class="chapter-item expanded "><a href="inlining.html"><strong aria-hidden="true">6.</strong> Inlining</a></li><li class="chapter-item expanded "><a href="hashing.html"><strong aria-hidden="true">7.</strong> Hashing</a></li><li class="chapter-item expanded "><a href="heap-allocations.html"><strong aria-hidden="true">8.</strong> Heap Allocations</a></li><li class="chapter-item expanded "><a href="type-sizes.html"><strong aria-hidden="true">9.</strong> Type Sizes</a></li><li class="chapter-item expanded "><a href="standard-library-types.html"><strong aria-hidden="true">10.</strong> Standard Library Types</a></li><li class="chapter-item expanded "><a href="iterators.html"><strong aria-hidden="true">11.</strong> Iterators</a></li><li class="chapter-item expanded "><a href="bounds-checks.html"><strong aria-hidden="true">12.</strong> Bounds Checks</a></li><li class="chapter-item expanded "><a href="io.html"><strong aria-hidden="true">13.</strong> I/O</a></li><li class="chapter-item expanded "><a href="logging-and-debugging.html"><strong aria-hidden="true">14.</strong> Logging and Debugging</a></li><li class="chapter-item expanded "><a href="wrapper-types.html"><strong aria-hidden="true">15.</strong> Wrapper Types</a></li><li class="chapter-item expanded "><a href="machine-code.html"><strong aria-hidden="true">16.</strong> Machine Code</a></li><li class="chapter-item expanded "><a href="parallelism.html"><strong aria-hidden="true">17.</strong> Parallelism</a></li><li class="chapter-item expanded "><a href="binary-size.html"><strong aria-hidden="true">18.</strong> Binary Size</a></li><li class="chapter-item expanded "><a href="general-tips.html"><strong aria-hidden="true">19.</strong> General Tips</a></li><li class="chapter-item expanded "><a href="compile-times.html" class="active"><strong aria-hidden="true">20.</strong> Compile Times</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="title-page.html">Title Page</a></li><li class="chapter-item expanded "><a href="introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="benchmarking.html"><strong aria-hidden="true">2.</strong> Benchmarking</a></li><li class="chapter-item expanded "><a href="build-configuration.html"><strong aria-hidden="true">3.</strong> Build Configuration</a></li><li class="chapter-item expanded "><a href="linting.html"><strong aria-hidden="true">4.</strong> Linting</a></li><li class="chapter-item expanded "><a href="profiling.html"><strong aria-hidden="true">5.</strong> Profiling</a></li><li class="chapter-item expanded "><a href="inlining.html"><strong aria-hidden="true">6.</strong> Inlining</a></li><li class="chapter-item expanded "><a href="hashing.html"><strong aria-hidden="true">7.</strong> Hashing</a></li><li class="chapter-item expanded "><a href="heap-allocations.html"><strong aria-hidden="true">8.</strong> Heap Allocations</a></li><li class="chapter-item expanded "><a href="type-sizes.html"><strong aria-hidden="true">9.</strong> Type Sizes</a></li><li class="chapter-item expanded "><a href="standard-library-types.html"><strong aria-hidden="true">10.</strong> Standard Library Types</a></li><li class="chapter-item expanded "><a href="iterators.html"><strong aria-hidden="true">11.</strong> Iterators</a></li><li class="chapter-item expanded "><a href="bounds-checks.html"><strong aria-hidden="true">12.</strong> Bounds Checks</a></li><li class="chapter-item expanded "><a href="io.html"><strong aria-hidden="true">13.</strong> I/O</a></li><li class="chapter-item expanded "><a href="logging-and-debugging.html"><strong aria-hidden="true">14.</strong> Logging and Debugging</a></li><li class="chapter-item expanded "><a href="wrapper-types.html"><strong aria-hidden="true">15.</strong> Wrapper Types</a></li><li class="chapter-item expanded "><a href="machine-code.html"><strong aria-hidden="true">16.</strong> Machine Code</a></li><li class="chapter-item expanded "><a href="parallelism.html"><strong aria-hidden="true">17.</strong> Parallelism</a></li><li class="chapter-item expanded "><a href="general-tips.html"><strong aria-hidden="true">18.</strong> General Tips</a></li><li class="chapter-item expanded "><a href="compile-times.html" class="active"><strong aria-hidden="true">19.</strong> Compile Times</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -116,9 +121,9 @@
                                 <div id="menu-bar-hover-placeholder"></div>
                 <div id="menu-bar" class="menu-bar sticky">
                     <div class="left-buttons">
-                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
                             <i class="fa fa-bars"></i>
-                        </button>
+                        </label>
                         <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
                             <i class="fa fa-paint-brush"></i>
                         </button>
@@ -176,34 +181,13 @@
 <p>Although this book is primarily about improving the performance of Rust
 programs, this section is about reducing the compile times of Rust programs,
 because that is a related topic of interest to many people.</p>
-<h2 id="linking"><a class="header" href="#linking">Linking</a></h2>
-<p>A big part of compile time is actually linking time, particularly when
-rebuilding a program after a small change. It is possible to select a faster
-linker than the default one.</p>
-<p>One option is <a href="https://lld.llvm.org/">lld</a>, which is available on Linux and Windows.</p>
-<p>To specify lld from the command line, use the <code>-C link-arg=-fuse-ld=lld</code> flag.
-For example:</p>
-<pre><code class="language-bash">$ RUSTFLAGS=&quot;-C target-cpu=native&quot; cargo build --release
-</code></pre>
-<p>Alternatively, to specify lld from a <a href="https://doc.rust-lang.org/cargo/reference/config.html"><code>config.toml</code></a> file (for one or more
-projects), add these lines:</p>
-<pre><code class="language-text">[build]
-rustflags = [&quot;-C&quot;, &quot;link-arg=-fuse-ld=lld&quot;]
-</code></pre>
-<p>lld is not fully supported for use with Rust, but it should work for most use
-cases on Linux and Windows. There is a <a href="https://github.com/rust-lang/rust/issues/39915#issuecomment-618726211">GitHub Issue</a> tracking full support for
-lld.</p>
-<p>Another option is <a href="https://github.com/rui314/mold">mold</a>, which is currently available on Linux and macOS.
-Simply substitute <code>mold</code> for <code>lld</code> in the instructions above.</p>
-<p>mold is often faster than lld. It is also much newer and may not work in all
-cases.</p>
+<p>The <a href="build-configuration.html#minimizing-compile-times">Minimizing Compile Times</a> section discussed ways to reduce compile times
+via build configuration choices. The rest of this section discusses ways to
+reduce compile times that require modifying your program’s code.</p>
 <h2 id="visualization"><a class="header" href="#visualization">Visualization</a></h2>
 <p>Cargo has a feature that lets you visualize compilation of your
-program. Build with this command (1.60 or later):</p>
+program. Build with this command:</p>
 <pre><code class="language-text">cargo build --timings
-</code></pre>
-<p>or this (1.59 or earlier):</p>
-<pre><code class="language-text">cargo +nightly build -Ztimings
 </code></pre>
 <p>On completion it will print the name of an HTML file. Open that file in a web
 browser. It contains a <a href="https://en.wikipedia.org/wiki/Gantt_chart">Gantt chart</a> that shows the dependencies between the
@@ -211,16 +195,6 @@ various crates in your program. This shows how much parallelism there is in
 your crate graph, which can indicate if any large crates that serialize
 compilation should be broken up. See <a href="https://doc.rust-lang.org/nightly/cargo/reference/timings.html">the documentation</a> for more
 details on how to read the graphs.</p>
-<h2 id="fully-disable-link-time-optimization"><a class="header" href="#fully-disable-link-time-optimization">Fully Disable Link-time Optimization</a></h2>
-<p>For release builds the Rust compiler by default does a simple form of
-<a href="https://doc.rust-lang.org/cargo/reference/profiles.html#lto">link-time optimization</a> called <em>thin local LTO</em>. This can be disabled with the
-following lines in the <code>Cargo.toml</code> or <a href="https://doc.rust-lang.org/cargo/reference/config.html"><code>config.toml</code></a> file:</p>
-<pre><code class="language-toml">[profile.release]
-lto = &quot;off&quot;
-</code></pre>
-<p>This will speed up release builds at the cost of lower code quality.</p>
-<p>Note that this is different to the <code>lto = &quot;false&quot;</code> option, which leaves thin
-local LTO enabled.</p>
 <h2 id="llvm-ir"><a class="header" href="#llvm-ir">LLVM IR</a></h2>
 <p>The Rust compiler uses <a href="https://llvm.org/">LLVM</a> for its back-end. LLVM’s execution can be a large
 part of compile times, especially when the Rust compiler’s front end generates
@@ -256,6 +230,7 @@ can help compile times.</p>
 <p>The effects of these sorts of changes on compile times will usually be small,
 though occasionally they can be large.
 <a href="https://github.com/servo/servo/issues/26585"><strong>Example</strong></a>.</p>
+<p>Such changes can also reduce binary size.</p>
 
                     </main>
 

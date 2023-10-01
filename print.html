@@ -1,17 +1,17 @@
 <!DOCTYPE HTML>
-<html lang="en" class="sidebar-visible no-js rust">
+<html lang="en" class="rust" dir="ltr">
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
         <title>The Rust Performance Book</title>
-        <meta name="robots" content="noindex" />
+        <meta name="robots" content="noindex">
 
 
         <!-- Custom HTML head -->
         
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="theme-color" content="#ffffff" />
+        <meta name="theme-color" content="#ffffff">
 
         <link rel="icon" href="favicon.svg">
         <link rel="shortcut icon" href="favicon.png">
@@ -32,7 +32,7 @@
         <!-- Custom theme stylesheets -->
 
     </head>
-    <body>
+    <body class="sidebar-visible no-js">
     <div id="body-container">
         <!-- Provide site root to javascript -->
         <script>
@@ -62,29 +62,34 @@
             try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
             if (theme === null || theme === undefined) { theme = default_theme; }
             var html = document.querySelector('html');
-            html.classList.remove('no-js')
             html.classList.remove('rust')
             html.classList.add(theme);
-            html.classList.add('js');
+            var body = document.querySelector('body');
+            body.classList.remove('no-js')
+            body.classList.add('js');
         </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
 
         <!-- Hide / unhide sidebar before it is displayed -->
         <script>
-            var html = document.querySelector('html');
+            var body = document.querySelector('body');
             var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
             if (document.body.clientWidth >= 1080) {
                 try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
                 sidebar = sidebar || 'visible';
             } else {
                 sidebar = 'hidden';
             }
-            html.classList.remove('sidebar-visible');
-            html.classList.add("sidebar-" + sidebar);
+            sidebar_toggle.checked = sidebar === 'visible';
+            body.classList.remove('sidebar-visible');
+            body.classList.add("sidebar-" + sidebar);
         </script>
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded affix "><a href="title-page.html">Title Page</a></li><li class="chapter-item expanded "><a href="introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="benchmarking.html"><strong aria-hidden="true">2.</strong> Benchmarking</a></li><li class="chapter-item expanded "><a href="build-configuration.html"><strong aria-hidden="true">3.</strong> Build Configuration</a></li><li class="chapter-item expanded "><a href="linting.html"><strong aria-hidden="true">4.</strong> Linting</a></li><li class="chapter-item expanded "><a href="profiling.html"><strong aria-hidden="true">5.</strong> Profiling</a></li><li class="chapter-item expanded "><a href="inlining.html"><strong aria-hidden="true">6.</strong> Inlining</a></li><li class="chapter-item expanded "><a href="hashing.html"><strong aria-hidden="true">7.</strong> Hashing</a></li><li class="chapter-item expanded "><a href="heap-allocations.html"><strong aria-hidden="true">8.</strong> Heap Allocations</a></li><li class="chapter-item expanded "><a href="type-sizes.html"><strong aria-hidden="true">9.</strong> Type Sizes</a></li><li class="chapter-item expanded "><a href="standard-library-types.html"><strong aria-hidden="true">10.</strong> Standard Library Types</a></li><li class="chapter-item expanded "><a href="iterators.html"><strong aria-hidden="true">11.</strong> Iterators</a></li><li class="chapter-item expanded "><a href="bounds-checks.html"><strong aria-hidden="true">12.</strong> Bounds Checks</a></li><li class="chapter-item expanded "><a href="io.html"><strong aria-hidden="true">13.</strong> I/O</a></li><li class="chapter-item expanded "><a href="logging-and-debugging.html"><strong aria-hidden="true">14.</strong> Logging and Debugging</a></li><li class="chapter-item expanded "><a href="wrapper-types.html"><strong aria-hidden="true">15.</strong> Wrapper Types</a></li><li class="chapter-item expanded "><a href="machine-code.html"><strong aria-hidden="true">16.</strong> Machine Code</a></li><li class="chapter-item expanded "><a href="parallelism.html"><strong aria-hidden="true">17.</strong> Parallelism</a></li><li class="chapter-item expanded "><a href="binary-size.html"><strong aria-hidden="true">18.</strong> Binary Size</a></li><li class="chapter-item expanded "><a href="general-tips.html"><strong aria-hidden="true">19.</strong> General Tips</a></li><li class="chapter-item expanded "><a href="compile-times.html"><strong aria-hidden="true">20.</strong> Compile Times</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="title-page.html">Title Page</a></li><li class="chapter-item expanded "><a href="introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="benchmarking.html"><strong aria-hidden="true">2.</strong> Benchmarking</a></li><li class="chapter-item expanded "><a href="build-configuration.html"><strong aria-hidden="true">3.</strong> Build Configuration</a></li><li class="chapter-item expanded "><a href="linting.html"><strong aria-hidden="true">4.</strong> Linting</a></li><li class="chapter-item expanded "><a href="profiling.html"><strong aria-hidden="true">5.</strong> Profiling</a></li><li class="chapter-item expanded "><a href="inlining.html"><strong aria-hidden="true">6.</strong> Inlining</a></li><li class="chapter-item expanded "><a href="hashing.html"><strong aria-hidden="true">7.</strong> Hashing</a></li><li class="chapter-item expanded "><a href="heap-allocations.html"><strong aria-hidden="true">8.</strong> Heap Allocations</a></li><li class="chapter-item expanded "><a href="type-sizes.html"><strong aria-hidden="true">9.</strong> Type Sizes</a></li><li class="chapter-item expanded "><a href="standard-library-types.html"><strong aria-hidden="true">10.</strong> Standard Library Types</a></li><li class="chapter-item expanded "><a href="iterators.html"><strong aria-hidden="true">11.</strong> Iterators</a></li><li class="chapter-item expanded "><a href="bounds-checks.html"><strong aria-hidden="true">12.</strong> Bounds Checks</a></li><li class="chapter-item expanded "><a href="io.html"><strong aria-hidden="true">13.</strong> I/O</a></li><li class="chapter-item expanded "><a href="logging-and-debugging.html"><strong aria-hidden="true">14.</strong> Logging and Debugging</a></li><li class="chapter-item expanded "><a href="wrapper-types.html"><strong aria-hidden="true">15.</strong> Wrapper Types</a></li><li class="chapter-item expanded "><a href="machine-code.html"><strong aria-hidden="true">16.</strong> Machine Code</a></li><li class="chapter-item expanded "><a href="parallelism.html"><strong aria-hidden="true">17.</strong> Parallelism</a></li><li class="chapter-item expanded "><a href="general-tips.html"><strong aria-hidden="true">18.</strong> General Tips</a></li><li class="chapter-item expanded "><a href="compile-times.html"><strong aria-hidden="true">19.</strong> Compile Times</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -117,9 +122,9 @@
                                 <div id="menu-bar-hover-placeholder"></div>
                 <div id="menu-bar" class="menu-bar sticky">
                     <div class="left-buttons">
-                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
                             <i class="fa fa-bars"></i>
-                        </button>
+                        </label>
                         <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
                             <i class="fa fa-paint-brush"></i>
                         </button>
@@ -176,10 +181,11 @@
 <p><a href="https://github.com/nnethercote/perf-book">Source code</a></p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="introduction"><a class="header" href="#introduction">Introduction</a></h1>
 <p>Performance is important for many Rust programs. </p>
-<p>This book contains techniques that can improve the performance—speed and memory
-usage—of Rust programs. The <a href="compile-times.html">Compile Times</a> section also contains techniques
-that will improve the compile times of Rust programs. Some techniques only
-require changing build configurations, but many require changing code.</p>
+<p>This book contains techniques that can improve the performance-related
+characteristics of Rust programs, such as runtime speed, memory usage, and
+binary size. The <a href="compile-times.html">Compile Times</a> section also contains techniques that will
+improve the compile times of Rust programs. Some techniques only require
+changing build configurations, but many require changing code.</p>
 <p>Some techniques are entirely Rust-specific, and some involve ideas that can be
 applied (often with modifications) to programs written in other languages. The
 <a href="general-tips.html">General Tips</a> section also includes some general principles that apply to any
@@ -188,9 +194,9 @@ Rust programs and is no substitute for a general purpose guide to profiling and
 optimization.</p>
 <p>This book also focuses on techniques that are practical and proven: many are
 accompanied by links to pull requests or other resources that show how the
-technique was used on a real-world Rust program. It reflects the author’s
-background, being somewhat biased towards compiler development and away from
-other areas such as scientific computing.</p>
+technique was used on a real-world Rust program. It reflects the primary
+author’s background, being somewhat biased towards compiler development and
+away from other areas such as scientific computing.</p>
 <p>This book is deliberately terse, favouring breadth over depth, so that it is
 quick to read. It links to external sources that provide more depth when
 appropriate.</p>
@@ -210,11 +216,15 @@ workloads that represent realistic usage of your program. Workloads using
 real-world inputs are best, but <a href="https://stackoverflow.com/questions/2842695/what-is-microbenchmarking">microbenchmarks</a> and <a href="https://en.wikipedia.org/wiki/Stress_testing_(software)">stress tests</a> can be
 useful in moderation.</p>
 <p>Second, you need a way to run the workloads, which will also dictate the
-metrics used. Rust’s built-in <a href="https://doc.rust-lang.org/nightly/unstable-book/library-features/test.html">benchmark tests</a> are a simple starting point,
-but they use unstable features and therefore only work on Nightly Rust.
-<a href="https://github.com/bheisler/criterion.rs">Criterion</a> is a more sophisticated alternative. Custom benchmarking harnesses
-are also possible. For example, <a href="https://github.com/rust-lang/rustc-perf/">rustc-perf</a> is the harness used to benchmark
-the Rust compiler.</p>
+metrics used.</p>
+<ul>
+<li>Rust’s built-in <a href="https://doc.rust-lang.org/nightly/unstable-book/library-features/test.html">benchmark tests</a> are a simple starting point, but they use
+unstable features and therefore only work on Nightly Rust.</li>
+<li><a href="https://github.com/bheisler/criterion.rs">Criterion</a> is a more sophisticated alternative.</li>
+<li><a href="https://github.com/sharkdp/hyperfine">Hyperfine</a> is an excellent general-purpose benchmarking tool.</li>
+<li>Custom benchmarking harnesses are also possible. For example, <a href="https://github.com/rust-lang/rustc-perf/">rustc-perf</a> is
+the harness used to benchmark the Rust compiler.</li>
+</ul>
 <p>When it comes to metrics, there are many choices, and the right one(s) will
 depend on the nature of the program being benchmarked. For example, metrics
 that make sense for a batch program might not make sense for an interactive
@@ -227,17 +237,29 @@ instruction counts) may be a reasonable alternative.</p>
 are a variety of ways to do it, with no single method being obviously best.</p>
 <p>Good benchmarking is hard. Having said that, do not stress too much about
 having a perfect benchmarking setup, particularly when you start optimizing a
-program. A mediocre setup is far better than no setup. Keep an open mind about
-what you are measuring, and over time you can make benchmarking improvements as
-you learn about the performance characteristics of your program.</p>
+program. Mediocre benchmarking is far better than no benchmarking. Keep an open
+mind about what you are measuring, and over time you can make benchmarking
+improvements as you learn about the performance characteristics of your
+program.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="build-configuration"><a class="header" href="#build-configuration">Build Configuration</a></h1>
-<p>The right build configuration will maximize the performance of your Rust
-program without any changes to its code. In particular, several build
-configuration options exist that trade longer compile times for higher code
-quality. But you should check your program’s performance after applying any of
-the following changes, because they can sometimes worsen performance.</p>
+<p>You can drastically change the performance of a Rust program without changing
+its code, just by changing its build configuration. There are many possible
+build configurations for each Rust program. The one chosen will affect several
+characteristics of the compiled code, such as compile times, runtime speed,
+binary size, debuggability, profilability, and which architectures your
+compiled program will run on.</p>
+<p>Most configuration choices will improve one or more characteristics while
+worsening one or more others. For example, a common trade-off is to accept
+worse compile times in exchange for higher runtime speeds. The right choice
+for your program depends on your needs and the specifics of your program, and
+performance-related choices (which is most of them) should be validated with
+benchmarking.</p>
+<p>Note that Cargo only looks at the profile settings in the <code>Cargo.toml</code> file at
+the root of the workspace. Profile settings defined in dependencies are
+ignored. Therefore, these options are mostly relevant for binary crates, not
+library crates.</p>
 <h2 id="release-builds"><a class="header" href="#release-builds">Release Builds</a></h2>
-<p>The single most important Rust performance tip is simple but <a href="https://users.rust-lang.org/t/why-my-rust-program-is-so-slow/47764/5">easy to
+<p>The single most important build configuration choice is simple but <a href="https://users.rust-lang.org/t/why-my-rust-program-is-so-slow/47764/5">easy to
 overlook</a>: make sure you are using a <a href="https://doc.rust-lang.org/cargo/reference/profiles.html#release">release build</a> rather than a <a href="https://doc.rust-lang.org/cargo/reference/profiles.html#dev">dev build</a>
 when you want high performance. This is usually done by specifying the
 <code>--release</code> flag to Cargo.</p>
@@ -265,68 +287,162 @@ run the release build.</p>
 <p>See the <a href="https://doc.rust-lang.org/cargo/reference/profiles.html">Cargo profile documentation</a> for more details about the differences
 between dev builds (which use the <code>dev</code> profile) and release builds (which use
 the <code>release</code> profile).</p>
-<h2 id="codegen-units"><a class="header" href="#codegen-units">Codegen Units</a></h2>
-<p>The Rust compiler splits crates into multiple <a href="https://doc.rust-lang.org/rustc/codegen-options/index.html#codegen-units">codegen units</a> to parallelize
+<p>The default build configuration choices used in release builds provide a good
+balance between the abovementioned characteristics such as compile times, runtime
+speed, and binary size. But there are many possible adjustments, as the
+following sections explain.</p>
+<h2 id="maximizing-runtime-speed"><a class="header" href="#maximizing-runtime-speed">Maximizing Runtime Speed</a></h2>
+<p>The following build configuration options are designed primarily to maximize
+runtime speed. Some of them may also reduce binary size.</p>
+<h3 id="codegen-units"><a class="header" href="#codegen-units">Codegen Units</a></h3>
+<p>The Rust compiler splits crates into multiple <a href="https://doc.rust-lang.org/cargo/reference/profiles.html#codegen-units">codegen units</a> to parallelize
 (and thus speed up) compilation. However, this might cause it to miss some
-potential optimizations. If you want to potentially improve runtime performance
-at the cost of larger compile time, you can set the number of units to one:</p>
+potential optimizations. You may be able to improve runtime speed and reduce
+binary size, at the cost of increased compile times, by setting the number of
+units to one. Add these lines to the <code>Cargo.toml</code> file:</p>
 <pre><code class="language-toml">[profile.release]
 codegen-units = 1
 </code></pre>
-<p><a href="https://likebike.com/posts/How_To_Write_Fast_Rust_Code.html#emit-asm"><strong>Example</strong></a>.</p>
-<p>Reducing the number of codegen units can also result in a smaller compiled
-binary.</p>
-<h2 id="link-time-optimization"><a class="header" href="#link-time-optimization">Link-time Optimization</a></h2>
-<p>Link-time optimization (LTO) is a whole-program optimization technique that can
-improve runtime performance by 10-20% or more, at the cost of increased build
-times. For any individual Rust program it is easy to see if the runtime versus
-compile-time trade-off is worthwhile.</p>
-<p>The simplest way to try LTO is to add the following lines to the <code>Cargo.toml</code>
-file and do a release build.</p>
+<p><a href="https://likebike.com/posts/How_To_Write_Fast_Rust_Code.html#emit-asm"><strong>Example 1</strong></a>,
+<a href="https://github.com/rust-lang/rust/pull/115554#issuecomment-1742192440"><strong>Example 2</strong></a>.</p>
+<h3 id="link-time-optimization"><a class="header" href="#link-time-optimization">Link-time Optimization</a></h3>
+<p><a href="https://doc.rust-lang.org/cargo/reference/profiles.html#lto">Link-time optimization</a> (LTO) is a whole-program optimization technique that
+can improve runtime speed by 10-20% or more, and also reduce binary size, at
+the cost of worse compile times. It comes in several forms.</p>
+<p>The first form of LTO is <em>thin local LTO</em>, a lightweight form of LTO. By
+default the compiler uses this for any build that involves a non-zero level of
+optimization. This includes release builds. To explicitly request this level of
+LTO, put these lines in the <code>Cargo.toml</code> file:</p>
 <pre><code class="language-toml">[profile.release]
-lto = true
+lto = false
 </code></pre>
-<p>This will result in “fat” LTO, which optimizes across all crates in the
-dependency graph.</p>
-<p>Alternatively, use <code>lto = &quot;thin&quot;</code> in <code>Cargo.toml</code> to use “thin” LTO, which is a
-less aggressive form of LTO that often works as well as “fat” LTO without
-increasing build times as much.</p>
-<p>See the <a href="https://doc.rust-lang.org/cargo/reference/profiles.html#lto">Cargo LTO documentation</a> for more details about the <code>lto</code> setting, and
-about enabling specific settings for different profiles.</p>
-<h2 id="abort-on-panic"><a class="header" href="#abort-on-panic">Abort on <code>panic!</code></a></h2>
-<p>If you do not need to catch or unwind panics, you can tell the compiler to
-simply abort on panics. This might reduce binary size and increase performance
-slightly:</p>
-<pre><code class="language-toml">[profile.release]
-panic = &quot;abort&quot;
-</code></pre>
-<h2 id="cpu-specific-instructions"><a class="header" href="#cpu-specific-instructions">CPU Specific Instructions</a></h2>
+<p>The second form of LTO is <em>thin LTO</em>, which is a little more aggressive, and
+likely to improve runtime speed and reduce binary size while also increasing
+compile times. Use <code>lto = &quot;thin&quot;</code> in <code>Cargo.toml</code> to enable it.</p>
+<p>The third form of LTO is <em>fat LTO</em>, which is even more aggressive, and may
+improve performance and reduce binary size further while increasing build
+times again. Use <code>lto = &quot;fat&quot;</code> in <code>Cargo.toml</code> to enable it.</p>
+<p>Finally, it is possible to fully disable LTO, which will likely worsen runtime
+speed and increase binary size but reduce compile times. Use <code>lto = &quot;off&quot;</code> in
+<code>Cargo.toml</code> for this. Note that this is different to the <code>lto = false</code> option,
+which, as mentioned above, leaves thin local LTO enabled.</p>
+<h3 id="cpu-specific-instructions"><a class="header" href="#cpu-specific-instructions">CPU Specific Instructions</a></h3>
 <p>If you do not care about the compatibility of your binary on older (or other
 types of) processors, you can tell the compiler to generate the newest (and
-potentially fastest) instructions specific to a <a href="https://doc.rust-lang.org/1.41.1/rustc/codegen-options/index.html#target-cpu">certain CPU architecture</a>.</p>
+potentially fastest) instructions specific to a <a href="https://doc.rust-lang.org/rustc/codegen-options/index.html#target-cpu">certain CPU architecture</a>,
+such as AVX SIMD instructions for x86-64 CPUs.</p>
 <p>To request these instructions from the command line, use the <code>-C target-cpu=native</code> flag. For example:</p>
 <pre><code class="language-bash">$ RUSTFLAGS=&quot;-C target-cpu=native&quot; cargo build --release
 </code></pre>
 <p>Alternatively, to request these instructions from a <a href="https://doc.rust-lang.org/cargo/reference/config.html"><code>config.toml</code></a> file (for
 one or more projects), add these lines:</p>
-<pre><code class="language-text">[build]
+<pre><code class="language-toml">[build]
 rustflags = [&quot;-C&quot;, &quot;target-cpu=native&quot;]
 </code></pre>
-<p>This can have a large effect, especially if the compiler finds vectorization
+<p>This can improve runtime speed, especially if the compiler finds vectorization
 opportunities in your code.</p>
 <p>If you are unsure whether <code>-C target-cpu=native</code> is working optimally, compare
 the output of <code>rustc --print cfg</code> and <code>rustc --print cfg -C target-cpu=native</code>
 to see if the CPU features are being detected correctly in the latter case. If
 not, you can use <code>-C target-feature</code> to target specific features.</p>
-<h2 id="profile-guided-optimization"><a class="header" href="#profile-guided-optimization">Profile-guided Optimization</a></h2>
+<h3 id="profile-guided-optimization"><a class="header" href="#profile-guided-optimization">Profile-guided Optimization</a></h3>
 <p>Profile-guided optimization (PGO) is a compilation model where you compile
 your program, run it on sample data while collecting profiling data, and then
-use that profiling data to guide a second compilation of the program.
-<a href="https://blog.rust-lang.org/inside-rust/2020/11/11/exploring-pgo-for-the-rust-compiler.html"><strong>Example</strong></a>.</p>
+use that profiling data to guide a second compilation of the program. This can
+improve runtime speed by 10% or more.
+<a href="https://blog.rust-lang.org/inside-rust/2020/11/11/exploring-pgo-for-the-rust-compiler.html"><strong>Example 1</strong></a>,
+<a href="https://github.com/rust-lang/rust/pull/96978"><strong>Example 2</strong></a>.</p>
 <p>It is an advanced technique that takes some effort to set up, but is worthwhile
 in some cases. See the <a href="https://doc.rust-lang.org/rustc/profile-guided-optimization.html">rustc PGO documentation</a> for details. Also, the
 <a href="https://github.com/Kobzol/cargo-pgo"><code>cargo-pgo</code></a> command makes it easier to use PGO (and <a href="https://github.com/llvm/llvm-project/tree/main/bolt">BOLT</a>, which is similar)
 to optimize Rust binaries.</p>
+<h2 id="minimizing-binary-size"><a class="header" href="#minimizing-binary-size">Minimizing Binary Size</a></h2>
+<p>The following build configuration options are designed primarily to minimize
+binary size. Their affects on runtime speed vary.</p>
+<h3 id="optimization-level"><a class="header" href="#optimization-level">Optimization Level</a></h3>
+<p>You can request an <a href="https://doc.rust-lang.org/cargo/reference/profiles.html#opt-level">optimization level</a> that aims to minimize binary size by
+adding these lines to the <code>Cargo.toml</code> file:</p>
+<pre><code class="language-toml">[profile.release]
+opt-level = &quot;z&quot;
+</code></pre>
+<p>This may also reduce runtime speed.</p>
+<p>An alternative is <code>opt-level = &quot;s&quot;</code>, which targets minimal binary size a little
+less aggressively. Compared to <code>opt-level = &quot;z&quot;</code>, it allows <a href="https://doc.rust-lang.org/rustc/codegen-options/index.html#inline-threshold">slightly more
+inlining</a> and also the vectorization of loops.</p>
+<h3 id="abort-on-panic"><a class="header" href="#abort-on-panic">Abort on <code>panic!</code></a></h3>
+<p>If you do not need to catch or unwind panics, you can tell the compiler to
+simply <a href="https://doc.rust-lang.org/cargo/reference/profiles.html#panic">abort on panic</a>. This might reduce binary size and increase runtime
+speed slightly, and may even reduce compile times slightly. Add these lines to
+the <code>Cargo.toml</code> file:</p>
+<pre><code class="language-toml">[profile.release]
+panic = &quot;abort&quot;
+</code></pre>
+<h3 id="strip-debug-info-and-symbols"><a class="header" href="#strip-debug-info-and-symbols">Strip Debug Info and Symbols</a></h3>
+<p>You can tell the compiler to <a href="https://doc.rust-lang.org/cargo/reference/profiles.html#strip">strip</a> debug info and symbols from the compiled
+binary. Add these lines to <code>Cargo.toml</code> to strip just debug info:</p>
+<pre><code class="language-toml">[profile.release]
+strip = &quot;debuginfo&quot;
+</code></pre>
+<p>Alternatively, use <code>strip = &quot;symbols&quot;</code> to strip both debug info and symbols.</p>
+<p>Stripping debug info can greatly reduce binary size. On Linux, the binary size
+of a small Rust programs might shrink by 4x when debug info is stripped.
+Stripping symbols can also reduce binary size, though generally not by as much.
+<a href="https://github.com/nnethercote/counts/commit/53cab44cd09ff1aa80de70a6dbe1893ff8a41142"><strong>Example</strong></a>.</p>
+<p>However, stripping makes your compiled program more difficult to debug and
+profile. For example, if a stripped program panics, the backtrace produced may
+contain less useful information than normal. The exact effects for the two
+levels of stripping depend on the platform.</p>
+<h3 id="other-ideas"><a class="header" href="#other-ideas">Other ideas</a></h3>
+<p>For more advanced binary size minimization techniques, consult the
+comprehensive documentation in the excellent <a href="https://github.com/johnthagen/min-sized-rust"><code>min-sized-rust</code></a> repository.</p>
+<h2 id="minimizing-compile-times"><a class="header" href="#minimizing-compile-times">Minimizing Compile Times</a></h2>
+<p>The following build configuration options are designed primarily to minimize
+compile times.</p>
+<h3 id="linking"><a class="header" href="#linking">Linking</a></h3>
+<p>A big part of compile time is actually linking time, particularly when
+rebuilding a program after a small change. It is possible to select a faster
+linker than the default one.</p>
+<p>One option is <a href="https://lld.llvm.org/">lld</a>, which is available on Linux and Windows. To specify lld
+from the command line, use the <code>-C link-arg=-fuse-ld=lld</code> flag. For example:</p>
+<pre><code class="language-bash">$ RUSTFLAGS=&quot;-C target-cpu=native&quot; cargo build --release
+</code></pre>
+<p>Alternatively, to specify lld from a <a href="https://doc.rust-lang.org/cargo/reference/config.html"><code>config.toml</code></a> file (for one or more
+projects), add these lines:</p>
+<pre><code class="language-toml">[build]
+rustflags = [&quot;-C&quot;, &quot;link-arg=-fuse-ld=lld&quot;]
+</code></pre>
+<p>lld is not fully supported for use with Rust, but it should work for most use
+cases on Linux and Windows. There is a <a href="https://github.com/rust-lang/rust/issues/39915#issuecomment-618726211">GitHub Issue</a> tracking full support for
+lld.</p>
+<p>Another option is <a href="https://github.com/rui314/mold">mold</a>, which is currently available on Linux and macOS.
+Simply substitute <code>mold</code> for <code>lld</code> in the instructions above. mold is often
+faster than lld. It is also much newer and may not work in all cases.</p>
+<p>Unlike the other options in this chapter, there are no trade-offs here!
+Alternative linkers can be dramatically faster, without any downsides.</p>
+<h2 id="custom-profiles"><a class="header" href="#custom-profiles">Custom profiles</a></h2>
+<p>In addition to the <code>dev</code> and <code>release</code> profiles, Cargo supports <a href="https://doc.rust-lang.org/cargo/reference/profiles.html#custom-profiles">custom
+profiles</a>. It might be useful, for example, to create a custom profile halfway
+between <code>dev</code> and <code>release</code> if you find the runtime speed of dev builds
+insufficient and the compile times of release builds too slow for everyday
+development.</p>
+<h2 id="summary"><a class="header" href="#summary">Summary</a></h2>
+<p>There are many choices to be made when it comes to build configurations. The
+following points summarize the above information into some recommendations.</p>
+<ul>
+<li>If you want to maximize runtime speed, consider all of the following:
+<code>codegen-units = 1</code>, <code>lto = &quot;fat&quot;</code>, <code>panic = &quot;abort&quot;</code>, <code>strip = &quot;symbols&quot;</code>.</li>
+<li>If you want to minimize binary size, consider all of those plus <code>opt-level = &quot;z&quot;</code>.</li>
+<li>In either case, consider <code>-C target-cpu=native</code> if broad architecture support
+is not needed, and <code>cargo pgo</code> if you have the time.</li>
+<li>Always use a faster linker if you are on a platform that supports it, because
+there are no downsides to doing so.</li>
+<li>Benchmark all changes, one at a time, to ensure they have the expected
+effects.</li>
+</ul>
+<p>Finally, <a href="https://github.com/rust-lang/rust/issues/103595">this issue</a> tracks the evolution of the Rust compiler’s own build
+configuration. The Rust compiler’s build system is stranger and more complex
+than that of most Rust programs. Nonetheless, this issue may be instructive in
+showing how build configuration choices can be applied to a large program.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="linting"><a class="header" href="#linting">Linting</a></h1>
 <p><a href="https://github.com/rust-lang/rust-clippy">Clippy</a> is a collection of lints to catch common mistakes in Rust code. It is
 an excellent tool to run on Rust code in general. It can also help with
@@ -424,12 +540,23 @@ library will not point to source code files, because this feature does not also
 download standard library source code. So this approach will not help with
 profilers such as Cachegrind and Samply that require source code to work fully.</p>
 <h2 id="symbol-demangling"><a class="header" href="#symbol-demangling">Symbol Demangling</a></h2>
-<p>Rust uses a mangling scheme to encode function names in compiled code. If a
-profiler is unaware of this scheme, its output may contain symbol names
-beginning with <code>_ZN</code> or <code>_R</code>, such as <code>_ZN3foo3barE</code> or
+<p>Rust uses a form of name mangling to encode function names in compiled code. If
+a profiler is unaware of this, its output may contain symbol names beginning
+with <code>_ZN</code> or <code>_R</code>, such as <code>_ZN3foo3barE</code> or
 <code>_ZN28_$u7b$$u7b$closure$u7d$$u7d$E</code> or
 <code>_RMCsno73SFvQKx_1cINtB0_3StrKRe616263_E</code></p>
 <p>Names like these can be manually demangled using <a href="https://crates.io/crates/rustfilt"><code>rustfilt</code></a>.</p>
+<p>If you are having trouble with symbol demangling while profiling, it may be
+worth changing the <a href="https://doc.rust-lang.org/rustc/codegen-options/index.html#symbol-mangling-version">mangling format</a> from the default legacy format to the newer
+v0 format.</p>
+<p>To use the v0 format from the command line, use the <code>-C symbol-mangling-version=v0</code> flag. For example:</p>
+<pre><code class="language-bash">$ RUSTFLAGS=&quot;-C symbol-mangling-version=v0&quot; cargo build --release
+</code></pre>
+<p>Alternatively, to request these instructions from a <a href="https://doc.rust-lang.org/cargo/reference/config.html"><code>config.toml</code></a> file (for
+one or more projects), add these lines:</p>
+<pre><code class="language-toml">[build]
+rustflags = [&quot;-C&quot;, &quot;symbol-mangling-version=v0&quot;]
+</code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="inlining"><a class="header" href="#inlining">Inlining</a></h1>
 <p>Entry to and exit from hot, uninlined functions often accounts for a
 non-trivial fraction of execution time. Inlining these functions can provide
@@ -1293,10 +1420,6 @@ on its design. </p>
 <p>An in-depth treatment of parallelism is beyond the scope of this book. If you
 are interested in this topic, the documentation for the <a href="https://crates.io/crates/rayon"><code>rayon</code></a> and
 <a href="https://crates.io/crates/crossbeam"><code>crossbeam</code></a> crates is a good place to start.</p>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="binary-size"><a class="header" href="#binary-size">Binary Size</a></h1>
-<p>Sometimes you might need to minimize the size of a compiled Rust binary. In
-that case, you should consult the comprehensive documentation in the excellent
-<a href="https://github.com/johnthagen/min-sized-rust"><code>min-sized-rust</code></a> repository.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="general-tips"><a class="header" href="#general-tips">General Tips</a></h1>
 <p>The previous sections of this book have discussed Rust-specific techniques.
 This section gives a brief overview of some general performance principles.</p>
@@ -1354,34 +1477,13 @@ so handle those cases first” can be illuminating.</p>
 <p>Although this book is primarily about improving the performance of Rust
 programs, this section is about reducing the compile times of Rust programs,
 because that is a related topic of interest to many people.</p>
-<h2 id="linking"><a class="header" href="#linking">Linking</a></h2>
-<p>A big part of compile time is actually linking time, particularly when
-rebuilding a program after a small change. It is possible to select a faster
-linker than the default one.</p>
-<p>One option is <a href="https://lld.llvm.org/">lld</a>, which is available on Linux and Windows.</p>
-<p>To specify lld from the command line, use the <code>-C link-arg=-fuse-ld=lld</code> flag.
-For example:</p>
-<pre><code class="language-bash">$ RUSTFLAGS=&quot;-C target-cpu=native&quot; cargo build --release
-</code></pre>
-<p>Alternatively, to specify lld from a <a href="https://doc.rust-lang.org/cargo/reference/config.html"><code>config.toml</code></a> file (for one or more
-projects), add these lines:</p>
-<pre><code class="language-text">[build]
-rustflags = [&quot;-C&quot;, &quot;link-arg=-fuse-ld=lld&quot;]
-</code></pre>
-<p>lld is not fully supported for use with Rust, but it should work for most use
-cases on Linux and Windows. There is a <a href="https://github.com/rust-lang/rust/issues/39915#issuecomment-618726211">GitHub Issue</a> tracking full support for
-lld.</p>
-<p>Another option is <a href="https://github.com/rui314/mold">mold</a>, which is currently available on Linux and macOS.
-Simply substitute <code>mold</code> for <code>lld</code> in the instructions above.</p>
-<p>mold is often faster than lld. It is also much newer and may not work in all
-cases.</p>
+<p>The <a href="build-configuration.html#minimizing-compile-times">Minimizing Compile Times</a> section discussed ways to reduce compile times
+via build configuration choices. The rest of this section discusses ways to
+reduce compile times that require modifying your program’s code.</p>
 <h2 id="visualization"><a class="header" href="#visualization">Visualization</a></h2>
 <p>Cargo has a feature that lets you visualize compilation of your
-program. Build with this command (1.60 or later):</p>
+program. Build with this command:</p>
 <pre><code class="language-text">cargo build --timings
-</code></pre>
-<p>or this (1.59 or earlier):</p>
-<pre><code class="language-text">cargo +nightly build -Ztimings
 </code></pre>
 <p>On completion it will print the name of an HTML file. Open that file in a web
 browser. It contains a <a href="https://en.wikipedia.org/wiki/Gantt_chart">Gantt chart</a> that shows the dependencies between the
@@ -1389,16 +1491,6 @@ various crates in your program. This shows how much parallelism there is in
 your crate graph, which can indicate if any large crates that serialize
 compilation should be broken up. See <a href="https://doc.rust-lang.org/nightly/cargo/reference/timings.html">the documentation</a> for more
 details on how to read the graphs.</p>
-<h2 id="fully-disable-link-time-optimization"><a class="header" href="#fully-disable-link-time-optimization">Fully Disable Link-time Optimization</a></h2>
-<p>For release builds the Rust compiler by default does a simple form of
-<a href="https://doc.rust-lang.org/cargo/reference/profiles.html#lto">link-time optimization</a> called <em>thin local LTO</em>. This can be disabled with the
-following lines in the <code>Cargo.toml</code> or <a href="https://doc.rust-lang.org/cargo/reference/config.html"><code>config.toml</code></a> file:</p>
-<pre><code class="language-toml">[profile.release]
-lto = &quot;off&quot;
-</code></pre>
-<p>This will speed up release builds at the cost of lower code quality.</p>
-<p>Note that this is different to the <code>lto = &quot;false&quot;</code> option, which leaves thin
-local LTO enabled.</p>
 <h2 id="llvm-ir"><a class="header" href="#llvm-ir">LLVM IR</a></h2>
 <p>The Rust compiler uses <a href="https://llvm.org/">LLVM</a> for its back-end. LLVM’s execution can be a large
 part of compile times, especially when the Rust compiler’s front end generates
@@ -1434,6 +1526,7 @@ can help compile times.</p>
 <p>The effects of these sorts of changes on compile times will usually be small,
 though occasionally they can be large.
 <a href="https://github.com/servo/servo/issues/26585"><strong>Example</strong></a>.</p>
+<p>Such changes can also reduce binary size.</p>
 
                     </main>
 
