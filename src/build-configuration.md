@@ -1,14 +1,27 @@
 # Build Configuration
 
-The right build configuration will maximize the performance of your Rust
-program without any changes to its code. In particular, several build
-configuration options exist that trade longer compile times for higher code
-quality. But you should check your program's performance after applying any of
-the following changes, because they can sometimes worsen performance.
+You can drastically change the performance of a Rust program without changing
+its code, just by changing its build configuration. There are many possible
+build configurations for each Rust program. The one chosen will affect several
+characteristics of the compiled code, such as compile times, runtime speed,
+binary size, debuggability, profilability, and which architectures your
+compiled program will run on.
+
+Most configuration choices will improve one or more characteristics while
+worsening one or more others. For example, a common trade-off is to accept
+worse compile times in exchange for higher runtime speeds. The right choice
+for your program depends on your needs and the specifics of your program, and
+performance-related choices (which is most of them) should be validated with
+benchmarking.
+
+Note that Cargo only looks at the profile settings in the `Cargo.toml` file at
+the root of the workspace. Profile settings defined in dependencies are
+ignored. Therefore, these options are mostly relevant for binary crates, not
+library crates.
 
 ## Release Builds
 
-The single most important Rust performance tip is simple but [easy to
+The single most important build configuration choice is simple but [easy to
 overlook]: make sure you are using a [release build] rather than a [dev build]
 when you want high performance. This is usually done by specifying the
 `--release` flag to Cargo.
@@ -50,65 +63,70 @@ the `release` profile).
 
 [Cargo profile documentation]: https://doc.rust-lang.org/cargo/reference/profiles.html
 
-## Codegen Units
+The default build configuration choices used in release builds provide a good
+balance between the abovementioned characteristics such as compile times, runtime
+speed, and binary size. But there are many possible adjustments, as the
+following sections explain.
+
+## Maximizing Runtime Speed
+
+The following build configuration options are designed primarily to maximize
+runtime speed. Some of them may also reduce binary size.
+
+### Codegen Units
 
 The Rust compiler splits crates into multiple [codegen units] to parallelize
 (and thus speed up) compilation. However, this might cause it to miss some
-potential optimizations. If you want to potentially improve runtime performance
-at the cost of larger compile time, you can set the number of units to one:
+potential optimizations. You may be able to improve runtime speed and reduce
+binary size, at the cost of increased compile times, by setting the number of
+units to one. Add these lines to the `Cargo.toml` file:
 ```toml
 [profile.release]
 codegen-units = 1
 ```
-[**Example**](https://likebike.com/posts/How_To_Write_Fast_Rust_Code.html#emit-asm).
+[**Example 1**](https://likebike.com/posts/How_To_Write_Fast_Rust_Code.html#emit-asm),
+[**Example 2**](https://github.com/rust-lang/rust/pull/115554#issuecomment-1742192440).
 
-[codegen units]: https://doc.rust-lang.org/rustc/codegen-options/index.html#codegen-units
+[codegen units]: https://doc.rust-lang.org/cargo/reference/profiles.html#codegen-units
 
-Reducing the number of codegen units can also result in a smaller compiled
-binary.
+### Link-time Optimization
 
-## Link-time Optimization
+[Link-time optimization] (LTO) is a whole-program optimization technique that
+can improve runtime speed by 10-20% or more, and also reduce binary size, at
+the cost of worse compile times. It comes in several forms.
 
-Link-time optimization (LTO) is a whole-program optimization technique that can
-improve runtime performance by 10-20% or more, at the cost of increased build
-times. For any individual Rust program it is easy to see if the runtime versus
-compile-time trade-off is worthwhile.
+[Link-time optimization]: https://doc.rust-lang.org/cargo/reference/profiles.html#lto
 
-The simplest way to try LTO is to add the following lines to the `Cargo.toml`
-file and do a release build.
+The first form of LTO is *thin local LTO*, a lightweight form of LTO. By
+default the compiler uses this for any build that involves a non-zero level of
+optimization. This includes release builds. To explicitly request this level of
+LTO, put these lines in the `Cargo.toml` file:
 ```toml
 [profile.release]
-lto = true
-```
-This will result in "fat" LTO, which optimizes across all crates in the
-dependency graph.
-
-Alternatively, use `lto = "thin"` in `Cargo.toml` to use "thin" LTO, which is a
-less aggressive form of LTO that often works as well as "fat" LTO without
-increasing build times as much.
-
-See the [Cargo LTO documentation] for more details about the `lto` setting, and
-about enabling specific settings for different profiles.
-
-[Cargo LTO documentation]: https://doc.rust-lang.org/cargo/reference/profiles.html#lto
-
-## Abort on `panic!`
-
-If you do not need to catch or unwind panics, you can tell the compiler to
-simply abort on panics. This might reduce binary size and increase performance
-slightly:
-```toml
-[profile.release]
-panic = "abort"
+lto = false
 ```
 
-## CPU Specific Instructions
+The second form of LTO is *thin LTO*, which is a little more aggressive, and
+likely to improve runtime speed and reduce binary size while also increasing
+compile times. Use `lto = "thin"` in `Cargo.toml` to enable it.
+
+The third form of LTO is *fat LTO*, which is even more aggressive, and may
+improve performance and reduce binary size further while increasing build
+times again. Use `lto = "fat"` in `Cargo.toml` to enable it.
+
+Finally, it is possible to fully disable LTO, which will likely worsen runtime
+speed and increase binary size but reduce compile times. Use `lto = "off"` in
+`Cargo.toml` for this. Note that this is different to the `lto = false` option,
+which, as mentioned above, leaves thin local LTO enabled.
+
+### CPU Specific Instructions
 
 If you do not care about the compatibility of your binary on older (or other
 types of) processors, you can tell the compiler to generate the newest (and
-potentially fastest) instructions specific to a [certain CPU architecture].
+potentially fastest) instructions specific to a [certain CPU architecture],
+such as AVX SIMD instructions for x86-64 CPUs.
 
-[certain CPU architecture]: https://doc.rust-lang.org/1.41.1/rustc/codegen-options/index.html#target-cpu
+[certain CPU architecture]: https://doc.rust-lang.org/rustc/codegen-options/index.html#target-cpu
 
 To request these instructions from the command line, use the `-C
 target-cpu=native` flag. For example:
@@ -118,13 +136,13 @@ $ RUSTFLAGS="-C target-cpu=native" cargo build --release
 
 Alternatively, to request these instructions from a [`config.toml`] file (for
 one or more projects), add these lines:
-```text
+```toml
 [build]
 rustflags = ["-C", "target-cpu=native"]
 ```
 [`config.toml`]: https://doc.rust-lang.org/cargo/reference/config.html
 
-This can have a large effect, especially if the compiler finds vectorization
+This can improve runtime speed, especially if the compiler finds vectorization
 opportunities in your code.
 
 If you are unsure whether `-C target-cpu=native` is working optimally, compare
@@ -132,12 +150,14 @@ the output of `rustc --print cfg` and `rustc --print cfg -C target-cpu=native`
 to see if the CPU features are being detected correctly in the latter case. If
 not, you can use `-C target-feature` to target specific features.
 
-## Profile-guided Optimization
+### Profile-guided Optimization
 
 Profile-guided optimization (PGO) is a compilation model where you compile
 your program, run it on sample data while collecting profiling data, and then
-use that profiling data to guide a second compilation of the program.
-[**Example**](https://blog.rust-lang.org/inside-rust/2020/11/11/exploring-pgo-for-the-rust-compiler.html).
+use that profiling data to guide a second compilation of the program. This can
+improve runtime speed by 10% or more.
+[**Example 1**](https://blog.rust-lang.org/inside-rust/2020/11/11/exploring-pgo-for-the-rust-compiler.html),
+[**Example 2**](https://github.com/rust-lang/rust/pull/96978).
 
 It is an advanced technique that takes some effort to set up, but is worthwhile
 in some cases. See the [rustc PGO documentation] for details. Also, the
@@ -147,3 +167,142 @@ to optimize Rust binaries.
 [rustc PGO documentation]: https://doc.rust-lang.org/rustc/profile-guided-optimization.html
 [`cargo-pgo`]: https://github.com/Kobzol/cargo-pgo
 [BOLT]: https://github.com/llvm/llvm-project/tree/main/bolt
+
+## Minimizing Binary Size
+
+The following build configuration options are designed primarily to minimize
+binary size. Their affects on runtime speed vary.
+
+### Optimization Level
+
+You can request an [optimization level] that aims to minimize binary size by
+adding these lines to the `Cargo.toml` file:
+```toml
+[profile.release]
+opt-level = "z"
+```
+[optimization level]: https://doc.rust-lang.org/cargo/reference/profiles.html#opt-level
+
+This may also reduce runtime speed.
+
+An alternative is `opt-level = "s"`, which targets minimal binary size a little
+less aggressively. Compared to `opt-level = "z"`, it allows [slightly more
+inlining] and also the vectorization of loops.
+
+[slightly more inlining]: https://doc.rust-lang.org/rustc/codegen-options/index.html#inline-threshold
+
+### Abort on `panic!`
+
+If you do not need to catch or unwind panics, you can tell the compiler to
+simply [abort on panic]. This might reduce binary size and increase runtime
+speed slightly, and may even reduce compile times slightly. Add these lines to
+the `Cargo.toml` file:
+```toml
+[profile.release]
+panic = "abort"
+```
+
+[abort on panic]: https://doc.rust-lang.org/cargo/reference/profiles.html#panic
+
+### Strip Debug Info and Symbols
+
+You can tell the compiler to [strip] debug info and symbols from the compiled
+binary. Add these lines to `Cargo.toml` to strip just debug info:
+```toml
+[profile.release]
+strip = "debuginfo"
+```
+Alternatively, use `strip = "symbols"` to strip both debug info and symbols.
+
+[strip]: https://doc.rust-lang.org/cargo/reference/profiles.html#strip
+
+Stripping debug info can greatly reduce binary size. On Linux, the binary size
+of a small Rust programs might shrink by 4x when debug info is stripped.
+Stripping symbols can also reduce binary size, though generally not by as much.
+[**Example**](https://github.com/nnethercote/counts/commit/53cab44cd09ff1aa80de70a6dbe1893ff8a41142).
+
+However, stripping makes your compiled program more difficult to debug and
+profile. For example, if a stripped program panics, the backtrace produced may
+contain less useful information than normal. The exact effects for the two
+levels of stripping depend on the platform.
+
+### Other ideas
+
+For more advanced binary size minimization techniques, consult the
+comprehensive documentation in the excellent [`min-sized-rust`] repository.
+
+[`min-sized-rust`]: https://github.com/johnthagen/min-sized-rust
+
+## Minimizing Compile Times
+
+The following build configuration options are designed primarily to minimize
+compile times.
+
+### Linking
+
+A big part of compile time is actually linking time, particularly when
+rebuilding a program after a small change. It is possible to select a faster
+linker than the default one.
+
+One option is [lld], which is available on Linux and Windows. To specify lld
+from the command line, use the `-C link-arg=-fuse-ld=lld` flag. For example:
+```bash
+$ RUSTFLAGS="-C target-cpu=native" cargo build --release
+```
+
+[lld]: https://lld.llvm.org/
+
+Alternatively, to specify lld from a [`config.toml`] file (for one or more
+projects), add these lines:
+```toml
+[build]
+rustflags = ["-C", "link-arg=-fuse-ld=lld"]
+```
+[`config.toml`]: https://doc.rust-lang.org/cargo/reference/config.html
+
+lld is not fully supported for use with Rust, but it should work for most use
+cases on Linux and Windows. There is a [GitHub Issue] tracking full support for
+lld.
+
+Another option is [mold], which is currently available on Linux and macOS.
+Simply substitute `mold` for `lld` in the instructions above. mold is often
+faster than lld. It is also much newer and may not work in all cases.
+
+[mold]: https://github.com/rui314/mold
+
+Unlike the other options in this chapter, there are no trade-offs here!
+Alternative linkers can be dramatically faster, without any downsides.
+
+[GitHub Issue]: https://github.com/rust-lang/rust/issues/39915#issuecomment-618726211
+
+## Custom profiles
+
+In addition to the `dev` and `release` profiles, Cargo supports [custom
+profiles]. It might be useful, for example, to create a custom profile halfway
+between `dev` and `release` if you find the runtime speed of dev builds
+insufficient and the compile times of release builds too slow for everyday
+development.
+
+[custom profiles]: https://doc.rust-lang.org/cargo/reference/profiles.html#custom-profiles
+
+## Summary
+
+There are many choices to be made when it comes to build configurations. The
+following points summarize the above information into some recommendations.
+
+- If you want to maximize runtime speed, consider all of the following:
+  `codegen-units = 1`, `lto = "fat"`, `panic = "abort"`, `strip = "symbols"`.
+- If you want to minimize binary size, consider all of those plus `opt-level = "z"`.
+- In either case, consider `-C target-cpu=native` if broad architecture support
+  is not needed, and `cargo pgo` if you have the time.
+- Always use a faster linker if you are on a platform that supports it, because
+  there are no downsides to doing so.
+- Benchmark all changes, one at a time, to ensure they have the expected
+  effects.
+
+Finally, [this issue] tracks the evolution of the Rust compiler's own build
+configuration. The Rust compiler's build system is stranger and more complex
+than that of most Rust programs. Nonetheless, this issue may be instructive in
+showing how build configuration choices can be applied to a large program.
+
+[this issue]: https://github.com/rust-lang/rust/issues/103595

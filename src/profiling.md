@@ -94,12 +94,33 @@ profilers such as Cachegrind and Samply that require source code to work fully.
 
 ## Symbol Demangling
 
-Rust uses a mangling scheme to encode function names in compiled code. If a
-profiler is unaware of this scheme, its output may contain symbol names
-beginning with `_ZN` or `_R`, such as `_ZN3foo3barE` or
+Rust uses a form of name mangling to encode function names in compiled code. If
+a profiler is unaware of this, its output may contain symbol names beginning
+with `_ZN` or `_R`, such as `_ZN3foo3barE` or
 `_ZN28_$u7b$$u7b$closure$u7d$$u7d$E` or
 `_RMCsno73SFvQKx_1cINtB0_3StrKRe616263_E`
 
 Names like these can be manually demangled using [`rustfilt`].
 
 [`rustfilt`]: https://crates.io/crates/rustfilt
+
+If you are having trouble with symbol demangling while profiling, it may be
+worth changing the [mangling format] from the default legacy format to the newer
+v0 format.
+
+[mangling format]: https://doc.rust-lang.org/rustc/codegen-options/index.html#symbol-mangling-version
+
+To use the v0 format from the command line, use the `-C
+symbol-mangling-version=v0` flag. For example:
+```bash
+$ RUSTFLAGS="-C symbol-mangling-version=v0" cargo build --release
+```
+
+Alternatively, to request these instructions from a [`config.toml`] file (for
+one or more projects), add these lines:
+```toml
+[build]
+rustflags = ["-C", "symbol-mangling-version=v0"]
+```
+[`config.toml`]: https://doc.rust-lang.org/cargo/reference/config.html
+

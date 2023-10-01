@@ -4,54 +4,18 @@ Although this book is primarily about improving the performance of Rust
 programs, this section is about reducing the compile times of Rust programs,
 because that is a related topic of interest to many people.
 
-## Linking
+The [Minimizing Compile Times] section discussed ways to reduce compile times
+via build configuration choices. The rest of this section discusses ways to
+reduce compile times that require modifying your program's code.
 
-A big part of compile time is actually linking time, particularly when
-rebuilding a program after a small change. It is possible to select a faster
-linker than the default one.
-
-One option is [lld], which is available on Linux and Windows.
-
-[lld]: https://lld.llvm.org/
-
-To specify lld from the command line, use the `-C link-arg=-fuse-ld=lld` flag.
-For example:
-```bash
-$ RUSTFLAGS="-C target-cpu=native" cargo build --release
-```
-
-Alternatively, to specify lld from a [`config.toml`] file (for one or more
-projects), add these lines:
-```text
-[build]
-rustflags = ["-C", "link-arg=-fuse-ld=lld"]
-```
-[`config.toml`]: https://doc.rust-lang.org/cargo/reference/config.html
-
-lld is not fully supported for use with Rust, but it should work for most use
-cases on Linux and Windows. There is a [GitHub Issue] tracking full support for
-lld.
-
-Another option is [mold], which is currently available on Linux and macOS.
-Simply substitute `mold` for `lld` in the instructions above.
-
-[mold]: https://github.com/rui314/mold
-
-mold is often faster than lld. It is also much newer and may not work in all
-cases.
-
-[GitHub Issue]: https://github.com/rust-lang/rust/issues/39915#issuecomment-618726211
+[Minimizing Compile Times]: build-configuration.md#minimizing-compile-times
 
 ## Visualization 
 
 Cargo has a feature that lets you visualize compilation of your
-program. Build with this command (1.60 or later):
+program. Build with this command:
 ```text
 cargo build --timings
-```
-or this (1.59 or earlier):
-```text
-cargo +nightly build -Ztimings
 ```
 On completion it will print the name of an HTML file. Open that file in a web
 browser. It contains a [Gantt chart] that shows the dependencies between the
@@ -62,22 +26,6 @@ details on how to read the graphs.
 
 [Gantt chart]: https://en.wikipedia.org/wiki/Gantt_chart
 [timings]: https://doc.rust-lang.org/nightly/cargo/reference/timings.html
-
-## Fully Disable Link-time Optimization
-
-For release builds the Rust compiler by default does a simple form of
-[link-time optimization] called *thin local LTO*. This can be disabled with the
-following lines in the `Cargo.toml` or [`config.toml`] file:
-```toml
-[profile.release]
-lto = "off"
-```
-This will speed up release builds at the cost of lower code quality.
-
-[link-time optimization]: https://doc.rust-lang.org/cargo/reference/profiles.html#lto
-
-Note that this is different to the `lto = "false"` option, which leaves thin
-local LTO enabled.
 
 ## LLVM IR
 
@@ -132,3 +80,5 @@ can help compile times.
 The effects of these sorts of changes on compile times will usually be small,
 though occasionally they can be large.
 [**Example**](https://github.com/servo/servo/issues/26585).
+
+Such changes can also reduce binary size.
