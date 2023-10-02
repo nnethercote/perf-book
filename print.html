@@ -358,7 +358,7 @@ in some cases. See the <a href="https://doc.rust-lang.org/rustc/profile-guided-o
 to optimize Rust binaries.</p>
 <h2 id="minimizing-binary-size"><a class="header" href="#minimizing-binary-size">Minimizing Binary Size</a></h2>
 <p>The following build configuration options are designed primarily to minimize
-binary size. Their affects on runtime speed vary.</p>
+binary size. Their effects on runtime speed vary.</p>
 <h3 id="optimization-level"><a class="header" href="#optimization-level">Optimization Level</a></h3>
 <p>You can request an <a href="https://doc.rust-lang.org/cargo/reference/profiles.html#opt-level">optimization level</a> that aims to minimize binary size by
 adding these lines to the <code>Cargo.toml</code> file:</p>
@@ -404,7 +404,7 @@ rebuilding a program after a small change. It is possible to select a faster
 linker than the default one.</p>
 <p>One option is <a href="https://lld.llvm.org/">lld</a>, which is available on Linux and Windows. To specify lld
 from the command line, use the <code>-C link-arg=-fuse-ld=lld</code> flag. For example:</p>
-<pre><code class="language-bash">$ RUSTFLAGS=&quot;-C target-cpu=native&quot; cargo build --release
+<pre><code class="language-bash">$ RUSTFLAGS=&quot;-C link-arg=-fuse-ld=lld&quot; cargo build --release
 </code></pre>
 <p>Alternatively, to specify lld from a <a href="https://doc.rust-lang.org/cargo/reference/config.html"><code>config.toml</code></a> file (for one or more
 projects), add these lines:</p>
