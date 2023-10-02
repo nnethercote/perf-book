@@ -171,7 +171,7 @@ to optimize Rust binaries.
 ## Minimizing Binary Size
 
 The following build configuration options are designed primarily to minimize
-binary size. Their affects on runtime speed vary.
+binary size. Their effects on runtime speed vary.
 
 ### Optimization Level
 
@@ -247,7 +247,7 @@ linker than the default one.
 One option is [lld], which is available on Linux and Windows. To specify lld
 from the command line, use the `-C link-arg=-fuse-ld=lld` flag. For example:
 ```bash
-$ RUSTFLAGS="-C target-cpu=native" cargo build --release
+$ RUSTFLAGS="-C link-arg=-fuse-ld=lld" cargo build --release
 ```
 
 [lld]: https://lld.llvm.org/
