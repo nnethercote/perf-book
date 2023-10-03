@@ -182,8 +182,8 @@
 its code, just by changing its build configuration. There are many possible
 build configurations for each Rust program. The one chosen will affect several
 characteristics of the compiled code, such as compile times, runtime speed,
-binary size, debuggability, profilability, and which architectures your
-compiled program will run on.</p>
+memory use, binary size, debuggability, profilability, and which architectures
+your compiled program will run on.</p>
 <p>Most configuration choices will improve one or more characteristics while
 worsening one or more others. For example, a common trade-off is to accept
 worse compile times in exchange for higher runtime speeds. The right choice
@@ -262,6 +262,25 @@ times again. Use <code>lto = &quot;fat&quot;</code> in <code>Cargo.toml</code> t
 speed and increase binary size but reduce compile times. Use <code>lto = &quot;off&quot;</code> in
 <code>Cargo.toml</code> for this. Note that this is different to the <code>lto = false</code> option,
 which, as mentioned above, leaves thin local LTO enabled.</p>
+<h3 id="alternative-allocators"><a class="header" href="#alternative-allocators">Alternative Allocators</a></h3>
+<p>It is possible to replace the default (system) heap allocator used by a Rust
+program with an alternative allocator. The exact effect will depend on the
+individual program and the alternative allocator chosen, but large improvements
+in runtime speed and large reductions in memory usage have been seen in
+practice. The effect will also vary across platforms, because each platform’s
+system allocator has its own strengths and weaknesses. The use of an
+alternative allocator is also likely to increase binary size and compile times.</p>
+<p>One popular alternative allocator for Linux and Mac is <a href="https://github.com/jemalloc/jemalloc">jemalloc</a>, usable via
+the <a href="https://crates.io/crates/tikv-jemallocator"><code>tikv-jemallocator</code></a> crate. To use it, add a dependency to your
+<code>Cargo.toml</code> file:</p>
+<pre><code class="language-toml">[dependencies]
+tikv-jemallocator = &quot;0.5.0&quot;
+</code></pre>
+<p>Then add the following to your Rust code, e.g. at the top of <code>src/main.rs</code>:</p>
+<pre><code class="language-rust ignore">#[global_allocator]
+static GLOBAL: tikv_jemallocator::Jemalloc = tikv_jemallocator::Jemalloc;</code></pre>
+<p>Another alternative allocator that works on many platforms is <a href="https://github.com/microsoft/mimalloc">mimalloc</a>,
+usable via the <a href="https://docs.rs/mimalloc/0.1.22/mimalloc/"><code>mimalloc</code></a> crate.</p>
 <h3 id="cpu-specific-instructions"><a class="header" href="#cpu-specific-instructions">CPU Specific Instructions</a></h3>
 <p>If you do not care about the compatibility of your binary on older (or other
 types of) processors, you can tell the compiler to generate the newest (and
@@ -292,6 +311,8 @@ improve runtime speed by 10% or more.
 in some cases. See the <a href="https://doc.rust-lang.org/rustc/profile-guided-optimization.html">rustc PGO documentation</a> for details. Also, the
 <a href="https://github.com/Kobzol/cargo-pgo"><code>cargo-pgo</code></a> command makes it easier to use PGO (and <a href="https://github.com/llvm/llvm-project/tree/main/bolt">BOLT</a>, which is similar)
 to optimize Rust binaries.</p>
+<p>Unfortunately, PGO is not supported for binaries hosted on crates.io and
+distributed via <code>cargo install</code>, which limits its usability.</p>
 <h2 id="minimizing-binary-size"><a class="header" href="#minimizing-binary-size">Minimizing Binary Size</a></h2>
 <p>The following build configuration options are designed primarily to minimize
 binary size. Their effects on runtime speed vary.</p>
@@ -366,10 +387,11 @@ development.</p>
 following points summarize the above information into some recommendations.</p>
 <ul>
 <li>If you want to maximize runtime speed, consider all of the following:
-<code>codegen-units = 1</code>, <code>lto = &quot;fat&quot;</code>, <code>panic = &quot;abort&quot;</code>, <code>strip = &quot;symbols&quot;</code>.</li>
-<li>If you want to minimize binary size, consider all of those plus <code>opt-level = &quot;z&quot;</code>.</li>
+<code>codegen-units = 1</code>, <code>lto = &quot;fat&quot;</code>, an alternative allocator, and <code>panic = &quot;abort&quot;</code>.</li>
+<li>If you want to minimize binary size, consider <code>opt-level = &quot;z&quot;</code>,
+<code>codegen-units = 1</code>, <code>lto = &quot;fat&quot;</code>, <code>panic = &quot;abort&quot;</code>, and <code>strip = &quot;symbols&quot;</code>.</li>
 <li>In either case, consider <code>-C target-cpu=native</code> if broad architecture support
-is not needed, and <code>cargo pgo</code> if you have the time.</li>
+is not needed, and <code>cargo-pgo</code> if it works with your distribution mechanism.</li>
 <li>Always use a faster linker if you are on a platform that supports it, because
 there are no downsides to doing so.</li>
 <li>Benchmark all changes, one at a time, to ensure they have the expected

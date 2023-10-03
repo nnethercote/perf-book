@@ -476,24 +476,9 @@ while lock.read_line(&amp;mut line)? != 0 {
 <code>String</code>.</p>
 <p><a href="https://github.com/nnethercote/counts/commit/7d39bbb1867720ef3b9799fee739cd717ad1539a"><strong>Example</strong></a>.</p>
 <h2 id="using-an-alternative-allocator"><a class="header" href="#using-an-alternative-allocator">Using an Alternative Allocator</a></h2>
-<p>Another option for improving the performance of allocation-heavy Rust programs
-is to replace the default (system) allocator with an alternative allocator. The
-exact effect will depend on the individual program and the alternative
-allocator chosen, but large improvements in speed and very large reductions in
-memory usage have been seen in practice. The effect will also vary across
-platforms, because each platform’s system allocator has its own strengths and
-weaknesses. The use of an alternative allocator can also affect binary size.</p>
-<p>One popular alternative allocator for Linux and Mac is <a href="https://github.com/jemalloc/jemalloc">jemalloc</a>, usable via
-the <a href="https://crates.io/crates/tikv-jemallocator"><code>tikv-jemallocator</code></a> crate. To use it, add a dependency to your
-<code>Cargo.toml</code> file:</p>
-<pre><code class="language-toml">[dependencies]
-tikv-jemallocator = &quot;0.5.0&quot;
-</code></pre>
-<p>Then add the following somewhere in your Rust code:</p>
-<pre><code class="language-rust ignore">#[global_allocator]
-static GLOBAL: tikv_jemallocator::Jemalloc = tikv_jemallocator::Jemalloc;</code></pre>
-<p>Another alternative allocator that works on many platforms is <a href="https://github.com/microsoft/mimalloc">mimalloc</a>,
-usable via the <a href="https://docs.rs/mimalloc/0.1.22/mimalloc/"><code>mimalloc</code></a> crate.</p>
+<p>It is also possible to improve heap allocation performance without changing
+your code, simply by using a different allocator. See the <a href="build-configuration.html#alternative-allocators">Alternative
+Allocators</a> section for details.</p>
 <h2 id="avoiding-regressions"><a class="header" href="#avoiding-regressions">Avoiding Regressions</a></h2>
 <p>To ensure the number and/or size of allocations done by your code doesn’t
 increase unintentionally, you can use the <em>heap usage testing</em> feature of
