@@ -457,7 +457,7 @@ for line in lock.lines() {
 <p>But the iterator it produces returns <code>io::Result&lt;String&gt;</code>, which means it
 allocates for every line in the file.</p>
 <p>An alternative is to use a workhorse <code>String</code> in a loop over
-<a href="https://doc.rust-lang.org/stable/std/io/trait.BufRead.html#method.read_line"><code>BufRead::read_line</code></a>, reducing the number of allocations to just one:</p>
+<a href="https://doc.rust-lang.org/stable/std/io/trait.BufRead.html#method.read_line"><code>BufRead::read_line</code></a>:</p>
 <pre><pre class="playground"><code class="language-rust edition2018"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span><span class="boring">fn blah() -&gt; Result&lt;(), std::io::Error&gt; {
@@ -472,6 +472,9 @@ while lock.read_line(&amp;mut line)? != 0 {
 <span class="boring">Ok(())
 </span><span class="boring">}
 </span><span class="boring">}</span></code></pre></pre>
+<p>This reduces the number of allocations to at most a handful, and possibly just
+one. (The exact number depends on how many times <code>line</code> needs to be
+reallocated, which depends on the distribution of line lengths in the file.)</p>
 <p>This will only work if the loop body can operate on a <code>&amp;str</code>, rather than a
 <code>String</code>.</p>
 <p><a href="https://github.com/nnethercote/counts/commit/7d39bbb1867720ef3b9799fee739cd717ad1539a"><strong>Example</strong></a>.</p>
