@@ -4,8 +4,8 @@ You can drastically change the performance of a Rust program without changing
 its code, just by changing its build configuration. There are many possible
 build configurations for each Rust program. The one chosen will affect several
 characteristics of the compiled code, such as compile times, runtime speed,
-binary size, debuggability, profilability, and which architectures your
-compiled program will run on.
+memory use, binary size, debuggability, profilability, and which architectures
+your compiled program will run on.
 
 Most configuration choices will improve one or more characteristics while
 worsening one or more others. For example, a common trade-off is to accept
@@ -119,6 +119,37 @@ speed and increase binary size but reduce compile times. Use `lto = "off"` in
 `Cargo.toml` for this. Note that this is different to the `lto = false` option,
 which, as mentioned above, leaves thin local LTO enabled.
 
+### Alternative Allocators
+
+It is possible to replace the default (system) heap allocator used by a Rust
+program with an alternative allocator. The exact effect will depend on the
+individual program and the alternative allocator chosen, but large improvements
+in runtime speed and large reductions in memory usage have been seen in
+practice. The effect will also vary across platforms, because each platform's
+system allocator has its own strengths and weaknesses. The use of an
+alternative allocator is also likely to increase binary size and compile times.
+
+One popular alternative allocator for Linux and Mac is [jemalloc], usable via
+the [`tikv-jemallocator`] crate. To use it, add a dependency to your
+`Cargo.toml` file:
+```toml
+[dependencies]
+tikv-jemallocator = "0.5.0"
+```
+Then add the following to your Rust code, e.g. at the top of `src/main.rs`:
+```rust,ignore
+#[global_allocator]
+static GLOBAL: tikv_jemallocator::Jemalloc = tikv_jemallocator::Jemalloc;
+```
+Another alternative allocator that works on many platforms is [mimalloc],
+usable via the [`mimalloc`] crate.
+
+[jemalloc]: https://github.com/jemalloc/jemalloc
+[`tikv-jemallocator`]: https://crates.io/crates/tikv-jemallocator
+[better performance]: https://github.com/rust-lang/rust/pull/83152
+[mimalloc]: https://github.com/microsoft/mimalloc
+[`mimalloc`]: https://docs.rs/mimalloc/0.1.22/mimalloc/
+
 ### CPU Specific Instructions
 
 If you do not care about the compatibility of your binary on older (or other
@@ -163,6 +194,9 @@ It is an advanced technique that takes some effort to set up, but is worthwhile
 in some cases. See the [rustc PGO documentation] for details. Also, the
 [`cargo-pgo`] command makes it easier to use PGO (and [BOLT], which is similar)
 to optimize Rust binaries.
+
+Unfortunately, PGO is not supported for binaries hosted on crates.io and
+distributed via `cargo install`, which limits its usability.
 
 [rustc PGO documentation]: https://doc.rust-lang.org/rustc/profile-guided-optimization.html
 [`cargo-pgo`]: https://github.com/Kobzol/cargo-pgo
@@ -291,10 +325,13 @@ There are many choices to be made when it comes to build configurations. The
 following points summarize the above information into some recommendations.
 
 - If you want to maximize runtime speed, consider all of the following:
-  `codegen-units = 1`, `lto = "fat"`, `panic = "abort"`, `strip = "symbols"`.
-- If you want to minimize binary size, consider all of those plus `opt-level = "z"`.
+  `codegen-units = 1`, `lto = "fat"`, an alternative allocator, and `panic =
+  "abort"`.
+- If you want to minimize binary size, consider `opt-level = "z"`,
+  `codegen-units = 1`, `lto = "fat"`, `panic = "abort"`, and `strip =
+  "symbols"`.
 - In either case, consider `-C target-cpu=native` if broad architecture support
-  is not needed, and `cargo pgo` if you have the time.
+  is not needed, and `cargo-pgo` if it works with your distribution mechanism.
 - Always use a faster linker if you are on a platform that supports it, because
   there are no downsides to doing so.
 - Benchmark all changes, one at a time, to ensure they have the expected
