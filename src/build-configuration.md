@@ -84,7 +84,9 @@ units to one. Add these lines to the `Cargo.toml` file:
 [profile.release]
 codegen-units = 1
 ```
-[**Example 1**](https://likebike.com/posts/How_To_Write_Fast_Rust_Code.html#emit-asm),
+<!-- Using `https` for this link triggers "potential security risk" warnings due
+to a certificate problem. -->
+[**Example 1**](http://likebike.com/posts/How_To_Write_Fast_Rust_Code.html#emit-asm),
 [**Example 2**](https://github.com/rust-lang/rust/pull/115554#issuecomment-1742192440).
 
 [codegen units]: https://doc.rust-lang.org/cargo/reference/profiles.html#codegen-units
