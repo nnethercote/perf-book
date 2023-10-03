@@ -239,7 +239,9 @@ units to one. Add these lines to the <code>Cargo.toml</code> file:</p>
 <pre><code class="language-toml">[profile.release]
 codegen-units = 1
 </code></pre>
-<p><a href="https://likebike.com/posts/How_To_Write_Fast_Rust_Code.html#emit-asm"><strong>Example 1</strong></a>,
+<!-- Using `https` for this link triggers "potential security risk" warnings due
+to a certificate problem. -->
+<p><a href="http://likebike.com/posts/How_To_Write_Fast_Rust_Code.html#emit-asm"><strong>Example 1</strong></a>,
 <a href="https://github.com/rust-lang/rust/pull/115554#issuecomment-1742192440"><strong>Example 2</strong></a>.</p>
 <h3 id="link-time-optimization"><a class="header" href="#link-time-optimization">Link-time Optimization</a></h3>
 <p><a href="https://doc.rust-lang.org/cargo/reference/profiles.html#lto">Link-time optimization</a> (LTO) is a whole-program optimization technique that
