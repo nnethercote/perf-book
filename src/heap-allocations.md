@@ -391,7 +391,7 @@ allocates for every line in the file.
 [`BufRead::lines`]: https://doc.rust-lang.org/stable/std/io/trait.BufRead.html#method.lines
 
 An alternative is to use a workhorse `String` in a loop over
-[`BufRead::read_line`], reducing the number of allocations to just one:
+[`BufRead::read_line`]:
 ```rust
 # fn blah() -> Result<(), std::io::Error> {
 # fn process(_: &str) {}
@@ -405,6 +405,10 @@ while lock.read_line(&mut line)? != 0 {
 # Ok(())
 # }
 ```
+This reduces the number of allocations to at most a handful, and possibly just
+one. (The exact number depends on how many times `line` needs to be
+reallocated, which depends on the distribution of line lengths in the file.)
+
 This will only work if the loop body can operate on a `&str`, rather than a
 `String`.
 
