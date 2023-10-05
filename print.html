@@ -393,10 +393,11 @@ opt-level = &quot;z&quot;
 less aggressively. Compared to <code>opt-level = &quot;z&quot;</code>, it allows <a href="https://doc.rust-lang.org/rustc/codegen-options/index.html#inline-threshold">slightly more
 inlining</a> and also the vectorization of loops.</p>
 <h3 id="abort-on-panic"><a class="header" href="#abort-on-panic">Abort on <code>panic!</code></a></h3>
-<p>If you do not need to catch or unwind panics, you can tell the compiler to
-simply <a href="https://doc.rust-lang.org/cargo/reference/profiles.html#panic">abort on panic</a>. This might reduce binary size and increase runtime
-speed slightly, and may even reduce compile times slightly. Add these lines to
-the <code>Cargo.toml</code> file:</p>
+<p>If you do not need to unwind on panic, e.g. because your program doesn’t use
+<a href="https://doc.rust-lang.org/std/panic/fn.catch_unwind.html"><code>catch_unwind</code></a>, you can tell the compiler to simply <a href="https://doc.rust-lang.org/cargo/reference/profiles.html#panic">abort on panic</a>. On
+panic, your program will still produce a backtrace.</p>
+<p>This might reduce binary size and increase runtime speed slightly, and may even
+reduce compile times slightly. Add these lines to the <code>Cargo.toml</code> file:</p>
 <pre><code class="language-toml">[profile.release]
 panic = &quot;abort&quot;
 </code></pre>
@@ -410,7 +411,8 @@ strip = &quot;debuginfo&quot;
 <p>Stripping debug info can greatly reduce binary size. On Linux, the binary size
 of a small Rust programs might shrink by 4x when debug info is stripped.
 Stripping symbols can also reduce binary size, though generally not by as much.
-<a href="https://github.com/nnethercote/counts/commit/53cab44cd09ff1aa80de70a6dbe1893ff8a41142"><strong>Example</strong></a>.</p>
+<a href="https://github.com/nnethercote/counts/commit/53cab44cd09ff1aa80de70a6dbe1893ff8a41142"><strong>Example</strong></a>.
+The exact effects are platform-dependent.</p>
 <p>However, stripping makes your compiled program more difficult to debug and
 profile. For example, if a stripped program panics, the backtrace produced may
 contain less useful information than normal. The exact effects for the two
