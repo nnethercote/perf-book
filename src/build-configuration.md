@@ -229,16 +229,20 @@ inlining] and also the vectorization of loops.
 
 ### Abort on `panic!`
 
-If you do not need to catch or unwind panics, you can tell the compiler to
-simply [abort on panic]. This might reduce binary size and increase runtime
-speed slightly, and may even reduce compile times slightly. Add these lines to
-the `Cargo.toml` file:
+If you do not need to unwind on panic, e.g. because your program doesn't use
+[`catch_unwind`], you can tell the compiler to simply [abort on panic]. On
+panic, your program will still produce a backtrace.
+
+[`catch_unwind`]: https://doc.rust-lang.org/std/panic/fn.catch_unwind.html
+[abort on panic]: https://doc.rust-lang.org/cargo/reference/profiles.html#panic
+
+This might reduce binary size and increase runtime speed slightly, and may even
+reduce compile times slightly. Add these lines to the `Cargo.toml` file:
 ```toml
 [profile.release]
 panic = "abort"
 ```
 
-[abort on panic]: https://doc.rust-lang.org/cargo/reference/profiles.html#panic
 
 ### Strip Debug Info and Symbols
 
@@ -256,6 +260,7 @@ Stripping debug info can greatly reduce binary size. On Linux, the binary size
 of a small Rust programs might shrink by 4x when debug info is stripped.
 Stripping symbols can also reduce binary size, though generally not by as much.
 [**Example**](https://github.com/nnethercote/counts/commit/53cab44cd09ff1aa80de70a6dbe1893ff8a41142).
+The exact effects are platform-dependent.
 
 However, stripping makes your compiled program more difficult to debug and
 profile. For example, if a stripped program panics, the backtrace produced may
