@@ -82,3 +82,17 @@ though occasionally they can be large.
 [**Example**](https://github.com/servo/servo/issues/26585).
 
 Such changes can also reduce binary size.
+
+## Memory allocation
+On Linux, the compiler uses the [`jemalloc`](https://jemalloc.net/) memory
+allocator. It can be configured to use (transparent) huge pages, which can
+result in ~5% compilation performance increase, at the cost of higher
+memory usage.
+
+You can enable huge page support for jemalloc on Linux with the `MALLOC_CONF`
+environment variable:
+```bash
+$ export MALLOC_CONF="thp:always,metadata_thp:always"
+$ cargo build
+```
+Your system also has to be configured to support (transparent) huge pages.
