@@ -353,6 +353,21 @@ up to 50%. But the effects vary widely and depend on the characteristics of the
 code and its build configuration, and for some programs there is no compile
 time improvement.
 
+### Codegen backend
+You can use a different codegen backend to reduce compile times. Currently,
+the Cranelift codegen backend is available in the nightly chanel for Linux x64 and 64-bit ARM targets.
+
+You can install it with this `rustup` command:
+```bash
+$ rustup component add rustc-codegen-cranelift-preview --toolchain nightly
+```
+
+And then use it with one of the following commands:
+- `RUSTFLAGS="-Zcodegen-backend=cranelift" cargo +nightly build`
+- `CARGO_PROFILE_DEV_CODEGEN_BACKEND=cranelift cargo +nightly build -Zcodegen-backend`
+
+You can find more information about this codegen backend [here](https://github.com/rust-lang/rustc_codegen_cranelift).
+
 ## Custom profiles
 
 In addition to the `dev` and `release` profiles, Cargo supports [custom
