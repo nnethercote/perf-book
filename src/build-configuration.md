@@ -316,6 +316,22 @@ Alternative linkers can be dramatically faster, without any downsides.
 
 [GitHub Issue]: https://github.com/rust-lang/rust/issues/39915#issuecomment-618726211
 
+### Parallel frontend
+If you use the nightly channel, you can opt in to using multiple threads in
+the compiler frontend.
+
+You can do that by adding `-Zthreads=N` to RUSTFLAGS, for example:
+```bash
+$ RUSTFLAGS="-Zthreads=8" cargo build --release
+```
+`N` specifies how many threads will be used for parallelizing the frontend.
+Currently, the best results seem to be achieved with up to `8` threads, higher
+thread count provides diminishing results.
+
+You can find out more about this in [this blog post].
+
+[this blog post]: https://blog.rust-lang.org/2023/11/09/parallel-rustc.html
+
 ## Custom profiles
 
 In addition to the `dev` and `release` profiles, Cargo supports [custom
