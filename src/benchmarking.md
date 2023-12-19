@@ -21,13 +21,14 @@ Second, you need a way to run the workloads, which will also dictate the
 metrics used.
 - Rust's built-in [benchmark tests] are a simple starting point, but they use
   unstable features and therefore only work on Nightly Rust.
-- [Criterion] is a more sophisticated alternative.
+- [Criterion] and [Divan] are more sophisticated alternatives.
 - [Hyperfine] is an excellent general-purpose benchmarking tool.
 - Custom benchmarking harnesses are also possible. For example, [rustc-perf] is
   the harness used to benchmark the Rust compiler.
 
 [benchmark tests]: https://doc.rust-lang.org/nightly/unstable-book/library-features/test.html
 [Criterion]: https://github.com/bheisler/criterion.rs
+[Divan]: https://github.com/nvzqz/divan
 [Hyperfine]: https://github.com/sharkdp/hyperfine
 [rustc-perf]: https://github.com/rust-lang/rustc-perf/
 
