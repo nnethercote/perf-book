@@ -144,13 +144,36 @@ Then add the following to your Rust code, e.g. at the top of `src/main.rs`:
 static GLOBAL: tikv_jemallocator::Jemalloc = tikv_jemallocator::Jemalloc;
 ```
 Another alternative allocator that works on many platforms is [mimalloc],
-usable via the [`mimalloc`] crate.
+usable via the [`mimalloc`] crate. [mimalloc]'s core focus is cross-platform 
+performance and is used in Unreal Engine, the Decima engine for Death Stranding,
+Bing, and many areas of Azure. It also features a secure mode with extra
+security, large page support (>2MiB), _huge_ page support (>1GiB), and NUMA.
+
+To use it, add a dependency to your
+`Cargo.toml` file:
+```toml
+[dependencies]
+mimalloc = { version = "*" }
+```
+
+Then add the following to your Rust code, e.g. at the top of `src/main.rs`:
+```rust,ignore
+use mimalloc::MiMalloc;
+
+#[global_allocator]
+static GLOBAL: MiMalloc = MiMalloc;
+```
+
+If you want to use [mimalloc] without overriding the global allocator, or use
+its dedicated heap functionality via allocator pooling, check out the 
+[`cesium-allocator`] crate.
 
 [jemalloc]: https://github.com/jemalloc/jemalloc
 [`tikv-jemallocator`]: https://crates.io/crates/tikv-jemallocator
 [better performance]: https://github.com/rust-lang/rust/pull/83152
 [mimalloc]: https://github.com/microsoft/mimalloc
 [`mimalloc`]: https://docs.rs/mimalloc/0.1.22/mimalloc/
+[`cesium-allocator`]: https://docs.rs/cesium-allocator/1.0.1/cesium_allocator/
 
 ### CPU Specific Instructions
 
