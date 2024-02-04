@@ -267,7 +267,7 @@ profile. For example, if a stripped program panics, the backtrace produced may
 contain less useful information than normal. The exact effects for the two
 levels of stripping depend on the platform.
 
-### Other ideas
+### Other Ideas
 
 For more advanced binary size minimization techniques, consult the
 comprehensive documentation in the excellent [`min-sized-rust`] repository.
@@ -316,21 +316,32 @@ Alternative linkers can be dramatically faster, without any downsides.
 
 [GitHub Issue]: https://github.com/rust-lang/rust/issues/39915#issuecomment-618726211
 
-### Parallel frontend
-If you use the nightly channel, you can opt in to using multiple threads in
-the compiler frontend.
+### Experimental Parallel Front-end
+
+If you use nightly Rust, you can enable the experimental [parallel front-end].
+
+[parallel front-end]: https://blog.rust-lang.org/2023/11/09/parallel-rustc.html
 
 You can do that by adding `-Zthreads=N` to RUSTFLAGS, for example:
 ```bash
 $ RUSTFLAGS="-Zthreads=8" cargo build --release
 ```
-`N` specifies how many threads will be used for parallelizing the frontend.
-Currently, the best results seem to be achieved with up to `8` threads, higher
-thread count provides diminishing results.
 
-You can find out more about this in [this blog post].
+Alternatively, to request these instructions from a [`config.toml`] file (for
+one or more projects), add these lines:
+```toml
+[build]
+rustflags = ["-Z", "threads=8"]
+```
+[`config.toml`]: https://doc.rust-lang.org/cargo/reference/config.html
 
-[this blog post]: https://blog.rust-lang.org/2023/11/09/parallel-rustc.html
+Values other than `8` are possible, but that is the number that tends to give
+the best results.
+
+In the best cases, the experimental parallel front-end reduces compile times by
+up to 50%. But the effects vary widely and depend on the characteristics of the
+code and its build configuration, and for some programs there is no compile
+time improvement.
 
 ## Custom profiles
 
