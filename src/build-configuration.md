@@ -174,7 +174,7 @@ such as AVX SIMD instructions for x86-64 CPUs.
 To request these instructions from the command line, use the `-C
 target-cpu=native` flag. For example:
 ```bash
-$ RUSTFLAGS="-C target-cpu=native" cargo build --release
+RUSTFLAGS="-C target-cpu=native" cargo build --release
 ```
 
 Alternatively, to request these instructions from a [`config.toml`] file (for
@@ -298,7 +298,7 @@ linker than the default one.
 One option is [lld], which is available on Linux and Windows. To specify lld
 from the command line, use the `-C link-arg=-fuse-ld=lld` flag. For example:
 ```bash
-$ RUSTFLAGS="-C link-arg=-fuse-ld=lld" cargo build --release
+RUSTFLAGS="-C link-arg=-fuse-ld=lld" cargo build --release
 ```
 
 [lld]: https://lld.llvm.org/
@@ -334,7 +334,7 @@ If you use nightly Rust, you can enable the experimental [parallel front-end].
 
 You can do that by adding `-Zthreads=N` to RUSTFLAGS, for example:
 ```bash
-$ RUSTFLAGS="-Zthreads=8" cargo build --release
+RUSTFLAGS="-Zthreads=8" cargo build --release
 ```
 
 Alternatively, to request these instructions from a [`config.toml`] file (for

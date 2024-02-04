@@ -113,7 +113,7 @@ v0 format.
 To use the v0 format from the command line, use the `-C
 symbol-mangling-version=v0` flag. For example:
 ```bash
-$ RUSTFLAGS="-C symbol-mangling-version=v0" cargo build --release
+RUSTFLAGS="-C symbol-mangling-version=v0" cargo build --release
 ```
 
 Alternatively, to request these instructions from a [`config.toml`] file (for
