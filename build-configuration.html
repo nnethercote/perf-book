@@ -278,13 +278,20 @@ alternative allocator is also likely to increase binary size and compile times.<
 the <a href="https://crates.io/crates/tikv-jemallocator"><code>tikv-jemallocator</code></a> crate. To use it, add a dependency to your
 <code>Cargo.toml</code> file:</p>
 <pre><code class="language-toml">[dependencies]
-tikv-jemallocator = &quot;0.5.0&quot;
+tikv-jemallocator = &quot;0.5&quot;
 </code></pre>
 <p>Then add the following to your Rust code, e.g. at the top of <code>src/main.rs</code>:</p>
 <pre><code class="language-rust ignore">#[global_allocator]
 static GLOBAL: tikv_jemallocator::Jemalloc = tikv_jemallocator::Jemalloc;</code></pre>
 <p>Another alternative allocator that works on many platforms is <a href="https://github.com/microsoft/mimalloc">mimalloc</a>,
-usable via the <a href="https://docs.rs/mimalloc/0.1.22/mimalloc/"><code>mimalloc</code></a> crate.</p>
+usable via the <a href="https://crates.io/crates/mimalloc"><code>mimalloc</code></a> crate. To use it, add a dependency to your
+<code>Cargo.toml</code> file:</p>
+<pre><code class="language-toml">[dependencies]
+mimalloc = &quot;0.1&quot;
+</code></pre>
+<p>Then add the following to your Rust code, e.g. at the top of <code>src/main.rs</code>:</p>
+<pre><code class="language-rust ignore">#[global_allocator]
+static GLOBAL: mimalloc::MiMalloc = mimalloc::MiMalloc;</code></pre>
 <h3 id="cpu-specific-instructions"><a class="header" href="#cpu-specific-instructions">CPU Specific Instructions</a></h3>
 <p>If you do not care about the compatibility of your binary on older (or other
 types of) processors, you can tell the compiler to generate the newest (and
