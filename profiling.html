@@ -251,7 +251,7 @@ with <code>_ZN</code> or <code>_R</code>, such as <code>_ZN3foo3barE</code> or
 worth changing the <a href="https://doc.rust-lang.org/rustc/codegen-options/index.html#symbol-mangling-version">mangling format</a> from the default legacy format to the newer
 v0 format.</p>
 <p>To use the v0 format from the command line, use the <code>-C symbol-mangling-version=v0</code> flag. For example:</p>
-<pre><code class="language-bash">$ RUSTFLAGS=&quot;-C symbol-mangling-version=v0&quot; cargo build --release
+<pre><code class="language-bash">RUSTFLAGS=&quot;-C symbol-mangling-version=v0&quot; cargo build --release
 </code></pre>
 <p>Alternatively, to request these instructions from a <a href="https://doc.rust-lang.org/cargo/reference/config.html"><code>config.toml</code></a> file (for
 one or more projects), add these lines:</p>

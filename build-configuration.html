@@ -298,7 +298,7 @@ types of) processors, you can tell the compiler to generate the newest (and
 potentially fastest) instructions specific to a <a href="https://doc.rust-lang.org/rustc/codegen-options/index.html#target-cpu">certain CPU architecture</a>,
 such as AVX SIMD instructions for x86-64 CPUs.</p>
 <p>To request these instructions from the command line, use the <code>-C target-cpu=native</code> flag. For example:</p>
-<pre><code class="language-bash">$ RUSTFLAGS=&quot;-C target-cpu=native&quot; cargo build --release
+<pre><code class="language-bash">RUSTFLAGS=&quot;-C target-cpu=native&quot; cargo build --release
 </code></pre>
 <p>Alternatively, to request these instructions from a <a href="https://doc.rust-lang.org/cargo/reference/config.html"><code>config.toml</code></a> file (for
 one or more projects), add these lines:</p>
@@ -374,7 +374,7 @@ rebuilding a program after a small change. It is possible to select a faster
 linker than the default one.</p>
 <p>One option is <a href="https://lld.llvm.org/">lld</a>, which is available on Linux and Windows. To specify lld
 from the command line, use the <code>-C link-arg=-fuse-ld=lld</code> flag. For example:</p>
-<pre><code class="language-bash">$ RUSTFLAGS=&quot;-C link-arg=-fuse-ld=lld&quot; cargo build --release
+<pre><code class="language-bash">RUSTFLAGS=&quot;-C link-arg=-fuse-ld=lld&quot; cargo build --release
 </code></pre>
 <p>Alternatively, to specify lld from a <a href="https://doc.rust-lang.org/cargo/reference/config.html"><code>config.toml</code></a> file (for one or more
 projects), add these lines:</p>
@@ -392,7 +392,7 @@ Alternative linkers can be dramatically faster, without any downsides.</p>
 <h3 id="experimental-parallel-front-end"><a class="header" href="#experimental-parallel-front-end">Experimental Parallel Front-end</a></h3>
 <p>If you use nightly Rust, you can enable the experimental <a href="https://blog.rust-lang.org/2023/11/09/parallel-rustc.html">parallel front-end</a>.</p>
 <p>You can do that by adding <code>-Zthreads=N</code> to RUSTFLAGS, for example:</p>
-<pre><code class="language-bash">$ RUSTFLAGS=&quot;-Zthreads=8&quot; cargo build --release
+<pre><code class="language-bash">RUSTFLAGS=&quot;-Zthreads=8&quot; cargo build --release
 </code></pre>
 <p>Alternatively, to request these instructions from a <a href="https://doc.rust-lang.org/cargo/reference/config.html"><code>config.toml</code></a> file (for
 one or more projects), add these lines:</p>
