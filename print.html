@@ -446,6 +446,16 @@ Simply substitute <code>mold</code> for <code>lld</code> in the instructions abo
 faster than lld. It is also much newer and may not work in all cases.</p>
 <p>Unlike the other options in this chapter, there are no trade-offs here!
 Alternative linkers can be dramatically faster, without any downsides.</p>
+<h3 id="parallel-frontend"><a class="header" href="#parallel-frontend">Parallel frontend</a></h3>
+<p>If you use the nightly channel, you can opt in to using multiple threads in
+the compiler frontend.</p>
+<p>You can do that by adding <code>-Zthreads=N</code> to RUSTFLAGS, for example:</p>
+<pre><code class="language-bash">$ RUSTFLAGS=&quot;-Zthreads=8&quot; cargo build --release
+</code></pre>
+<p><code>N</code> specifies how many threads will be used for parallelizing the frontend.
+Currently, the best results seem to be achieved with up to <code>8</code> threads, higher
+thread count provides diminishing results.</p>
+<p>You can find out more about this in <a href="https://blog.rust-lang.org/2023/11/09/parallel-rustc.html">this blog post</a>.</p>
 <h2 id="custom-profiles"><a class="header" href="#custom-profiles">Custom profiles</a></h2>
 <p>In addition to the <code>dev</code> and <code>release</code> profiles, Cargo supports <a href="https://doc.rust-lang.org/cargo/reference/profiles.html#custom-profiles">custom
 profiles</a>. It might be useful, for example, to create a custom profile halfway
