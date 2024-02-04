@@ -329,6 +329,8 @@ Alternative linkers can be dramatically faster, without any downsides.
 ### Experimental Parallel Front-end
 
 If you use nightly Rust, you can enable the experimental [parallel front-end].
+It may reduce compile times at the cost of higher compile-time memory usage. It
+won't affect the quality of the generated code.
 
 [parallel front-end]: https://blog.rust-lang.org/2023/11/09/parallel-rustc.html
 
@@ -337,7 +339,7 @@ You can do that by adding `-Zthreads=N` to RUSTFLAGS, for example:
 RUSTFLAGS="-Zthreads=8" cargo build --release
 ```
 
-Alternatively, to request these instructions from a [`config.toml`] file (for
+Alternatively, to enable the parallel front-end from a [`config.toml`] file (for
 one or more projects), add these lines:
 ```toml
 [build]
@@ -353,20 +355,38 @@ up to 50%. But the effects vary widely and depend on the characteristics of the
 code and its build configuration, and for some programs there is no compile
 time improvement.
 
-### Codegen backend
-You can use a different codegen backend to reduce compile times. Currently,
-the Cranelift codegen backend is available in the nightly chanel for Linux x64 and 64-bit ARM targets.
+### Cranelift Codegen Back-end
 
-You can install it with this `rustup` command:
+If you use nightly Rust on x86-64/Linux or ARM/Linux, you can enable the
+Cranelift codegen back-end. It may reduce compile times at the cost of lower
+quality generated code, and therefore is recommended for dev builds rather than
+release builds.
+
+First, install the back-end with this `rustup` command:
 ```bash
-$ rustup component add rustc-codegen-cranelift-preview --toolchain nightly
+rustup component add rustc-codegen-cranelift-preview --toolchain nightly
 ```
 
-And then use it with one of the following commands:
-- `RUSTFLAGS="-Zcodegen-backend=cranelift" cargo +nightly build`
-- `CARGO_PROFILE_DEV_CODEGEN_BACKEND=cranelift cargo +nightly build -Zcodegen-backend`
+To select Cranelift from the command line, use the
+`-Zcodegen-backend=cranelift` flag. For example:
+```
+RUSTFLAGS="-Zcodegen-backend=cranelift" cargo +nightly build
+```
 
-You can find more information about this codegen backend [here](https://github.com/rust-lang/rustc_codegen_cranelift).
+Alternatively, to specify Cranelift from a [`config.toml`] file (for one or
+more projects), add these lines:
+```toml
+[unstable]
+codegen-backend = true
+
+[profile.dev]
+codegen-backend = "cranelift"
+```
+[`config.toml`]: https://doc.rust-lang.org/cargo/reference/config.html
+
+For more information, see the [Cranelift documentation].
+
+[Cranelift documentation]: https://github.com/rust-lang/rustc_codegen_cranelift
 
 ## Custom profiles
 
