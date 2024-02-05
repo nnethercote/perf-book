@@ -369,7 +369,7 @@ rustup component add rustc-codegen-cranelift-preview --toolchain nightly
 
 To select Cranelift from the command line, use the
 `-Zcodegen-backend=cranelift` flag. For example:
-```
+```bash
 RUSTFLAGS="-Zcodegen-backend=cranelift" cargo +nightly build
 ```
 
