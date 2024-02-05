@@ -390,11 +390,13 @@ faster than lld. It is also much newer and may not work in all cases.</p>
 <p>Unlike the other options in this chapter, there are no trade-offs here!
 Alternative linkers can be dramatically faster, without any downsides.</p>
 <h3 id="experimental-parallel-front-end"><a class="header" href="#experimental-parallel-front-end">Experimental Parallel Front-end</a></h3>
-<p>If you use nightly Rust, you can enable the experimental <a href="https://blog.rust-lang.org/2023/11/09/parallel-rustc.html">parallel front-end</a>.</p>
+<p>If you use nightly Rust, you can enable the experimental <a href="https://blog.rust-lang.org/2023/11/09/parallel-rustc.html">parallel front-end</a>.
+It may reduce compile times at the cost of higher compile-time memory usage. It
+won’t affect the quality of the generated code.</p>
 <p>You can do that by adding <code>-Zthreads=N</code> to RUSTFLAGS, for example:</p>
 <pre><code class="language-bash">RUSTFLAGS=&quot;-Zthreads=8&quot; cargo build --release
 </code></pre>
-<p>Alternatively, to request these instructions from a <a href="https://doc.rust-lang.org/cargo/reference/config.html"><code>config.toml</code></a> file (for
+<p>Alternatively, to enable the parallel front-end from a <a href="https://doc.rust-lang.org/cargo/reference/config.html"><code>config.toml</code></a> file (for
 one or more projects), add these lines:</p>
 <pre><code class="language-toml">[build]
 rustflags = [&quot;-Z&quot;, &quot;threads=8&quot;]
@@ -405,18 +407,27 @@ the best results.</p>
 up to 50%. But the effects vary widely and depend on the characteristics of the
 code and its build configuration, and for some programs there is no compile
 time improvement.</p>
-<h3 id="codegen-backend"><a class="header" href="#codegen-backend">Codegen backend</a></h3>
-<p>You can use a different codegen backend to reduce compile times. Currently,
-the Cranelift codegen backend is available in the nightly chanel for Linux x64 and 64-bit ARM targets.</p>
-<p>You can install it with this <code>rustup</code> command:</p>
-<pre><code class="language-bash">$ rustup component add rustc-codegen-cranelift-preview --toolchain nightly
+<h3 id="cranelift-codegen-back-end"><a class="header" href="#cranelift-codegen-back-end">Cranelift Codegen Back-end</a></h3>
+<p>If you use nightly Rust on x86-64/Linux or ARM/Linux, you can enable the
+Cranelift codegen back-end. It may reduce compile times at the cost of lower
+quality generated code, and therefore is recommended for dev builds rather than
+release builds.</p>
+<p>First, install the back-end with this <code>rustup</code> command:</p>
+<pre><code class="language-bash">rustup component add rustc-codegen-cranelift-preview --toolchain nightly
 </code></pre>
-<p>And then use it with one of the following commands:</p>
-<ul>
-<li><code>RUSTFLAGS=&quot;-Zcodegen-backend=cranelift&quot; cargo +nightly build</code></li>
-<li><code>CARGO_PROFILE_DEV_CODEGEN_BACKEND=cranelift cargo +nightly build -Zcodegen-backend</code></li>
-</ul>
-<p>You can find more information about this codegen backend <a href="https://github.com/rust-lang/rustc_codegen_cranelift">here</a>.</p>
+<p>To select Cranelift from the command line, use the
+<code>-Zcodegen-backend=cranelift</code> flag. For example:</p>
+<pre><code class="language-bash">RUSTFLAGS=&quot;-Zcodegen-backend=cranelift&quot; cargo +nightly build
+</code></pre>
+<p>Alternatively, to specify Cranelift from a <a href="https://doc.rust-lang.org/cargo/reference/config.html"><code>config.toml</code></a> file (for one or
+more projects), add these lines:</p>
+<pre><code class="language-toml">[unstable]
+codegen-backend = true
+
+[profile.dev]
+codegen-backend = &quot;cranelift&quot;
+</code></pre>
+<p>For more information, see the <a href="https://github.com/rust-lang/rustc_codegen_cranelift">Cranelift documentation</a>.</p>
 <h2 id="custom-profiles"><a class="header" href="#custom-profiles">Custom profiles</a></h2>
 <p>In addition to the <code>dev</code> and <code>release</code> profiles, Cargo supports <a href="https://doc.rust-lang.org/cargo/reference/profiles.html#custom-profiles">custom
 profiles</a>. It might be useful, for example, to create a custom profile halfway
