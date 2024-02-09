@@ -131,6 +131,8 @@ practice. The effect will also vary across platforms, because each platform's
 system allocator has its own strengths and weaknesses. The use of an
 alternative allocator is also likely to increase binary size and compile times.
 
+#### jemalloc
+
 One popular alternative allocator for Linux and Mac is [jemalloc], usable via
 the [`tikv-jemallocator`] crate. To use it, add a dependency to your
 `Cargo.toml` file:
@@ -143,6 +145,25 @@ Then add the following to your Rust code, e.g. at the top of `src/main.rs`:
 #[global_allocator]
 static GLOBAL: tikv_jemallocator::Jemalloc = tikv_jemallocator::Jemalloc;
 ```
+
+Furthermore, on Linux, jemalloc can be configured to use [transparent huge
+pages][THP] (THP). This can further speed up programs, possibly at the cost of
+higher memory usage.
+
+[THP]: https://www.kernel.org/doc/html/next/admin-guide/mm/transhuge.html
+
+Do this by setting the `MALLOC_CONF` environment variable appropriately before
+building your program, for example:
+```bash
+MALLOC_CONF="thp:always,metadata_thp:always" cargo build --release
+```
+The system running the compiled program also has to be configured to support
+THP. See [this blog post] for more details.
+
+[this blog post]: https://kobzol.github.io/rust/rustc/2023/10/21/make-rust-compiler-5percent-faster.html
+
+#### mimalloc
+
 Another alternative allocator that works on many platforms is [mimalloc],
 usable via the [`mimalloc`] crate. To use it, add a dependency to your
 `Cargo.toml` file:
