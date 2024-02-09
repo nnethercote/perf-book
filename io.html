@@ -186,21 +186,21 @@ have repeated calls to these macros it may be better to lock stdout manually.</p
 <p>For example, change this code:</p>
 <pre><pre class="playground"><code class="language-rust edition2018"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
-</span><span class="boring">let lines = vec![&quot;one&quot;, &quot;two&quot;, &quot;three&quot;];
+</span><span class="boring">let lines = vec!["one", "two", "three"];
 </span>for line in lines {
-    println!(&quot;{}&quot;, line);
+    println!("{}", line);
 }
 <span class="boring">}</span></code></pre></pre>
 <p>to this:</p>
 <pre><pre class="playground"><code class="language-rust edition2018"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span><span class="boring">fn blah() -&gt; Result&lt;(), std::io::Error&gt; {
-</span><span class="boring">let lines = vec![&quot;one&quot;, &quot;two&quot;, &quot;three&quot;];
+</span><span class="boring">let lines = vec!["one", "two", "three"];
 </span>use std::io::Write;
 let mut stdout = std::io::stdout();
 let mut lock = stdout.lock();
 for line in lines {
-    writeln!(lock, &quot;{}&quot;, line)?;
+    writeln!(lock, "{}", line)?;
 }
 // stdout is unlocked when `lock` is dropped
 <span class="boring">Ok(())
@@ -216,11 +216,11 @@ minimizing the number of system calls required.</p>
 <pre><pre class="playground"><code class="language-rust edition2018"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span><span class="boring">fn blah() -&gt; Result&lt;(), std::io::Error&gt; {
-</span><span class="boring">let lines = vec![&quot;one&quot;, &quot;two&quot;, &quot;three&quot;];
+</span><span class="boring">let lines = vec!["one", "two", "three"];
 </span>use std::io::Write;
-let mut out = std::fs::File::create(&quot;test.txt&quot;)?;
+let mut out = std::fs::File::create("test.txt")?;
 for line in lines {
-    writeln!(out, &quot;{}&quot;, line)?;
+    writeln!(out, "{}", line)?;
 }
 <span class="boring">Ok(())
 </span><span class="boring">}
@@ -229,11 +229,11 @@ for line in lines {
 <pre><pre class="playground"><code class="language-rust edition2018"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span><span class="boring">fn blah() -&gt; Result&lt;(), std::io::Error&gt; {
-</span><span class="boring">let lines = vec![&quot;one&quot;, &quot;two&quot;, &quot;three&quot;];
+</span><span class="boring">let lines = vec!["one", "two", "three"];
 </span>use std::io::{BufWriter, Write};
-let mut out = BufWriter::new(std::fs::File::create(&quot;test.txt&quot;)?);
+let mut out = BufWriter::new(std::fs::File::create("test.txt")?);
 for line in lines {
-    writeln!(out, &quot;{}&quot;, line)?;
+    writeln!(out, "{}", line)?;
 }
 out.flush()?;
 <span class="boring">Ok(())

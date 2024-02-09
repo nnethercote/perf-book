@@ -215,7 +215,7 @@ platforms.</li>
 statement with frequency-based post-processing, which is good for getting
 domain-specific insights into parts of your code. It works on all platforms.</li>
 <li><a href="https://github.com/plasma-umass/coz">Coz</a> performs <em>causal profiling</em> to measure optimization potential, and has
-Rust support via <a href="https://github.com/plasma-umass/coz/tree/master/rust">coz-rs</a>. It works on Linux. </li>
+Rust support via <a href="https://github.com/plasma-umass/coz/tree/master/rust">coz-rs</a>. It works on Linux.</li>
 </ul>
 <h2 id="debug-info"><a class="header" href="#debug-info">Debug Info</a></h2>
 <p>To profile a release build effectively you might need to enable source line
@@ -251,12 +251,12 @@ with <code>_ZN</code> or <code>_R</code>, such as <code>_ZN3foo3barE</code> or
 worth changing the <a href="https://doc.rust-lang.org/rustc/codegen-options/index.html#symbol-mangling-version">mangling format</a> from the default legacy format to the newer
 v0 format.</p>
 <p>To use the v0 format from the command line, use the <code>-C symbol-mangling-version=v0</code> flag. For example:</p>
-<pre><code class="language-bash">RUSTFLAGS=&quot;-C symbol-mangling-version=v0&quot; cargo build --release
+<pre><code class="language-bash">RUSTFLAGS="-C symbol-mangling-version=v0" cargo build --release
 </code></pre>
 <p>Alternatively, to request these instructions from a <a href="https://doc.rust-lang.org/cargo/reference/config.html"><code>config.toml</code></a> file (for
 one or more projects), add these lines:</p>
 <pre><code class="language-toml">[build]
-rustflags = [&quot;-C&quot;, &quot;symbol-mangling-version=v0&quot;]
+rustflags = ["-C", "symbol-mangling-version=v0"]
 </code></pre>
 
                     </main>

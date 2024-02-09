@@ -192,7 +192,7 @@ by default.</p>
 <pre><code class="language-text">cargo clippy
 </code></pre>
 <p>The full list of performance lints can be seen by visiting the <a href="https://rust-lang.github.io/rust-clippy/master/">lint list</a> and
-deselecting all the lint groups except for “Perf”. </p>
+deselecting all the lint groups except for “Perf”.</p>
 <p>As well as making the code faster, the performance lint suggestions usually
 result in code that is simpler and more idiomatic, so they are worth following
 even for code that is not executed frequently.</p>
@@ -212,7 +212,7 @@ standard library types in some places by mistake.</p>
 example, to disallow the use of the standard hash tables (for reasons explained
 in the <a href="hashing.html">Hashing</a> section) add a <code>clippy.toml</code> file to your code with the
 following line.</p>
-<pre><code class="language-toml">disallowed-types = [&quot;std::collections::HashMap&quot;, &quot;std::collections::HashSet&quot;]
+<pre><code class="language-toml">disallowed-types = ["std::collections::HashMap", "std::collections::HashSet"]
 </code></pre>
 
                     </main>

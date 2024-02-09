@@ -258,12 +258,12 @@ lto = false
 </code></pre>
 <p>The second form of LTO is <em>thin LTO</em>, which is a little more aggressive, and
 likely to improve runtime speed and reduce binary size while also increasing
-compile times. Use <code>lto = &quot;thin&quot;</code> in <code>Cargo.toml</code> to enable it.</p>
+compile times. Use <code>lto = "thin"</code> in <code>Cargo.toml</code> to enable it.</p>
 <p>The third form of LTO is <em>fat LTO</em>, which is even more aggressive, and may
 improve performance and reduce binary size further while increasing build
-times again. Use <code>lto = &quot;fat&quot;</code> in <code>Cargo.toml</code> to enable it.</p>
+times again. Use <code>lto = "fat"</code> in <code>Cargo.toml</code> to enable it.</p>
 <p>Finally, it is possible to fully disable LTO, which will likely worsen runtime
-speed and increase binary size but reduce compile times. Use <code>lto = &quot;off&quot;</code> in
+speed and increase binary size but reduce compile times. Use <code>lto = "off"</code> in
 <code>Cargo.toml</code> for this. Note that this is different to the <code>lto = false</code> option,
 which, as mentioned above, leaves thin local LTO enabled.</p>
 <h3 id="alternative-allocators"><a class="header" href="#alternative-allocators">Alternative Allocators</a></h3>
@@ -274,20 +274,31 @@ in runtime speed and large reductions in memory usage have been seen in
 practice. The effect will also vary across platforms, because each platform’s
 system allocator has its own strengths and weaknesses. The use of an
 alternative allocator is also likely to increase binary size and compile times.</p>
+<h4 id="jemalloc"><a class="header" href="#jemalloc">jemalloc</a></h4>
 <p>One popular alternative allocator for Linux and Mac is <a href="https://github.com/jemalloc/jemalloc">jemalloc</a>, usable via
 the <a href="https://crates.io/crates/tikv-jemallocator"><code>tikv-jemallocator</code></a> crate. To use it, add a dependency to your
 <code>Cargo.toml</code> file:</p>
 <pre><code class="language-toml">[dependencies]
-tikv-jemallocator = &quot;0.5&quot;
+tikv-jemallocator = "0.5"
 </code></pre>
 <p>Then add the following to your Rust code, e.g. at the top of <code>src/main.rs</code>:</p>
 <pre><code class="language-rust ignore">#[global_allocator]
 static GLOBAL: tikv_jemallocator::Jemalloc = tikv_jemallocator::Jemalloc;</code></pre>
+<p>Furthermore, on Linux, jemalloc can be configured to use <a href="https://www.kernel.org/doc/html/next/admin-guide/mm/transhuge.html">transparent huge
+pages</a> (THP). This can further speed up programs, possibly at the cost of
+higher memory usage.</p>
+<p>Do this by setting the <code>MALLOC_CONF</code> environment variable appropriately before
+building your program, for example:</p>
+<pre><code class="language-bash">MALLOC_CONF="thp:always,metadata_thp:always" cargo build --release
+</code></pre>
+<p>The system running the compiled program also has to be configured to support
+THP. See <a href="https://kobzol.github.io/rust/rustc/2023/10/21/make-rust-compiler-5percent-faster.html">this blog post</a> for more details.</p>
+<h4 id="mimalloc"><a class="header" href="#mimalloc">mimalloc</a></h4>
 <p>Another alternative allocator that works on many platforms is <a href="https://github.com/microsoft/mimalloc">mimalloc</a>,
 usable via the <a href="https://crates.io/crates/mimalloc"><code>mimalloc</code></a> crate. To use it, add a dependency to your
 <code>Cargo.toml</code> file:</p>
 <pre><code class="language-toml">[dependencies]
-mimalloc = &quot;0.1&quot;
+mimalloc = "0.1"
 </code></pre>
 <p>Then add the following to your Rust code, e.g. at the top of <code>src/main.rs</code>:</p>
 <pre><code class="language-rust ignore">#[global_allocator]
@@ -298,12 +309,12 @@ types of) processors, you can tell the compiler to generate the newest (and
 potentially fastest) instructions specific to a <a href="https://doc.rust-lang.org/rustc/codegen-options/index.html#target-cpu">certain CPU architecture</a>,
 such as AVX SIMD instructions for x86-64 CPUs.</p>
 <p>To request these instructions from the command line, use the <code>-C target-cpu=native</code> flag. For example:</p>
-<pre><code class="language-bash">RUSTFLAGS=&quot;-C target-cpu=native&quot; cargo build --release
+<pre><code class="language-bash">RUSTFLAGS="-C target-cpu=native" cargo build --release
 </code></pre>
 <p>Alternatively, to request these instructions from a <a href="https://doc.rust-lang.org/cargo/reference/config.html"><code>config.toml</code></a> file (for
 one or more projects), add these lines:</p>
 <pre><code class="language-toml">[build]
-rustflags = [&quot;-C&quot;, &quot;target-cpu=native&quot;]
+rustflags = ["-C", "target-cpu=native"]
 </code></pre>
 <p>This can improve runtime speed, especially if the compiler finds vectorization
 opportunities in your code.</p>
@@ -331,11 +342,11 @@ binary size. Their effects on runtime speed vary.</p>
 <p>You can request an <a href="https://doc.rust-lang.org/cargo/reference/profiles.html#opt-level">optimization level</a> that aims to minimize binary size by
 adding these lines to the <code>Cargo.toml</code> file:</p>
 <pre><code class="language-toml">[profile.release]
-opt-level = &quot;z&quot;
+opt-level = "z"
 </code></pre>
 <p>This may also reduce runtime speed.</p>
-<p>An alternative is <code>opt-level = &quot;s&quot;</code>, which targets minimal binary size a little
-less aggressively. Compared to <code>opt-level = &quot;z&quot;</code>, it allows <a href="https://doc.rust-lang.org/rustc/codegen-options/index.html#inline-threshold">slightly more
+<p>An alternative is <code>opt-level = "s"</code>, which targets minimal binary size a little
+less aggressively. Compared to <code>opt-level = "z"</code>, it allows <a href="https://doc.rust-lang.org/rustc/codegen-options/index.html#inline-threshold">slightly more
 inlining</a> and also the vectorization of loops.</p>
 <h3 id="abort-on-panic"><a class="header" href="#abort-on-panic">Abort on <code>panic!</code></a></h3>
 <p>If you do not need to unwind on panic, e.g. because your program doesn’t use
@@ -344,15 +355,15 @@ panic, your program will still produce a backtrace.</p>
 <p>This might reduce binary size and increase runtime speed slightly, and may even
 reduce compile times slightly. Add these lines to the <code>Cargo.toml</code> file:</p>
 <pre><code class="language-toml">[profile.release]
-panic = &quot;abort&quot;
+panic = "abort"
 </code></pre>
 <h3 id="strip-debug-info-and-symbols"><a class="header" href="#strip-debug-info-and-symbols">Strip Debug Info and Symbols</a></h3>
 <p>You can tell the compiler to <a href="https://doc.rust-lang.org/cargo/reference/profiles.html#strip">strip</a> debug info and symbols from the compiled
 binary. Add these lines to <code>Cargo.toml</code> to strip just debug info:</p>
 <pre><code class="language-toml">[profile.release]
-strip = &quot;debuginfo&quot;
+strip = "debuginfo"
 </code></pre>
-<p>Alternatively, use <code>strip = &quot;symbols&quot;</code> to strip both debug info and symbols.</p>
+<p>Alternatively, use <code>strip = "symbols"</code> to strip both debug info and symbols.</p>
 <p>Stripping debug info can greatly reduce binary size. On Linux, the binary size
 of a small Rust programs might shrink by 4x when debug info is stripped.
 Stripping symbols can also reduce binary size, though generally not by as much.
@@ -374,12 +385,12 @@ rebuilding a program after a small change. It is possible to select a faster
 linker than the default one.</p>
 <p>One option is <a href="https://lld.llvm.org/">lld</a>, which is available on Linux and Windows. To specify lld
 from the command line, use the <code>-C link-arg=-fuse-ld=lld</code> flag. For example:</p>
-<pre><code class="language-bash">RUSTFLAGS=&quot;-C link-arg=-fuse-ld=lld&quot; cargo build --release
+<pre><code class="language-bash">RUSTFLAGS="-C link-arg=-fuse-ld=lld" cargo build --release
 </code></pre>
 <p>Alternatively, to specify lld from a <a href="https://doc.rust-lang.org/cargo/reference/config.html"><code>config.toml</code></a> file (for one or more
 projects), add these lines:</p>
 <pre><code class="language-toml">[build]
-rustflags = [&quot;-C&quot;, &quot;link-arg=-fuse-ld=lld&quot;]
+rustflags = ["-C", "link-arg=-fuse-ld=lld"]
 </code></pre>
 <p>lld is not fully supported for use with Rust, but it should work for most use
 cases on Linux and Windows. There is a <a href="https://github.com/rust-lang/rust/issues/39915#issuecomment-618726211">GitHub Issue</a> tracking full support for
@@ -394,12 +405,12 @@ Alternative linkers can be dramatically faster, without any downsides.</p>
 It may reduce compile times at the cost of higher compile-time memory usage. It
 won’t affect the quality of the generated code.</p>
 <p>You can do that by adding <code>-Zthreads=N</code> to RUSTFLAGS, for example:</p>
-<pre><code class="language-bash">RUSTFLAGS=&quot;-Zthreads=8&quot; cargo build --release
+<pre><code class="language-bash">RUSTFLAGS="-Zthreads=8" cargo build --release
 </code></pre>
 <p>Alternatively, to enable the parallel front-end from a <a href="https://doc.rust-lang.org/cargo/reference/config.html"><code>config.toml</code></a> file (for
 one or more projects), add these lines:</p>
 <pre><code class="language-toml">[build]
-rustflags = [&quot;-Z&quot;, &quot;threads=8&quot;]
+rustflags = ["-Z", "threads=8"]
 </code></pre>
 <p>Values other than <code>8</code> are possible, but that is the number that tends to give
 the best results.</p>
@@ -417,7 +428,7 @@ release builds.</p>
 </code></pre>
 <p>To select Cranelift from the command line, use the
 <code>-Zcodegen-backend=cranelift</code> flag. For example:</p>
-<pre><code class="language-bash">RUSTFLAGS=&quot;-Zcodegen-backend=cranelift&quot; cargo +nightly build
+<pre><code class="language-bash">RUSTFLAGS="-Zcodegen-backend=cranelift" cargo +nightly build
 </code></pre>
 <p>Alternatively, to specify Cranelift from a <a href="https://doc.rust-lang.org/cargo/reference/config.html"><code>config.toml</code></a> file (for one or
 more projects), add these lines:</p>
@@ -425,7 +436,7 @@ more projects), add these lines:</p>
 codegen-backend = true
 
 [profile.dev]
-codegen-backend = &quot;cranelift&quot;
+codegen-backend = "cranelift"
 </code></pre>
 <p>For more information, see the <a href="https://github.com/rust-lang/rustc_codegen_cranelift">Cranelift documentation</a>.</p>
 <h2 id="custom-profiles"><a class="header" href="#custom-profiles">Custom profiles</a></h2>
@@ -439,9 +450,9 @@ development.</p>
 following points summarize the above information into some recommendations.</p>
 <ul>
 <li>If you want to maximize runtime speed, consider all of the following:
-<code>codegen-units = 1</code>, <code>lto = &quot;fat&quot;</code>, an alternative allocator, and <code>panic = &quot;abort&quot;</code>.</li>
-<li>If you want to minimize binary size, consider <code>opt-level = &quot;z&quot;</code>,
-<code>codegen-units = 1</code>, <code>lto = &quot;fat&quot;</code>, <code>panic = &quot;abort&quot;</code>, and <code>strip = &quot;symbols&quot;</code>.</li>
+<code>codegen-units = 1</code>, <code>lto = "fat"</code>, an alternative allocator, and <code>panic = "abort"</code>.</li>
+<li>If you want to minimize binary size, consider <code>opt-level = "z"</code>,
+<code>codegen-units = 1</code>, <code>lto = "fat"</code>, <code>panic = "abort"</code>, and <code>strip = "symbols"</code>.</li>
 <li>In either case, consider <code>-C target-cpu=native</code> if broad architecture support
 is not needed, and <code>cargo-pgo</code> if it works with your distribution mechanism.</li>
 <li>Always use a faster linker if you are on a platform that supports it, because

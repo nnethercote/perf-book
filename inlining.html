@@ -182,7 +182,7 @@
                         <h1 id="inlining"><a class="header" href="#inlining">Inlining</a></h1>
 <p>Entry to and exit from hot, uninlined functions often accounts for a
 non-trivial fraction of execution time. Inlining these functions can provide
-small but easy speed wins. </p>
+small but easy speed wins.</p>
 <p>There are four inline attributes that can be used on Rust functions.</p>
 <ul>
 <li><strong>None</strong>. The compiler will decide itself if the function should be inlined.
@@ -218,13 +218,13 @@ if (and only if) its first and last lines are <em>not</em> marked with event cou
 For example:</p>
 <pre><code class="language-text">      .  #[inline(always)]
       .  fn inlined(x: u32, y: u32) -&gt; u32 {
-700,000      eprintln!(&quot;inlined: {} + {}&quot;, x, y);
+700,000      eprintln!("inlined: {} + {}", x, y);
 200,000      x + y
       .  }
       .  
       .  #[inline(never)]
 400,000  fn not_inlined(x: u32, y: u32) -&gt; u32 {
-700,000      eprintln!(&quot;not_inlined: {} + {}&quot;, x, y);
+700,000      eprintln!("not_inlined: {} + {}", x, y);
 200,000      x + y
 200,000  }
 </code></pre>

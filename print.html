@@ -182,7 +182,7 @@
 <p><strong><span style="font-size: 130%">Written by Nicholas Nethercote and others</span></strong></p>
 <p><a href="https://github.com/nnethercote/perf-book">Source code</a></p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="introduction"><a class="header" href="#introduction">Introduction</a></h1>
-<p>Performance is important for many Rust programs. </p>
+<p>Performance is important for many Rust programs.</p>
 <p>This book contains techniques that can improve the performance-related
 characteristics of Rust programs, such as runtime speed, memory usage, and
 binary size. The <a href="compile-times.html">Compile Times</a> section also contains techniques that will
@@ -322,12 +322,12 @@ lto = false
 </code></pre>
 <p>The second form of LTO is <em>thin LTO</em>, which is a little more aggressive, and
 likely to improve runtime speed and reduce binary size while also increasing
-compile times. Use <code>lto = &quot;thin&quot;</code> in <code>Cargo.toml</code> to enable it.</p>
+compile times. Use <code>lto = "thin"</code> in <code>Cargo.toml</code> to enable it.</p>
 <p>The third form of LTO is <em>fat LTO</em>, which is even more aggressive, and may
 improve performance and reduce binary size further while increasing build
-times again. Use <code>lto = &quot;fat&quot;</code> in <code>Cargo.toml</code> to enable it.</p>
+times again. Use <code>lto = "fat"</code> in <code>Cargo.toml</code> to enable it.</p>
 <p>Finally, it is possible to fully disable LTO, which will likely worsen runtime
-speed and increase binary size but reduce compile times. Use <code>lto = &quot;off&quot;</code> in
+speed and increase binary size but reduce compile times. Use <code>lto = "off"</code> in
 <code>Cargo.toml</code> for this. Note that this is different to the <code>lto = false</code> option,
 which, as mentioned above, leaves thin local LTO enabled.</p>
 <h3 id="alternative-allocators"><a class="header" href="#alternative-allocators">Alternative Allocators</a></h3>
@@ -338,20 +338,31 @@ in runtime speed and large reductions in memory usage have been seen in
 practice. The effect will also vary across platforms, because each platform’s
 system allocator has its own strengths and weaknesses. The use of an
 alternative allocator is also likely to increase binary size and compile times.</p>
+<h4 id="jemalloc"><a class="header" href="#jemalloc">jemalloc</a></h4>
 <p>One popular alternative allocator for Linux and Mac is <a href="https://github.com/jemalloc/jemalloc">jemalloc</a>, usable via
 the <a href="https://crates.io/crates/tikv-jemallocator"><code>tikv-jemallocator</code></a> crate. To use it, add a dependency to your
 <code>Cargo.toml</code> file:</p>
 <pre><code class="language-toml">[dependencies]
-tikv-jemallocator = &quot;0.5&quot;
+tikv-jemallocator = "0.5"
 </code></pre>
 <p>Then add the following to your Rust code, e.g. at the top of <code>src/main.rs</code>:</p>
 <pre><code class="language-rust ignore">#[global_allocator]
 static GLOBAL: tikv_jemallocator::Jemalloc = tikv_jemallocator::Jemalloc;</code></pre>
+<p>Furthermore, on Linux, jemalloc can be configured to use <a href="https://www.kernel.org/doc/html/next/admin-guide/mm/transhuge.html">transparent huge
+pages</a> (THP). This can further speed up programs, possibly at the cost of
+higher memory usage.</p>
+<p>Do this by setting the <code>MALLOC_CONF</code> environment variable appropriately before
+building your program, for example:</p>
+<pre><code class="language-bash">MALLOC_CONF="thp:always,metadata_thp:always" cargo build --release
+</code></pre>
+<p>The system running the compiled program also has to be configured to support
+THP. See <a href="https://kobzol.github.io/rust/rustc/2023/10/21/make-rust-compiler-5percent-faster.html">this blog post</a> for more details.</p>
+<h4 id="mimalloc"><a class="header" href="#mimalloc">mimalloc</a></h4>
 <p>Another alternative allocator that works on many platforms is <a href="https://github.com/microsoft/mimalloc">mimalloc</a>,
 usable via the <a href="https://crates.io/crates/mimalloc"><code>mimalloc</code></a> crate. To use it, add a dependency to your
 <code>Cargo.toml</code> file:</p>
 <pre><code class="language-toml">[dependencies]
-mimalloc = &quot;0.1&quot;
+mimalloc = "0.1"
 </code></pre>
 <p>Then add the following to your Rust code, e.g. at the top of <code>src/main.rs</code>:</p>
 <pre><code class="language-rust ignore">#[global_allocator]
@@ -362,12 +373,12 @@ types of) processors, you can tell the compiler to generate the newest (and
 potentially fastest) instructions specific to a <a href="https://doc.rust-lang.org/rustc/codegen-options/index.html#target-cpu">certain CPU architecture</a>,
 such as AVX SIMD instructions for x86-64 CPUs.</p>
 <p>To request these instructions from the command line, use the <code>-C target-cpu=native</code> flag. For example:</p>
-<pre><code class="language-bash">RUSTFLAGS=&quot;-C target-cpu=native&quot; cargo build --release
+<pre><code class="language-bash">RUSTFLAGS="-C target-cpu=native" cargo build --release
 </code></pre>
 <p>Alternatively, to request these instructions from a <a href="https://doc.rust-lang.org/cargo/reference/config.html"><code>config.toml</code></a> file (for
 one or more projects), add these lines:</p>
 <pre><code class="language-toml">[build]
-rustflags = [&quot;-C&quot;, &quot;target-cpu=native&quot;]
+rustflags = ["-C", "target-cpu=native"]
 </code></pre>
 <p>This can improve runtime speed, especially if the compiler finds vectorization
 opportunities in your code.</p>
@@ -395,11 +406,11 @@ binary size. Their effects on runtime speed vary.</p>
 <p>You can request an <a href="https://doc.rust-lang.org/cargo/reference/profiles.html#opt-level">optimization level</a> that aims to minimize binary size by
 adding these lines to the <code>Cargo.toml</code> file:</p>
 <pre><code class="language-toml">[profile.release]
-opt-level = &quot;z&quot;
+opt-level = "z"
 </code></pre>
 <p>This may also reduce runtime speed.</p>
-<p>An alternative is <code>opt-level = &quot;s&quot;</code>, which targets minimal binary size a little
-less aggressively. Compared to <code>opt-level = &quot;z&quot;</code>, it allows <a href="https://doc.rust-lang.org/rustc/codegen-options/index.html#inline-threshold">slightly more
+<p>An alternative is <code>opt-level = "s"</code>, which targets minimal binary size a little
+less aggressively. Compared to <code>opt-level = "z"</code>, it allows <a href="https://doc.rust-lang.org/rustc/codegen-options/index.html#inline-threshold">slightly more
 inlining</a> and also the vectorization of loops.</p>
 <h3 id="abort-on-panic"><a class="header" href="#abort-on-panic">Abort on <code>panic!</code></a></h3>
 <p>If you do not need to unwind on panic, e.g. because your program doesn’t use
@@ -408,15 +419,15 @@ panic, your program will still produce a backtrace.</p>
 <p>This might reduce binary size and increase runtime speed slightly, and may even
 reduce compile times slightly. Add these lines to the <code>Cargo.toml</code> file:</p>
 <pre><code class="language-toml">[profile.release]
-panic = &quot;abort&quot;
+panic = "abort"
 </code></pre>
 <h3 id="strip-debug-info-and-symbols"><a class="header" href="#strip-debug-info-and-symbols">Strip Debug Info and Symbols</a></h3>
 <p>You can tell the compiler to <a href="https://doc.rust-lang.org/cargo/reference/profiles.html#strip">strip</a> debug info and symbols from the compiled
 binary. Add these lines to <code>Cargo.toml</code> to strip just debug info:</p>
 <pre><code class="language-toml">[profile.release]
-strip = &quot;debuginfo&quot;
+strip = "debuginfo"
 </code></pre>
-<p>Alternatively, use <code>strip = &quot;symbols&quot;</code> to strip both debug info and symbols.</p>
+<p>Alternatively, use <code>strip = "symbols"</code> to strip both debug info and symbols.</p>
 <p>Stripping debug info can greatly reduce binary size. On Linux, the binary size
 of a small Rust programs might shrink by 4x when debug info is stripped.
 Stripping symbols can also reduce binary size, though generally not by as much.
@@ -438,12 +449,12 @@ rebuilding a program after a small change. It is possible to select a faster
 linker than the default one.</p>
 <p>One option is <a href="https://lld.llvm.org/">lld</a>, which is available on Linux and Windows. To specify lld
 from the command line, use the <code>-C link-arg=-fuse-ld=lld</code> flag. For example:</p>
-<pre><code class="language-bash">RUSTFLAGS=&quot;-C link-arg=-fuse-ld=lld&quot; cargo build --release
+<pre><code class="language-bash">RUSTFLAGS="-C link-arg=-fuse-ld=lld" cargo build --release
 </code></pre>
 <p>Alternatively, to specify lld from a <a href="https://doc.rust-lang.org/cargo/reference/config.html"><code>config.toml</code></a> file (for one or more
 projects), add these lines:</p>
 <pre><code class="language-toml">[build]
-rustflags = [&quot;-C&quot;, &quot;link-arg=-fuse-ld=lld&quot;]
+rustflags = ["-C", "link-arg=-fuse-ld=lld"]
 </code></pre>
 <p>lld is not fully supported for use with Rust, but it should work for most use
 cases on Linux and Windows. There is a <a href="https://github.com/rust-lang/rust/issues/39915#issuecomment-618726211">GitHub Issue</a> tracking full support for
@@ -458,12 +469,12 @@ Alternative linkers can be dramatically faster, without any downsides.</p>
 It may reduce compile times at the cost of higher compile-time memory usage. It
 won’t affect the quality of the generated code.</p>
 <p>You can do that by adding <code>-Zthreads=N</code> to RUSTFLAGS, for example:</p>
-<pre><code class="language-bash">RUSTFLAGS=&quot;-Zthreads=8&quot; cargo build --release
+<pre><code class="language-bash">RUSTFLAGS="-Zthreads=8" cargo build --release
 </code></pre>
 <p>Alternatively, to enable the parallel front-end from a <a href="https://doc.rust-lang.org/cargo/reference/config.html"><code>config.toml</code></a> file (for
 one or more projects), add these lines:</p>
 <pre><code class="language-toml">[build]
-rustflags = [&quot;-Z&quot;, &quot;threads=8&quot;]
+rustflags = ["-Z", "threads=8"]
 </code></pre>
 <p>Values other than <code>8</code> are possible, but that is the number that tends to give
 the best results.</p>
@@ -481,7 +492,7 @@ release builds.</p>
 </code></pre>
 <p>To select Cranelift from the command line, use the
 <code>-Zcodegen-backend=cranelift</code> flag. For example:</p>
-<pre><code class="language-bash">RUSTFLAGS=&quot;-Zcodegen-backend=cranelift&quot; cargo +nightly build
+<pre><code class="language-bash">RUSTFLAGS="-Zcodegen-backend=cranelift" cargo +nightly build
 </code></pre>
 <p>Alternatively, to specify Cranelift from a <a href="https://doc.rust-lang.org/cargo/reference/config.html"><code>config.toml</code></a> file (for one or
 more projects), add these lines:</p>
@@ -489,7 +500,7 @@ more projects), add these lines:</p>
 codegen-backend = true
 
 [profile.dev]
-codegen-backend = &quot;cranelift&quot;
+codegen-backend = "cranelift"
 </code></pre>
 <p>For more information, see the <a href="https://github.com/rust-lang/rustc_codegen_cranelift">Cranelift documentation</a>.</p>
 <h2 id="custom-profiles"><a class="header" href="#custom-profiles">Custom profiles</a></h2>
@@ -503,9 +514,9 @@ development.</p>
 following points summarize the above information into some recommendations.</p>
 <ul>
 <li>If you want to maximize runtime speed, consider all of the following:
-<code>codegen-units = 1</code>, <code>lto = &quot;fat&quot;</code>, an alternative allocator, and <code>panic = &quot;abort&quot;</code>.</li>
-<li>If you want to minimize binary size, consider <code>opt-level = &quot;z&quot;</code>,
-<code>codegen-units = 1</code>, <code>lto = &quot;fat&quot;</code>, <code>panic = &quot;abort&quot;</code>, and <code>strip = &quot;symbols&quot;</code>.</li>
+<code>codegen-units = 1</code>, <code>lto = "fat"</code>, an alternative allocator, and <code>panic = "abort"</code>.</li>
+<li>If you want to minimize binary size, consider <code>opt-level = "z"</code>,
+<code>codegen-units = 1</code>, <code>lto = "fat"</code>, <code>panic = "abort"</code>, and <code>strip = "symbols"</code>.</li>
 <li>In either case, consider <code>-C target-cpu=native</code> if broad architecture support
 is not needed, and <code>cargo-pgo</code> if it works with your distribution mechanism.</li>
 <li>Always use a faster linker if you are on a platform that supports it, because
@@ -530,7 +541,7 @@ by default.</p>
 <pre><code class="language-text">cargo clippy
 </code></pre>
 <p>The full list of performance lints can be seen by visiting the <a href="https://rust-lang.github.io/rust-clippy/master/">lint list</a> and
-deselecting all the lint groups except for “Perf”. </p>
+deselecting all the lint groups except for “Perf”.</p>
 <p>As well as making the code faster, the performance lint suggestions usually
 result in code that is simpler and more idiomatic, so they are worth following
 even for code that is not executed frequently.</p>
@@ -550,7 +561,7 @@ standard library types in some places by mistake.</p>
 example, to disallow the use of the standard hash tables (for reasons explained
 in the <a href="hashing.html">Hashing</a> section) add a <code>clippy.toml</code> file to your code with the
 following line.</p>
-<pre><code class="language-toml">disallowed-types = [&quot;std::collections::HashMap&quot;, &quot;std::collections::HashSet&quot;]
+<pre><code class="language-toml">disallowed-types = ["std::collections::HashMap", "std::collections::HashSet"]
 </code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="profiling"><a class="header" href="#profiling">Profiling</a></h1>
 <p>When optimizing a program, you also need a way to determine which parts of the
@@ -588,7 +599,7 @@ platforms.</li>
 statement with frequency-based post-processing, which is good for getting
 domain-specific insights into parts of your code. It works on all platforms.</li>
 <li><a href="https://github.com/plasma-umass/coz">Coz</a> performs <em>causal profiling</em> to measure optimization potential, and has
-Rust support via <a href="https://github.com/plasma-umass/coz/tree/master/rust">coz-rs</a>. It works on Linux. </li>
+Rust support via <a href="https://github.com/plasma-umass/coz/tree/master/rust">coz-rs</a>. It works on Linux.</li>
 </ul>
 <h2 id="debug-info"><a class="header" href="#debug-info">Debug Info</a></h2>
 <p>To profile a release build effectively you might need to enable source line
@@ -624,17 +635,17 @@ with <code>_ZN</code> or <code>_R</code>, such as <code>_ZN3foo3barE</code> or
 worth changing the <a href="https://doc.rust-lang.org/rustc/codegen-options/index.html#symbol-mangling-version">mangling format</a> from the default legacy format to the newer
 v0 format.</p>
 <p>To use the v0 format from the command line, use the <code>-C symbol-mangling-version=v0</code> flag. For example:</p>
-<pre><code class="language-bash">RUSTFLAGS=&quot;-C symbol-mangling-version=v0&quot; cargo build --release
+<pre><code class="language-bash">RUSTFLAGS="-C symbol-mangling-version=v0" cargo build --release
 </code></pre>
 <p>Alternatively, to request these instructions from a <a href="https://doc.rust-lang.org/cargo/reference/config.html"><code>config.toml</code></a> file (for
 one or more projects), add these lines:</p>
 <pre><code class="language-toml">[build]
-rustflags = [&quot;-C&quot;, &quot;symbol-mangling-version=v0&quot;]
+rustflags = ["-C", "symbol-mangling-version=v0"]
 </code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="inlining"><a class="header" href="#inlining">Inlining</a></h1>
 <p>Entry to and exit from hot, uninlined functions often accounts for a
 non-trivial fraction of execution time. Inlining these functions can provide
-small but easy speed wins. </p>
+small but easy speed wins.</p>
 <p>There are four inline attributes that can be used on Rust functions.</p>
 <ul>
 <li><strong>None</strong>. The compiler will decide itself if the function should be inlined.
@@ -670,13 +681,13 @@ if (and only if) its first and last lines are <em>not</em> marked with event cou
 For example:</p>
 <pre><code class="language-text">      .  #[inline(always)]
       .  fn inlined(x: u32, y: u32) -&gt; u32 {
-700,000      eprintln!(&quot;inlined: {} + {}&quot;, x, y);
+700,000      eprintln!("inlined: {} + {}", x, y);
 200,000      x + y
       .  }
       .  
       .  #[inline(never)]
 400,000  fn not_inlined(x: u32, y: u32) -&gt; u32 {
-700,000      eprintln!(&quot;not_inlined: {} + {}&quot;, x, y);
+700,000      eprintln!("not_inlined: {} + {}", x, y);
 200,000      x + y
 200,000  }
 </code></pre>
@@ -764,7 +775,7 @@ type, the distribution of the hashed values won’t be that different to the
 distribution of the values themselves. In this case the <a href="https://crates.io/crates/nohash-hasher"><code>nohash_hasher</code></a> crate
 can be useful.</p>
 <p>Hash function design is a complex topic and is beyond the scope of this book.
-The <a href="https://github.com/tkaitchuck/aHash/blob/master/compare/readme.md"><code>ahash</code> documentation</a> has a good discussion. </p>
+The <a href="https://github.com/tkaitchuck/aHash/blob/master/compare/readme.md"><code>ahash</code> documentation</a> has a good discussion.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="heap-allocations"><a class="header" href="#heap-allocations">Heap Allocations</a></h1>
 <p>Heap allocations are moderately expensive. The exact details depend on which
 allocator is in use, but each allocation (and deallocation) typically involves
@@ -961,8 +972,8 @@ which are constructed with <code>format!</code>. The obvious representation is
 <pre><pre class="playground"><code class="language-rust edition2018"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>let mut errors: Vec&lt;String&gt; = vec![];
-errors.push(&quot;something went wrong&quot;.to_string());
-errors.push(format!(&quot;something went wrong on line {}&quot;, 100));
+errors.push("something went wrong".to_string());
+errors.push(format!("something went wrong on line {}", 100));
 <span class="boring">}</span></code></pre></pre>
 <p>That requires a <code>to_string</code> call to promote the static string literal to a
 <code>String</code>, which incurs an allocation.</p>
@@ -976,14 +987,14 @@ because it makes the type clearer.) The following example puts all this together
 </span><span class="boring">fn main() {
 </span>use std::borrow::Cow;
 let mut errors: Vec&lt;Cow&lt;'static, str&gt;&gt; = vec![];
-errors.push(Cow::Borrowed(&quot;something went wrong&quot;));
-errors.push(Cow::Owned(format!(&quot;something went wrong on line {}&quot;, 100)));
-errors.push(Cow::from(&quot;something else went wrong&quot;));
-errors.push(format!(&quot;something else went wrong on line {}&quot;, 101).into());
+errors.push(Cow::Borrowed("something went wrong"));
+errors.push(Cow::Owned(format!("something went wrong on line {}", 100)));
+errors.push(Cow::from("something else went wrong"));
+errors.push(format!("something else went wrong on line {}", 101).into());
 <span class="boring">}</span></code></pre></pre>
 <p><code>errors</code> now holds a mixture of borrowed and owned data without requiring any
 extra allocations. This example involves <code>&amp;str</code>/<code>String</code>, but other pairings
-such as <code>&amp;[T]</code>/<code>Vec&lt;T&gt;</code> and <code>&amp;Path</code>/<code>PathBuf</code> are also possible. </p>
+such as <code>&amp;[T]</code>/<code>Vec&lt;T&gt;</code> and <code>&amp;Path</code>/<code>PathBuf</code> are also possible.</p>
 <p><a href="https://github.com/rust-lang/rust/pull/37064/commits/b043e11de2eb2c60f7bfec5e15960f537b229e20"><strong>Example 1</strong></a>,
 <a href="https://github.com/rust-lang/rust/pull/56336/commits/787959c20d062d396b97a5566e0a766d963af022"><strong>Example 2</strong></a>.</p>
 <p>All of the above applies if the data is immutable. But <code>Cow</code> also allows
@@ -996,7 +1007,7 @@ as a <code>&amp;str</code>, that is mostly read-only but occasionally needs to b
 <p><a href="https://github.com/rust-lang/rust/pull/50855/commits/ad471452ba6fbbf91ad566dc4bdf1033a7281811"><strong>Example 1</strong></a>,
 <a href="https://github.com/rust-lang/rust/pull/68848/commits/67da45f5084f98eeb20cc6022d68788510dc832a"><strong>Example 2</strong></a>.</p>
 <p>Finally, because <code>Cow</code> implements <a href="https://doc.rust-lang.org/std/ops/trait.Deref.html"><code>Deref</code></a>, you can call methods directly on
-the data it encloses. </p>
+the data it encloses.</p>
 <p><code>Cow</code> can be fiddly to get working, but it is often worth the effort.</p>
 <h2 id="reusing-collections"><a class="header" href="#reusing-collections">Reusing Collections</a></h2>
 <p>Sometimes you need to build up a collection such as a <code>Vec</code> in stages. It is
@@ -1213,7 +1224,7 @@ that variant contains a <code>Vec</code>.</p>
 to use a static assertion to ensure that it does not accidentally regress. The
 following example uses a macro from the <a href="https://crates.io/crates/static_assertions"><code>static_assertions</code></a> crate.</p>
 <pre><code class="language-rust ignore">  // This type is used a lot. Make sure it doesn't unintentionally get bigger.
-  #[cfg(target_arch = &quot;x86_64&quot;)]
+  #[cfg(target_arch = "x86_64")]
   static_assertions::assert_eq_size!(HotType, [u8; 64]);</code></pre>
 <p>The <code>cfg</code> attribute is important, because type sizes can vary on different
 platforms. Restricting the assertion to <code>x86_64</code> (which is typically the most
@@ -1282,7 +1293,7 @@ library.</p>
 <p>The <code>parking_lot</code> versions used to be reliably smaller, faster, and more
 flexible than those in the standard library, but the standard library versions
 have greatly improved on some platforms. So you should measure before switching
-to <code>parking_lot</code>. </p>
+to <code>parking_lot</code>.</p>
 <p>If you decide to universally use the <code>parking_lot</code> types it is easy to
 accidentally use the standard library equivalents in some places. You can <a href="linting.html#disallowing-types">use
 Clippy</a> to avoid this problem.</p>
@@ -1348,21 +1359,21 @@ have repeated calls to these macros it may be better to lock stdout manually.</p
 <p>For example, change this code:</p>
 <pre><pre class="playground"><code class="language-rust edition2018"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
-</span><span class="boring">let lines = vec![&quot;one&quot;, &quot;two&quot;, &quot;three&quot;];
+</span><span class="boring">let lines = vec!["one", "two", "three"];
 </span>for line in lines {
-    println!(&quot;{}&quot;, line);
+    println!("{}", line);
 }
 <span class="boring">}</span></code></pre></pre>
 <p>to this:</p>
 <pre><pre class="playground"><code class="language-rust edition2018"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span><span class="boring">fn blah() -&gt; Result&lt;(), std::io::Error&gt; {
-</span><span class="boring">let lines = vec![&quot;one&quot;, &quot;two&quot;, &quot;three&quot;];
+</span><span class="boring">let lines = vec!["one", "two", "three"];
 </span>use std::io::Write;
 let mut stdout = std::io::stdout();
 let mut lock = stdout.lock();
 for line in lines {
-    writeln!(lock, &quot;{}&quot;, line)?;
+    writeln!(lock, "{}", line)?;
 }
 // stdout is unlocked when `lock` is dropped
 <span class="boring">Ok(())
@@ -1378,11 +1389,11 @@ minimizing the number of system calls required.</p>
 <pre><pre class="playground"><code class="language-rust edition2018"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span><span class="boring">fn blah() -&gt; Result&lt;(), std::io::Error&gt; {
-</span><span class="boring">let lines = vec![&quot;one&quot;, &quot;two&quot;, &quot;three&quot;];
+</span><span class="boring">let lines = vec!["one", "two", "three"];
 </span>use std::io::Write;
-let mut out = std::fs::File::create(&quot;test.txt&quot;)?;
+let mut out = std::fs::File::create("test.txt")?;
 for line in lines {
-    writeln!(out, &quot;{}&quot;, line)?;
+    writeln!(out, "{}", line)?;
 }
 <span class="boring">Ok(())
 </span><span class="boring">}
@@ -1391,11 +1402,11 @@ for line in lines {
 <pre><pre class="playground"><code class="language-rust edition2018"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span><span class="boring">fn blah() -&gt; Result&lt;(), std::io::Error&gt; {
-</span><span class="boring">let lines = vec![&quot;one&quot;, &quot;two&quot;, &quot;three&quot;];
+</span><span class="boring">let lines = vec!["one", "two", "three"];
 </span>use std::io::{BufWriter, Write};
-let mut out = BufWriter::new(std::fs::File::create(&quot;test.txt&quot;)?);
+let mut out = BufWriter::new(std::fs::File::create("test.txt")?);
 for line in lines {
-    writeln!(out, &quot;{}&quot;, line)?;
+    writeln!(out, "{}", line)?;
 }
 out.flush()?;
 <span class="boring">Ok(())
@@ -1478,7 +1489,7 @@ intrinsics, many of which relate to SIMD instructions.</p>
 <p>Rust provides excellent support for safe parallel programming, which can lead
 to large performance improvements. There are a variety of ways to introduce
 parallelism into a program and the best way for any program will depend greatly
-on its design. </p>
+on its design.</p>
 <p>An in-depth treatment of parallelism is beyond the scope of this book. If you
 are interested in this topic, the documentation for the <a href="https://crates.io/crates/rayon"><code>rayon</code></a> and
 <a href="https://crates.io/crates/crossbeam"><code>crossbeam</code></a> crates is a good place to start.</p>

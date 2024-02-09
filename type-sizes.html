@@ -317,7 +317,7 @@ that variant contains a <code>Vec</code>.</p>
 to use a static assertion to ensure that it does not accidentally regress. The
 following example uses a macro from the <a href="https://crates.io/crates/static_assertions"><code>static_assertions</code></a> crate.</p>
 <pre><code class="language-rust ignore">  // This type is used a lot. Make sure it doesn't unintentionally get bigger.
-  #[cfg(target_arch = &quot;x86_64&quot;)]
+  #[cfg(target_arch = "x86_64")]
   static_assertions::assert_eq_size!(HotType, [u8; 64]);</code></pre>
 <p>The <code>cfg</code> attribute is important, because type sizes can vary on different
 platforms. Restricting the assertion to <code>x86_64</code> (which is typically the most
