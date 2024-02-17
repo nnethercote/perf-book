@@ -32,6 +32,13 @@ metrics used.
 [Hyperfine]: https://github.com/sharkdp/hyperfine
 [rustc-perf]: https://github.com/rust-lang/rustc-perf/
 
+Third, you may want to track your benchmarks. Some harnesses mentioned above,
+like Criterion, Divan, and Hyperfine will track and compare your benchmarks
+locally. To track benchmarks as a part of continuous integration (CI), consider
+using a continuous benchmarking tool like [Bencher].
+
+[Bencher]: https://github.com/bencherdev/bencher
+
 When it comes to metrics, there are many choices, and the right one(s) will
 depend on the nature of the program being benchmarked. For example, metrics
 that make sense for a batch program might not make sense for an interactive
