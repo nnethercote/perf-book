@@ -23,6 +23,7 @@ metrics used.
   unstable features and therefore only work on nightly Rust.
 - [Criterion] and [Divan] are more sophisticated alternatives.
 - [Hyperfine] is an excellent general-purpose benchmarking tool.
+- [Bencher] can do continuous benchmarking on CI, including GitHub CI.
 - Custom benchmarking harnesses are also possible. For example, [rustc-perf] is
   the harness used to benchmark the Rust compiler.
 
@@ -30,6 +31,7 @@ metrics used.
 [Criterion]: https://github.com/bheisler/criterion.rs
 [Divan]: https://github.com/nvzqz/divan
 [Hyperfine]: https://github.com/sharkdp/hyperfine
+[Bencher]: https://github.com/bencherdev/bencher
 [rustc-perf]: https://github.com/rust-lang/rustc-perf/
 
 When it comes to metrics, there are many choices, and the right one(s) will
