@@ -274,7 +274,6 @@ reduce compile times slightly. Add these lines to the `Cargo.toml` file:
 panic = "abort"
 ```
 
-
 ### Strip Debug Info and Symbols
 
 You can tell the compiler to [strip] debug info and symbols from the compiled
@@ -286,6 +285,11 @@ strip = "debuginfo"
 Alternatively, use `strip = "symbols"` to strip both debug info and symbols.
 
 [strip]: https://doc.rust-lang.org/cargo/reference/profiles.html#strip
+
+Prior to Rust 1.77, the default behaviour was to do no stripping. [As of Rust
+1.77] the default behaviour is to strip debug info in release builds.
+
+[As of Rust 1.77]: https://blog.rust-lang.org/2024/03/21/Rust-1.77.0.html#enable-strip-in-release-profiles-by-default
 
 Stripping debug info can greatly reduce binary size. On Linux, the binary size
 of a small Rust programs might shrink by 4x when debug info is stripped.
