@@ -14,10 +14,17 @@ for your program depends on your needs and the specifics of your program, and
 performance-related choices (which is most of them) should be validated with
 benchmarking.
 
+It is worth reading this chapter carefully to understand all the build
+configuration choices. However, for the impatient or forgetful,
+[`cargo-wizard`] encapsulates this information and can help you choose an
+appropriate build configuration.
+
 Note that Cargo only looks at the profile settings in the `Cargo.toml` file at
 the root of the workspace. Profile settings defined in dependencies are
 ignored. Therefore, these options are mostly relevant for binary crates, not
 library crates.
+
+[`cargo-wizard`]: https://github.com/Kobzol/cargo-wizard
 
 ## Release Builds
 
@@ -438,6 +445,7 @@ following points summarize the above information into some recommendations.
   is not needed, and `cargo-pgo` if it works with your distribution mechanism.
 - Always use a faster linker if you are on a platform that supports it, because
   there are no downsides to doing so.
+- Use `cargo-wizard` if you need additional help with these choices.
 - Benchmark all changes, one at a time, to ensure they have the expected
   effects.
 
