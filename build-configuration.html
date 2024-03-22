@@ -192,6 +192,10 @@ worse compile times in exchange for higher runtime speeds. The right choice
 for your program depends on your needs and the specifics of your program, and
 performance-related choices (which is most of them) should be validated with
 benchmarking.</p>
+<p>It is worth reading this chapter carefully to understand all the build
+configuration choices. However, for the impatient or forgetful,
+<a href="https://github.com/Kobzol/cargo-wizard"><code>cargo-wizard</code></a> encapsulates this information and can help you choose an
+appropriate build configuration.</p>
 <p>Note that Cargo only looks at the profile settings in the <code>Cargo.toml</code> file at
 the root of the workspace. Profile settings defined in dependencies are
 ignored. Therefore, these options are mostly relevant for binary crates, not
@@ -364,6 +368,8 @@ binary. Add these lines to <code>Cargo.toml</code> to strip just debug info:</p>
 strip = "debuginfo"
 </code></pre>
 <p>Alternatively, use <code>strip = "symbols"</code> to strip both debug info and symbols.</p>
+<p>Prior to Rust 1.77, the default behaviour was to do no stripping. <a href="https://blog.rust-lang.org/2024/03/21/Rust-1.77.0.html#enable-strip-in-release-profiles-by-default">As of Rust
+1.77</a> the default behaviour is to strip debug info in release builds.</p>
 <p>Stripping debug info can greatly reduce binary size. On Linux, the binary size
 of a small Rust programs might shrink by 4x when debug info is stripped.
 Stripping symbols can also reduce binary size, though generally not by as much.
@@ -397,7 +403,9 @@ cases on Linux and Windows. There is a <a href="https://github.com/rust-lang/rus
 lld.</p>
 <p>Another option is <a href="https://github.com/rui314/mold">mold</a>, which is currently available on Linux and macOS.
 Simply substitute <code>mold</code> for <code>lld</code> in the instructions above. mold is often
-faster than lld. It is also much newer and may not work in all cases.</p>
+faster than lld.
+<a href="https://davidlattimore.github.io/posts/2024/02/04/speeding-up-the-rust-edit-build-run-cycle.html"><strong>Example</strong></a>.
+It is also much newer and may not work in all cases.</p>
 <p>Unlike the other options in this chapter, there are no trade-offs here!
 Alternative linkers can be dramatically faster, without any downsides.</p>
 <h3 id="experimental-parallel-front-end"><a class="header" href="#experimental-parallel-front-end">Experimental Parallel Front-end</a></h3>
@@ -457,6 +465,7 @@ following points summarize the above information into some recommendations.</p>
 is not needed, and <code>cargo-pgo</code> if it works with your distribution mechanism.</li>
 <li>Always use a faster linker if you are on a platform that supports it, because
 there are no downsides to doing so.</li>
+<li>Use <code>cargo-wizard</code> if you need additional help with these choices.</li>
 <li>Benchmark all changes, one at a time, to ensure they have the expected
 effects.</li>
 </ul>
