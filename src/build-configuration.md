@@ -349,7 +349,9 @@ lld.
 
 Another option is [mold], which is currently available on Linux and macOS.
 Simply substitute `mold` for `lld` in the instructions above. mold is often
-faster than lld. It is also much newer and may not work in all cases.
+faster than lld.
+[**Example**](https://davidlattimore.github.io/posts/2024/02/04/speeding-up-the-rust-edit-build-run-cycle.html).
+It is also much newer and may not work in all cases.
 
 [mold]: https://github.com/rui314/mold
 
