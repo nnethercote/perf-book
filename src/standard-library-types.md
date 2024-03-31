@@ -20,16 +20,6 @@ library types, such as [`Mutex`], [`RwLock`], [`Condvar`], and
 [`Condvar`]: https://doc.rust-lang.org/std/sync/struct.Condvar.html
 [`Once`]: https://doc.rust-lang.org/std/sync/struct.Once.html
 
-## `Box`
-
-The expression [`Box::default()`] has the same effect as
-`Box::new(T::default())` but can be faster because the compiler can create the
-value directly on the heap, rather than constructing it on the stack and then
-copying it over.
-[**Example**](https://github.com/komora-io/art/commit/d5dc58338f475709c375e15976d0d77eb5d7f7ef).
-
-[`Box::default()`]: https://doc.rust-lang.org/std/boxed/struct.Box.html#method.default
-
 ## `Vec`
 
 The best way to create a zero-filled `Vec` of length `n` is with `vec![0; n]`.
