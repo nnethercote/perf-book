@@ -11,10 +11,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Clone repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Setup mdbook
-        uses: peaceiris/actions-mdbook@v1
+        uses: peaceiris/actions-mdbook@v2
         with:
           mdbook-version: "latest"
 
@@ -35,7 +35,7 @@ jobs:
       #  run: cp book/epub/The\ Rust\ Performance\ Book.epub book/html
 
       - name: Deploy
-        uses: peaceiris/actions-gh-pages@v3
+        uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           #publish_dir: ./book/html  # use if EPUB is enabled
