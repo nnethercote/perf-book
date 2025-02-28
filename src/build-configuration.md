@@ -392,10 +392,9 @@ time improvement.
 
 ### Cranelift Codegen Back-end
 
-If you use nightly Rust on x86-64/Linux or ARM/Linux, you can enable the
-Cranelift codegen back-end. It may reduce compile times at the cost of lower
-quality generated code, and therefore is recommended for dev builds rather than
-release builds.
+If you use nightly Rust you can enable the Cranelift codegen back-end on [some
+platforms]. It may reduce compile times at the cost of lower quality generated
+code, and therefore is recommended for dev builds rather than release builds.
 
 First, install the back-end with this `rustup` command:
 ```bash
@@ -421,6 +420,7 @@ codegen-backend = "cranelift"
 
 For more information, see the [Cranelift documentation].
 
+[some platforms]: https://github.com/rust-lang/rustc_codegen_cranelift#platform-support
 [Cranelift documentation]: https://github.com/rust-lang/rustc_codegen_cranelift
 
 ## Custom profiles
