@@ -159,14 +159,15 @@ higher memory usage.
 
 [THP]: https://www.kernel.org/doc/html/next/admin-guide/mm/transhuge.html
 
-Do this by setting the `MALLOC_CONF` environment variable appropriately before
-building your program, for example:
+Do this by setting the `MALLOC_CONF` environment variable (or perhaps
+[`_RJEM_MALLOC_CONF`]) appropriately before building your program, for example:
 ```bash
 MALLOC_CONF="thp:always,metadata_thp:always" cargo build --release
 ```
 The system running the compiled program also has to be configured to support
 THP. See [this blog post] for more details.
 
+[`_RJEM_MALLOC_CONF`]: https://github.com/tikv/jemallocator/issues/65
 [this blog post]: https://kobzol.github.io/rust/rustc/2023/10/21/make-rust-compiler-5percent-faster.html
 
 #### mimalloc
