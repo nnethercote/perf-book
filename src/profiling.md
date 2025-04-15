@@ -92,6 +92,16 @@ profilers such as Cachegrind and Samply that require source code to work fully.
 
 [build-std]: https://doc.rust-lang.org/cargo/reference/unstable.html#build-std
 
+## Frame pointers
+
+The rust compiler might optimize frame pointers away, which will provide you
+poorer profiling information. To force rustc to generate frame pointers use the
+`-C force-frame-pointers=yes` flag. You can do this by setting the `RUSTFLAGS`
+environment variable. For example:
+```bash
+RUSTFLAGS="-C force-frame-pointers=yes" cargo build --release
+```
+
 ## Symbol Demangling
 
 Rust uses a form of name mangling to encode function names in compiled code. If
