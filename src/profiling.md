@@ -94,13 +94,20 @@ profilers such as Cachegrind and Samply that require source code to work fully.
 
 ## Frame pointers
 
-The rust compiler might optimize frame pointers away, which will provide you
-poorer profiling information. To force rustc to generate frame pointers use the
-`-C force-frame-pointers=yes` flag. You can do this by setting the `RUSTFLAGS`
-environment variable. For example:
+The Rust compiler may optimize away frame pointers, which can hurt the quality
+of profiling information such as stack traces. To force the compiler to use
+frame pointers, use the `-C force-frame-pointers=yes` flag. For example:
 ```bash
 RUSTFLAGS="-C force-frame-pointers=yes" cargo build --release
 ```
+
+Alternatively, to force the use frame pointers from a [`config.toml`] file (for
+one or more projects), add these lines:
+```toml
+[build]
+rustflags = ["-C", "force-frame-pointers=yes"]
+```
+[`config.toml`]: https://doc.rust-lang.org/cargo/reference/config.html
 
 ## Symbol Demangling
 
