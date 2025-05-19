@@ -322,6 +322,22 @@ comprehensive documentation in the excellent [`min-sized-rust`] repository.
 The following build configuration options are designed primarily to minimize
 compile times.
 
+### Disable debuginfo generation
+
+If you want to improve the compile times of `dev` (unoptimized) builds and
+you're not using a debugger, consider disabling debuginfo. It can improve
+incremental rebuild times by 2-3x.
+
+You can do that by putting this in your `Cargo.toml` file:
+```toml
+[profile.dev]
+debug = false
+```
+
+Note that this means that stack traces will not contain line information.
+If you want to keep useful stack traces, but do not require full information
+for the debugger, you can use `debug = "line-tables-only"` instead.
+
 ### Linking
 
 A big part of compile time is actually linking time, particularly when
