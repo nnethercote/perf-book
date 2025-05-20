@@ -348,7 +348,7 @@ lld is not fully supported for use with Rust, but it should work for most use
 cases on Linux and Windows. There is a [GitHub Issue] tracking full support for
 lld.
 
-Another option is [mold], which is currently available on Linux and macOS.
+Another option is [mold], which is currently available on Linux.
 Simply substitute `mold` for `lld` in the instructions above. mold is often
 faster than lld.
 [**Example**](https://davidlattimore.github.io/posts/2024/02/04/speeding-up-the-rust-edit-build-run-cycle.html).
