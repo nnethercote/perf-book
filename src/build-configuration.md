@@ -348,6 +348,8 @@ lld is not fully supported for use with Rust, but it should work for most use
 cases on Linux and Windows. There is a [GitHub Issue] tracking full support for
 lld.
 
+[GitHub Issue]: https://github.com/rust-lang/rust/issues/39915#issuecomment-618726211
+
 Another option is [mold], which is currently available on Linux.
 Simply substitute `mold` for `lld` in the instructions above. mold is often
 faster than lld.
@@ -358,8 +360,6 @@ It is also much newer and may not work in all cases.
 
 Unlike the other options in this chapter, there are no trade-offs here!
 Alternative linkers can be dramatically faster, without any downsides.
-
-[GitHub Issue]: https://github.com/rust-lang/rust/issues/39915#issuecomment-618726211
 
 ### Experimental Parallel Front-end
 
