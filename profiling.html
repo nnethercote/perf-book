@@ -203,7 +203,7 @@ Rust support via <a href="https://github.com/plasma-umass/coz/tree/master/rust">
 <p>To profile a release build effectively you might need to enable source line
 debug info. To do this, add the following lines to your <code>Cargo.toml</code> file:</p>
 <pre><code class="language-toml">[profile.release]
-debug = 1
+debug = "line-tables-only"
 </code></pre>
 <p>See the <a href="https://doc.rust-lang.org/cargo/reference/profiles.html#debug">Cargo documentation</a> for more details about the <code>debug</code> setting.</p>
 <p>Unfortunately, even after doing the above step you won’t get detailed profiling

@@ -432,17 +432,6 @@ comprehensive documentation in the excellent <a href="https://github.com/johntha
 <h2 id="minimizing-compile-times"><a class="header" href="#minimizing-compile-times">Minimizing Compile Times</a></h2>
 <p>The following build configuration options are designed primarily to minimize
 compile times.</p>
-<h3 id="disable-debuginfo-generation"><a class="header" href="#disable-debuginfo-generation">Disable debuginfo generation</a></h3>
-<p>If you want to improve the compile times of <code>dev</code> (unoptimized) builds and
-you’re not using a debugger, consider disabling debuginfo. It can improve
-incremental rebuild times by 2-3x.</p>
-<p>You can do that by putting this in your <code>Cargo.toml</code> file:</p>
-<pre><code class="language-toml">[profile.dev]
-debug = false
-</code></pre>
-<p>Note that this means that stack traces will not contain line information.
-If you want to keep useful stack traces, but do not require full information
-for the debugger, you can use <code>debug = "line-tables-only"</code> instead.</p>
 <h3 id="linking"><a class="header" href="#linking">Linking</a></h3>
 <p>A big part of compile time is actually linking time, particularly when
 rebuilding a program after a small change. It is possible to select a faster
@@ -466,6 +455,20 @@ faster than lld.
 It is also much newer and may not work in all cases.</p>
 <p>Unlike the other options in this chapter, there are no trade-offs here!
 Alternative linkers can be dramatically faster, without any downsides.</p>
+<h3 id="disable-debug-info-generation"><a class="header" href="#disable-debug-info-generation">Disable Debug Info Generation</a></h3>
+<p>Although release builds give the best performance, many people use dev builds
+while developing because they build more quickly. If you use dev builds but
+don’t often use a debugger, consider disabling debuginfo. This can improve dev
+build times significantly, by as much as 20-40%.
+<a href="https://kobzol.github.io/rust/rustc/2025/05/20/disable-debuginfo-to-improve-rust-compile-times.html"><strong>Example.</strong></a></p>
+<p>To disable debug info generation, add these lines to the <code>Cargo.toml</code> file:</p>
+<pre><code class="language-toml">[profile.dev]
+debug = false
+</code></pre>
+<p>Note that this means that stack traces will not contain line information. If
+you want to keep that line information, but do not require full information for
+the debugger, you can use <code>debug = "line-tables-only"</code> instead, which still
+gives most of the compile time benefits.</p>
 <h3 id="experimental-parallel-front-end"><a class="header" href="#experimental-parallel-front-end">Experimental Parallel Front-end</a></h3>
 <p>If you use nightly Rust, you can enable the experimental <a href="https://blog.rust-lang.org/2023/11/09/parallel-rustc.html">parallel front-end</a>.
 It may reduce compile times at the cost of higher compile-time memory usage. It
@@ -607,7 +610,7 @@ Rust support via <a href="https://github.com/plasma-umass/coz/tree/master/rust">
 <p>To profile a release build effectively you might need to enable source line
 debug info. To do this, add the following lines to your <code>Cargo.toml</code> file:</p>
 <pre><code class="language-toml">[profile.release]
-debug = 1
+debug = "line-tables-only"
 </code></pre>
 <p>See the <a href="https://doc.rust-lang.org/cargo/reference/profiles.html#debug">Cargo documentation</a> for more details about the <code>debug</code> setting.</p>
 <p>Unfortunately, even after doing the above step you won’t get detailed profiling
