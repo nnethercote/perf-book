@@ -322,22 +322,6 @@ comprehensive documentation in the excellent [`min-sized-rust`] repository.
 The following build configuration options are designed primarily to minimize
 compile times.
 
-### Disable debuginfo generation
-
-If you want to improve the compile times of `dev` (unoptimized) builds and
-you're not using a debugger, consider disabling debuginfo. It can improve
-incremental rebuild times by 2-3x.
-
-You can do that by putting this in your `Cargo.toml` file:
-```toml
-[profile.dev]
-debug = false
-```
-
-Note that this means that stack traces will not contain line information.
-If you want to keep useful stack traces, but do not require full information
-for the debugger, you can use `debug = "line-tables-only"` instead.
-
 ### Linking
 
 A big part of compile time is actually linking time, particularly when
@@ -376,6 +360,24 @@ It is also much newer and may not work in all cases.
 
 Unlike the other options in this chapter, there are no trade-offs here!
 Alternative linkers can be dramatically faster, without any downsides.
+
+### Disable Debug Info Generation
+
+Although release builds give the best performance, many people use dev builds
+while developing because they build more quickly. If you use dev builds but
+don't often use a debugger, consider disabling debuginfo. This can improve dev
+build times significantly, by as much as 20-40%.
+[**Example.**](https://kobzol.github.io/rust/rustc/2025/05/20/disable-debuginfo-to-improve-rust-compile-times.html)
+
+To disable debug info generation, add these lines to the `Cargo.toml` file:
+```toml
+[profile.dev]
+debug = false
+```
+Note that this means that stack traces will not contain line information. If
+you want to keep that line information, but do not require full information for
+the debugger, you can use `debug = "line-tables-only"` instead, which still
+gives most of the compile time benefits.
 
 ### Experimental Parallel Front-end
 

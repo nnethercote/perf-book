@@ -62,7 +62,7 @@ To profile a release build effectively you might need to enable source line
 debug info. To do this, add the following lines to your `Cargo.toml` file:
 ```toml
 [profile.release]
-debug = 1
+debug = "line-tables-only"
 ```
 See the [Cargo documentation] for more details about the `debug` setting.
 
