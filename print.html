@@ -432,6 +432,17 @@ comprehensive documentation in the excellent <a href="https://github.com/johntha
 <h2 id="minimizing-compile-times"><a class="header" href="#minimizing-compile-times">Minimizing Compile Times</a></h2>
 <p>The following build configuration options are designed primarily to minimize
 compile times.</p>
+<h3 id="disable-debuginfo-generation"><a class="header" href="#disable-debuginfo-generation">Disable debuginfo generation</a></h3>
+<p>If you want to improve the compile times of <code>dev</code> (unoptimized) builds and
+you’re not using a debugger, consider disabling debuginfo. It can improve
+incremental rebuild times by 2-3x.</p>
+<p>You can do that by putting this in your <code>Cargo.toml</code> file:</p>
+<pre><code class="language-toml">[profile.dev]
+debug = false
+</code></pre>
+<p>Note that this means that stack traces will not contain line information.
+If you want to keep useful stack traces, but do not require full information
+for the debugger, you can use <code>debug = "line-tables-only"</code> instead.</p>
 <h3 id="linking"><a class="header" href="#linking">Linking</a></h3>
 <p>A big part of compile time is actually linking time, particularly when
 rebuilding a program after a small change. It is possible to select a faster
