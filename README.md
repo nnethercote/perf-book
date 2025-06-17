@@ -54,6 +54,9 @@ issues rather than pull requests. This is because I am very particular about
 the wording used in the book. When pull requests are made, I typically take the
 underlying idea of a pull request and rewrite it into my own words anyway.
 
+This book contains no material produced by generative AI, and none will be
+accepted.
+
 ## License
 
 Licensed under either of
