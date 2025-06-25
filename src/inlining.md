@@ -1,8 +1,9 @@
 # Inlining
 
 Entry to and exit from hot, uninlined functions often accounts for a
-non-trivial fraction of execution time. Inlining these functions can provide
-small but easy speed wins. 
+non-trivial fraction of execution time. Inlining these functions removes these
+entries and exits and can enable additional low-level optimizations by the
+compiler. In the best case the overall effect is small but easy speed wins.
 
 There are four inline attributes that can be used on Rust functions.
 - **None**. The compiler will decide itself if the function should be inlined.
