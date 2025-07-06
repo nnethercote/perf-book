@@ -596,7 +596,7 @@ It works on Linux.</li>
 Linux, and macOS.</li>
 <li><a href="https://developer.amd.com/amd-uprof/">AMD μProf</a> is a general-purpose profiler. It works on Windows and Linux.</li>
 <li><a href="https://github.com/mstange/samply/">samply</a> is a sampling profiler that produces profiles that can be viewed
-in the Firefox Profiler. It works on Mac and Linux.</li>
+in the Firefox Profiler. It works on Mac, Linux, and Windows.</li>
 <li><a href="https://github.com/flamegraph-rs/flamegraph">flamegraph</a> is a Cargo command that uses perf/DTrace to profile your
 code and then displays the results in a flame graph. It works on Linux and
 all platforms that support DTrace (macOS, FreeBSD, NetBSD, and possibly
@@ -639,7 +639,7 @@ library as part of your program’s normal compilation, with the same build
 configuration. However, filenames present in the debug info for the standard
 library will not point to source code files, because this feature does not also
 download standard library source code. So this approach will not help with
-profilers such as Cachegrind and Samply that require source code to work fully.</p>
+profilers such as Cachegrind and samply that require source code to work fully.</p>
 <h2 id="frame-pointers"><a class="header" href="#frame-pointers">Frame pointers</a></h2>
 <p>The Rust compiler may optimize away frame pointers, which can hurt the quality
 of profiling information such as stack traces. To force the compiler to use
