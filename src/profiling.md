@@ -17,7 +17,7 @@ used successfully on Rust programs.
   Linux, and macOS.
 - [AMD μProf] is a general-purpose profiler. It works on Windows and Linux.
 - [samply] is a sampling profiler that produces profiles that can be viewed
-  in the Firefox Profiler. It works on Mac and Linux.
+  in the Firefox Profiler. It works on Mac, Linux, and Windows.
 - [flamegraph] is a Cargo command that uses perf/DTrace to profile your
   code and then displays the results in a flame graph. It works on Linux and
   all platforms that support DTrace (macOS, FreeBSD, NetBSD, and possibly
@@ -88,7 +88,7 @@ library as part of your program's normal compilation, with the same build
 configuration. However, filenames present in the debug info for the standard
 library will not point to source code files, because this feature does not also
 download standard library source code. So this approach will not help with
-profilers such as Cachegrind and Samply that require source code to work fully.
+profilers such as Cachegrind and samply that require source code to work fully.
 
 [build-std]: https://doc.rust-lang.org/cargo/reference/unstable.html#build-std
 
