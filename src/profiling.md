@@ -74,7 +74,7 @@ Rust standard library are not built with debug info.
 
 The most reliable way around this is to build your own version of the compiler
 and standard library, following [these instructions], and adding the following
-lines to the `config.toml` file:
+lines to a `bootstrap.toml` file in the repository root:
  ```toml
 [rust]
 debuginfo-level = 1
