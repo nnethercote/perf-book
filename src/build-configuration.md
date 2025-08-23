@@ -123,6 +123,11 @@ The third form of LTO is *fat LTO*, which is even more aggressive, and may
 improve performance and reduce binary size further while increasing build
 times again. Use `lto = "fat"` in `Cargo.toml` to enable it.
 
+Note that fat LTO does not necessarily produce *faster* executables than thin
+LTO, especially for larger programs it can be slower instead. It's recommended
+to compare the performance of thin and fat LTO for your program before enabling
+one over the other.
+
 Finally, it is possible to fully disable LTO, which will likely worsen runtime
 speed and increase binary size but reduce compile times. Use `lto = "off"` in
 `Cargo.toml` for this. Note that this is different to the `lto = false` option,
