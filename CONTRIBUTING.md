@@ -1,6 +1,6 @@
-# Contributing to The Rust Performance Book
+# Style Guide for The Rust Performance Book
 
-Please follow these style guidelines when contributing to the book.
+These style guidelines are used for the book.
 
 ## Line Lengths
 
