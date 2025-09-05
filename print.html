@@ -331,8 +331,8 @@ lto = false
 likely to improve runtime speed and reduce binary size while also increasing
 compile times. Use <code>lto = "thin"</code> in <code>Cargo.toml</code> to enable it.</p>
 <p>The third form of LTO is <em>fat LTO</em>, which is even more aggressive, and may
-improve performance and reduce binary size further while increasing build
-times again. Use <code>lto = "fat"</code> in <code>Cargo.toml</code> to enable it.</p>
+improve performance and reduce binary size further (but <a href="https://github.com/rust-lang/rust/pull/103453">not always</a>) while
+increasing build times again. Use <code>lto = "fat"</code> in <code>Cargo.toml</code> to enable it.</p>
 <p>Finally, it is possible to fully disable LTO, which will likely worsen runtime
 speed and increase binary size but reduce compile times. Use <code>lto = "off"</code> in
 <code>Cargo.toml</code> for this. Note that this is different to the <code>lto = false</code> option,
