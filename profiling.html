@@ -212,6 +212,9 @@ used to identify hot calls to <code>memcpy</code>. It works on Linux and some ot
 Unixes. <a href="https://github.com/nnethercote/dhat-rs/">dhat-rs</a> is an experimental alternative that is a little less
 powerful and requires minor changes to your Rust program, but works on all
 platforms.</li>
+<li><a href="https://github.com/iai-callgrind/iai-callgrind">Iai-Callgrind</a> provides <code>cargo bench</code> integration for the <a href="https://valgrind.org/">Valgrind</a>-based
+profilers: Cachegrind, Callgrind,
+DHAT, and others. It works on Linux and some other Unixes.</li>
 <li><a href="https://github.com/KDE/heaptrack">heaptrack</a> and <a href="https://github.com/koute/bytehound">bytehound</a> are heap profiling tools. They work on Linux.</li>
 <li><a href="https://github.com/nnethercote/counts/"><code>counts</code></a> supports ad hoc profiling, which combines the use of <code>eprintln!</code>
 statement with frequency-based post-processing, which is good for getting
