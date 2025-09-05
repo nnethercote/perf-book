@@ -31,6 +31,9 @@ used successfully on Rust programs.
   Unixes. [dhat-rs] is an experimental alternative that is a little less
   powerful and requires minor changes to your Rust program, but works on all
   platforms.
+- [Iai-Callgrind] provides `cargo bench` integration for the [Valgrind]-based
+  profilers: Cachegrind, Callgrind,
+  DHAT, and others. It works on Linux and some other Unixes.
 - [heaptrack] and [bytehound] are heap profiling tools. They work on Linux.
 - [`counts`] supports ad hoc profiling, which combines the use of `eprintln!`
   statement with frequency-based post-processing, which is good for getting
@@ -48,8 +51,10 @@ used successfully on Rust programs.
 [flamegraph]: https://github.com/flamegraph-rs/flamegraph
 [Cachegrind]: https://www.valgrind.org/docs/manual/cg-manual.html
 [Callgrind]: https://www.valgrind.org/docs/manual/cl-manual.html
+[Iai-Callgrind]: https://github.com/iai-callgrind/iai-callgrind
 [DHAT]: https://www.valgrind.org/docs/manual/dh-manual.html
 [dhat-rs]: https://github.com/nnethercote/dhat-rs/
+[Valgrind]: https://valgrind.org/
 [heaptrack]: https://github.com/KDE/heaptrack
 [bytehound]: https://github.com/koute/bytehound
 [`counts`]: https://github.com/nnethercote/counts/
