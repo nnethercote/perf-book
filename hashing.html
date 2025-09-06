@@ -182,11 +182,13 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="hashing"><a class="header" href="#hashing">Hashing</a></h1>
-<p><code>HashSet</code> and <code>HashMap</code> are two widely-used types. The default hashing
-algorithm is not specified, but at the time of writing the default is an
-algorithm called <a href="https://en.wikipedia.org/wiki/SipHash">SipHash 1-3</a>. This algorithm is high quality—it provides high
-protection against collisions—but is relatively slow, particularly for short keys
-such as integers.</p>
+<p><code>HashSet</code> and <code>HashMap</code> are two widely-used types and there are ways to make
+them faster.</p>
+<h2 id="alternative-hashers"><a class="header" href="#alternative-hashers">Alternative Hashers</a></h2>
+<p>The default hashing algorithm is not specified, but at the time of writing the
+default is an algorithm called <a href="https://en.wikipedia.org/wiki/SipHash">SipHash 1-3</a>. This algorithm is high quality—it
+provides high protection against collisions—but is relatively slow,
+particularly for short keys such as integers.</p>
 <p>If profiling shows that hashing is hot, and <a href="https://en.wikipedia.org/wiki/Collision_attack">HashDoS attacks</a> are not a concern
 for your application, the use of hash tables with faster hash algorithms can
 provide large speed wins.</p>
@@ -221,6 +223,18 @@ distribution of the values themselves. In this case the <a href="https://crates.
 can be useful.</p>
 <p>Hash function design is a complex topic and is beyond the scope of this book.
 The <a href="https://github.com/tkaitchuck/aHash/blob/master/compare/readme.md"><code>ahash</code> documentation</a> has a good discussion.</p>
+<h2 id="byte-wise-hashing"><a class="header" href="#byte-wise-hashing">Byte-wise Hashing</a></h2>
+<p>When you annotate a type with <code>#[derive(Hash)]</code> the generated <code>hash</code> method
+will hash each field separately. For some hash functions it may be faster to
+convert the type to raw bytes and hash the bytes as a stream. This is possible
+for types that satisfy certain properties such as having no padding bytes.</p>
+<p>The <a href="https://crates.io/crates/zerocopy"><code>zerocopy</code></a> and <a href="https://crates.io/crates/bytemuck"><code>bytemuck</code></a> crates both provide a <code>#[derive(ByteHash)]</code>
+macro that generates a <code>hash</code> method that does this kind of byte-wise hashing.
+The README for the <a href="https://crates.io/crates/derive_hash_fast"><code>derive_hash_fast</code></a> crate provides more detail for this
+technique.</p>
+<p>This is an advanced technique, and the performance effects are highly dependent
+on the hash function and the exact structure of the types being hashed. Measure
+carefully.</p>
 
                     </main>
 
