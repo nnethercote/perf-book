@@ -775,6 +775,13 @@ fn uninlined_my_function() {
 <span class="boring">}</span></code></pre></pre>
 <p><a href="https://github.com/rust-lang/rust/pull/53513/commits/b73843f9422fb487b2d26ac2d65f79f73a4c9ae3"><strong>Example 1</strong></a>,
 <a href="https://github.com/rust-lang/rust/pull/64420/commits/a2261ad66400c3145f96ebff0d9b75e910fa89dd"><strong>Example 2</strong></a>.</p>
+<h2 id="outlining"><a class="header" href="#outlining">Outlining</a></h2>
+<p>The inverse of inlining is <em>outlining</em>: moving rarely executed code into a
+separate function. You can add a <code>#[cold]</code> attribute to such functions to tell
+the compiler that the function is rarely called. This can result in better code
+generation for the hot path.
+<a href="https://github.com/Lokathor/tinyvec/pull/127"><strong>Example 1</strong></a>,
+<a href="https://crates.io/crates/fast_assert"><strong>Example 2</strong></a>.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="hashing"><a class="header" href="#hashing">Hashing</a></h1>
 <p><code>HashSet</code> and <code>HashMap</code> are two widely-used types and there are ways to make
 them faster.</p>
