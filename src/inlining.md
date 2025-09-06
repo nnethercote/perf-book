@@ -100,3 +100,11 @@ fn uninlined_my_function() {
 [**Example 1**](https://github.com/rust-lang/rust/pull/53513/commits/b73843f9422fb487b2d26ac2d65f79f73a4c9ae3),
 [**Example 2**](https://github.com/rust-lang/rust/pull/64420/commits/a2261ad66400c3145f96ebff0d9b75e910fa89dd).
 
+## Outlining
+
+The inverse of inlining is *outlining*: moving rarely executed code into a
+separate function. You can add a `#[cold]` attribute to such functions to tell
+the compiler that the function is rarely called. This can result in better code
+generation for the hot path.
+[**Example 1**](https://github.com/Lokathor/tinyvec/pull/127),
+[**Example 2**](https://crates.io/crates/fast_assert).
