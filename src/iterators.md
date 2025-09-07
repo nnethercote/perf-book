@@ -78,3 +78,15 @@ The same is true for related iterators:
 [`slice::rchunks_exact_mut`]: https://doc.rust-lang.org/stable/std/primitive.slice.html#method.rchunks_exact_mut
 [`RChunksExactMut::into_remainder`]: https://doc.rust-lang.org/stable/std/slice/struct.RChunksExactMut.html#method.into_remainder
 
+## `copied`
+
+When iterating over collections of small data types, such as integers, it may
+be better to use `iter().copied()` instead of `iter()`. Whatever consumes that
+iterator will receive the integers by value instead of by reference, and LLVM
+may generate better code in that case.
+[**Example 1**](https://github.com/rust-lang/rust/issues/106539),
+[**Example 2**](https://github.com/rust-lang/rust/issues/113789).
+
+This is an advanced technique. You might need to check the generated machine
+code to be certain it is having an effect. See the [Machine
+Code](machine-code.md) chapter for details on how to do that.
