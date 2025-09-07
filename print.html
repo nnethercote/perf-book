@@ -1388,6 +1388,16 @@ still be faster to use <code>slice::chunks_exact</code> in combination with eith
 <li><a href="https://doc.rust-lang.org/stable/std/primitive.slice.html#method.chunks_mut"><code>slice::chunks_mut</code></a>, <a href="https://doc.rust-lang.org/stable/std/primitive.slice.html#method.chunks_exact_mut"><code>slice::chunks_exact_mut</code></a>, and <a href="https://doc.rust-lang.org/stable/std/slice/struct.ChunksExactMut.html#method.into_remainder"><code>ChunksExactMut::into_remainder</code></a>;</li>
 <li><a href="https://doc.rust-lang.org/stable/std/primitive.slice.html#method.rchunks_mut"><code>slice::rchunks_mut</code></a>, <a href="https://doc.rust-lang.org/stable/std/primitive.slice.html#method.rchunks_exact_mut"><code>slice::rchunks_exact_mut</code></a>, and <a href="https://doc.rust-lang.org/stable/std/slice/struct.RChunksExactMut.html#method.into_remainder"><code>RChunksExactMut::into_remainder</code></a>.</li>
 </ul>
+<h2 id="copied"><a class="header" href="#copied"><code>copied</code></a></h2>
+<p>When iterating over collections of small data types, such as integers, it may
+be better to use <code>iter().copied()</code> instead of <code>iter()</code>. Whatever consumes that
+iterator will receive the integers by value instead of by reference, and LLVM
+may generate better code in that case.
+<a href="https://github.com/rust-lang/rust/issues/106539"><strong>Example 1</strong></a>,
+<a href="https://github.com/rust-lang/rust/issues/113789"><strong>Example 2</strong></a>.</p>
+<p>This is an advanced technique. You might need to check the generated machine
+code to be certain it is having an effect. See the <a href="machine-code.html">Machine
+Code</a> chapter for details on how to do that.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="bounds-checks"><a class="header" href="#bounds-checks">Bounds Checks</a></h1>
 <p>By default, accesses to container types such as slices and vectors involve
 bounds checks in Rust. These can affect performance, e.g. within hot loops,
