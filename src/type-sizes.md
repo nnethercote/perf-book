@@ -143,8 +143,18 @@ assert_eq!(size_of_val(&bs), 2 * size_of::<usize>());
 The boxed slice can be converted back to a vector with [`slice::into_vec`]
 without any cloning or a reallocation.
 
+If possible, it may further prove beneficial to directly create a boxed slice
+instead of taking the detour through a `Vec` (the conversion from `Vec` to
+boxed slice may involve a reallocation and copy operation if the `Vec` contains
+excess capacity). Operations such as [`Iterator::collect`] allow for collection
+into a boxed slice directly:
+```rust
+let bs: Box<[u32]> = (1..5).collect();
+```
+
 [`Vec::into_boxed_slice`]: https://doc.rust-lang.org/std/vec/struct.Vec.html#method.into_boxed_slice
 [`slice::into_vec`]: https://doc.rust-lang.org/std/primitive.slice.html#method.into_vec
+[`Iterator::collect`]: https://doc.rust-lang.org/std/iter/trait.Iterator.html#method.collect
 
 ## `ThinVec`
 
