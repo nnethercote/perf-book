@@ -304,8 +304,14 @@ assert_eq!(size_of_val(&amp;v), 3 * size_of::&lt;usize&gt;());
 let bs: Box&lt;[u32]&gt; = v.into_boxed_slice();
 assert_eq!(size_of_val(&amp;bs), 2 * size_of::&lt;usize&gt;());
 <span class="boring">}</span></code></pre></pre>
-<p>The boxed slice can be converted back to a vector with <a href="https://doc.rust-lang.org/std/primitive.slice.html#method.into_vec"><code>slice::into_vec</code></a>
-without any cloning or a reallocation.</p>
+<p>Alternatively, a boxed slice can be constructed directly from an iterator with
+<a href="https://doc.rust-lang.org/std/iter/trait.Iterator.html#method.collect"><code>Iterator::collect</code></a>, avoiding the need for any reallocation.</p>
+<pre><pre class="playground"><code class="language-rust edition2018"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let bs: Box&lt;[u32]&gt; = (1..3).collect();
+<span class="boring">}</span></code></pre></pre>
+<p>A boxed slice can be converted to a vector with <a href="https://doc.rust-lang.org/std/primitive.slice.html#method.into_vec"><code>slice::into_vec</code></a> without any
+cloning or reallocation.</p>
 <h2 id="thinvec"><a class="header" href="#thinvec"><code>ThinVec</code></a></h2>
 <p>An alternative to boxed slices is <code>ThinVec</code>, from the <a href="https://crates.io/crates/thin-vec"><code>thin_vec</code></a> crate. It is
 functionally equivalent to <code>Vec</code>, but stores the length and capacity in the
