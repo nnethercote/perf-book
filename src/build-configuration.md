@@ -284,33 +284,28 @@ reduce compile times slightly. Add these lines to the `Cargo.toml` file:
 panic = "abort"
 ```
 
-### Strip Debug Info and Symbols
+### Strip Symbols
 
-You can tell the compiler to [strip] debug info and symbols from the compiled
-binary. Add these lines to `Cargo.toml` to strip just debug info:
+You can tell the compiler to [strip] symbols from a release build by adding
+these lines to `Cargo.toml`:
 ```toml
 [profile.release]
-strip = "debuginfo"
+strip = "symbols"
 ```
-Alternatively, use `strip = "symbols"` to strip both debug info and symbols.
-
 [strip]: https://doc.rust-lang.org/cargo/reference/profiles.html#strip
 
-Prior to Rust 1.77, the default behaviour was to do no stripping. [As of Rust
-1.77] the default behaviour is to strip debug info in release builds.
-
-[As of Rust 1.77]: https://blog.rust-lang.org/2024/03/21/Rust-1.77.0.html#enable-strip-in-release-profiles-by-default
-
-Stripping debug info can greatly reduce binary size. On Linux, the binary size
-of a small Rust programs might shrink by 4x when debug info is stripped.
-Stripping symbols can also reduce binary size, though generally not by as much.
 [**Example**](https://github.com/nnethercote/counts/commit/53cab44cd09ff1aa80de70a6dbe1893ff8a41142).
-The exact effects are platform-dependent.
 
-However, stripping makes your compiled program more difficult to debug and
-profile. For example, if a stripped program panics, the backtrace produced may
-contain less useful information than normal. The exact effects for the two
-levels of stripping depend on the platform.
+However, stripping symbols may make your compiled program more difficult to
+debug and profile. For example, if a stripped program panics, the backtrace
+produced may contain less useful information than normal. The exact effects
+depend on the platform.
+
+Debug info does not need to be stripped from release builds. By default, debug
+info is not generated for local release builds, and debug info for the standard
+library has been stripped automatically in release builds [since Rust 1.77].
+
+[since Rust 1.77]: https://blog.rust-lang.org/2024/03/21/Rust-1.77.0.html#enable-strip-in-release-profiles-by-default
 
 ### Other Ideas
 
