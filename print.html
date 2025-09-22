@@ -428,24 +428,20 @@ reduce compile times slightly. Add these lines to the <code>Cargo.toml</code> fi
 <pre><code class="language-toml">[profile.release]
 panic = "abort"
 </code></pre>
-<h3 id="strip-debug-info-and-symbols"><a class="header" href="#strip-debug-info-and-symbols">Strip Debug Info and Symbols</a></h3>
-<p>You can tell the compiler to <a href="https://doc.rust-lang.org/cargo/reference/profiles.html#strip">strip</a> debug info and symbols from the compiled
-binary. Add these lines to <code>Cargo.toml</code> to strip just debug info:</p>
+<h3 id="strip-symbols"><a class="header" href="#strip-symbols">Strip Symbols</a></h3>
+<p>You can tell the compiler to <a href="https://doc.rust-lang.org/cargo/reference/profiles.html#strip">strip</a> symbols from a release build by adding
+these lines to <code>Cargo.toml</code>:</p>
 <pre><code class="language-toml">[profile.release]
-strip = "debuginfo"
+strip = "symbols"
 </code></pre>
-<p>Alternatively, use <code>strip = "symbols"</code> to strip both debug info and symbols.</p>
-<p>Prior to Rust 1.77, the default behaviour was to do no stripping. <a href="https://blog.rust-lang.org/2024/03/21/Rust-1.77.0.html#enable-strip-in-release-profiles-by-default">As of Rust
-1.77</a> the default behaviour is to strip debug info in release builds.</p>
-<p>Stripping debug info can greatly reduce binary size. On Linux, the binary size
-of a small Rust programs might shrink by 4x when debug info is stripped.
-Stripping symbols can also reduce binary size, though generally not by as much.
-<a href="https://github.com/nnethercote/counts/commit/53cab44cd09ff1aa80de70a6dbe1893ff8a41142"><strong>Example</strong></a>.
-The exact effects are platform-dependent.</p>
-<p>However, stripping makes your compiled program more difficult to debug and
-profile. For example, if a stripped program panics, the backtrace produced may
-contain less useful information than normal. The exact effects for the two
-levels of stripping depend on the platform.</p>
+<p><a href="https://github.com/nnethercote/counts/commit/53cab44cd09ff1aa80de70a6dbe1893ff8a41142"><strong>Example</strong></a>.</p>
+<p>However, stripping symbols may make your compiled program more difficult to
+debug and profile. For example, if a stripped program panics, the backtrace
+produced may contain less useful information than normal. The exact effects
+depend on the platform.</p>
+<p>Debug info does not need to be stripped from release builds. By default, debug
+info is not generated for local release builds, and debug info for the standard
+library has been stripped automatically in release builds <a href="https://blog.rust-lang.org/2024/03/21/Rust-1.77.0.html#enable-strip-in-release-profiles-by-default">since Rust 1.77</a>.</p>
 <h3 id="other-ideas"><a class="header" href="#other-ideas">Other Ideas</a></h3>
 <p>For more advanced binary size minimization techniques, consult the
 comprehensive documentation in the excellent <a href="https://github.com/johnthagen/min-sized-rust"><code>min-sized-rust</code></a> repository.</p>
