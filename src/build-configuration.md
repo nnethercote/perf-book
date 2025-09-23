@@ -322,10 +322,16 @@ compile times.
 ### Linking
 
 A big part of compile time is actually linking time, particularly when
-rebuilding a program after a small change. It is possible to select a faster
-linker than the default one.
+rebuilding a program after a small change. On some platforms it is possible to
+select a faster linker than the default one.
 
-One option is [lld], which is available on Linux and Windows. To specify lld
+One option is [lld], which is available on Linux and Windows. lld has been the
+default linker on Linux [since Rust 1.90]. It is not yet the default on
+Windows, but it should work for most use cases.
+
+[since Rust 1.90]: https://blog.rust-lang.org/2025/09/01/rust-lld-on-1.90.0-stable/
+
+To specify lld
 from the command line, use the `-C link-arg=-fuse-ld=lld` flag. For example:
 ```bash
 RUSTFLAGS="-C link-arg=-fuse-ld=lld" cargo build --release
@@ -341,9 +347,8 @@ rustflags = ["-C", "link-arg=-fuse-ld=lld"]
 ```
 [`config.toml`]: https://doc.rust-lang.org/cargo/reference/config.html
 
-lld is not fully supported for use with Rust, but it should work for most use
-cases on Linux and Windows. There is a [GitHub Issue] tracking full support for
-lld.
+There is a [GitHub Issue] tracking full
+support for lld.
 
 [GitHub Issue]: https://github.com/rust-lang/rust/issues/39915#issuecomment-618726211
 
@@ -355,8 +360,18 @@ It is also much newer and may not work in all cases.
 
 [mold]: https://github.com/rui314/mold
 
-Unlike the other options in this chapter, there are no trade-offs here!
-Alternative linkers can be dramatically faster, without any downsides.
+A final option is [wild], which is currently only available on Linux. It may be
+even faster than mold, but it is less mature.
+
+[wild]: https://github.com/davidlattimore/wild
+
+On Mac, an alternative linker isn't necessary because the system linker is
+fast.
+
+Unlike the other options in this chapter, there are no trade-offs to choosing
+another linker. As long as the linker works correctly for your program, which
+is likely to be true unless you are doing unusual things, an alternative
+linker can be dramatically faster without any downsides.
 
 ### Disable Debug Info Generation
 
