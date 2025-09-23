@@ -385,9 +385,12 @@ comprehensive documentation in the excellent <a href="https://github.com/johntha
 compile times.</p>
 <h3 id="linking"><a class="header" href="#linking">Linking</a></h3>
 <p>A big part of compile time is actually linking time, particularly when
-rebuilding a program after a small change. It is possible to select a faster
-linker than the default one.</p>
-<p>One option is <a href="https://lld.llvm.org/">lld</a>, which is available on Linux and Windows. To specify lld
+rebuilding a program after a small change. On some platforms it is possible to
+select a faster linker than the default one.</p>
+<p>One option is <a href="https://lld.llvm.org/">lld</a>, which is available on Linux and Windows. lld has been the
+default linker on Linux <a href="https://blog.rust-lang.org/2025/09/01/rust-lld-on-1.90.0-stable/">since Rust 1.90</a>. It is not yet the default on
+Windows, but it should work for most use cases.</p>
+<p>To specify lld
 from the command line, use the <code>-C link-arg=-fuse-ld=lld</code> flag. For example:</p>
 <pre><code class="language-bash">RUSTFLAGS="-C link-arg=-fuse-ld=lld" cargo build --release
 </code></pre>
@@ -396,16 +399,21 @@ projects), add these lines:</p>
 <pre><code class="language-toml">[build]
 rustflags = ["-C", "link-arg=-fuse-ld=lld"]
 </code></pre>
-<p>lld is not fully supported for use with Rust, but it should work for most use
-cases on Linux and Windows. There is a <a href="https://github.com/rust-lang/rust/issues/39915#issuecomment-618726211">GitHub Issue</a> tracking full support for
-lld.</p>
+<p>There is a <a href="https://github.com/rust-lang/rust/issues/39915#issuecomment-618726211">GitHub Issue</a> tracking full
+support for lld.</p>
 <p>Another option is <a href="https://github.com/rui314/mold">mold</a>, which is currently available on Linux.
 Simply substitute <code>mold</code> for <code>lld</code> in the instructions above. mold is often
 faster than lld.
 <a href="https://davidlattimore.github.io/posts/2024/02/04/speeding-up-the-rust-edit-build-run-cycle.html"><strong>Example</strong></a>.
 It is also much newer and may not work in all cases.</p>
-<p>Unlike the other options in this chapter, there are no trade-offs here!
-Alternative linkers can be dramatically faster, without any downsides.</p>
+<p>A final option is <a href="https://github.com/davidlattimore/wild">wild</a>, which is currently only available on Linux. It may be
+even faster than mold, but it is less mature.</p>
+<p>On Mac, an alternative linker isn’t necessary because the system linker is
+fast.</p>
+<p>Unlike the other options in this chapter, there are no trade-offs to choosing
+another linker. As long as the linker works correctly for your program, which
+is likely to be true unless you are doing unusual things, an alternative
+linker can be dramatically faster without any downsides.</p>
 <h3 id="disable-debug-info-generation"><a class="header" href="#disable-debug-info-generation">Disable Debug Info Generation</a></h3>
 <p>Although release builds give the best performance, many people use dev builds
 while developing because they build more quickly. If you use dev builds but
