@@ -186,9 +186,13 @@
 to large performance improvements. There are a variety of ways to introduce
 parallelism into a program and the best way for any program will depend greatly
 on its design.</p>
-<p>An in-depth treatment of parallelism is beyond the scope of this book. If you
-are interested in this topic, the documentation for the <a href="https://crates.io/crates/rayon"><code>rayon</code></a> and
-<a href="https://crates.io/crates/crossbeam"><code>crossbeam</code></a> crates is a good place to start.</p>
+<p>Having said that, an in-depth treatment of parallelism is beyond the scope of
+this book.</p>
+<p>If you are interested in thread-based parallelism, the documentation for the
+<a href="https://crates.io/crates/rayon"><code>rayon</code></a> and <a href="https://crates.io/crates/crossbeam"><code>crossbeam</code></a> crates is a good place to start. <a href="https://marabos.nl/atomics/">Rust Atomics and
+Locks</a> is also an excellent resource.</p>
+<p>If you are interested in fine-grained data parallelism, this <a href="https://shnatsel.medium.com/the-state-of-simd-in-rust-in-2025-32c263e5f53d">blog post</a> is a
+good overview of the state of SIMD support in Rust as of November 2025.</p>
 
                     </main>
 
