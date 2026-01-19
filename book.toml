@@ -3,7 +3,6 @@ title = "The Rust Performance Book"
 authors = ["Nicholas Nethercote"]
 src = "src"
 language = "en"
-multilingual = false
 
 [build]
 create-missing = false
@@ -12,7 +11,7 @@ create-missing = false
 edition = "2018"
 
 [output.html]
-curly-quotes = true
+smart-punctuation = true
 default-theme = "rust"
 git-repository-url = "https://github.com/nnethercote/perf-book"
 edit-url-template = "https://github.com/nnethercote/perf-book/edit/master/{path}"
