@@ -141,7 +141,8 @@ let bs: Box<[u32]> = v.into_boxed_slice();
 assert_eq!(size_of_val(&bs), 2 * size_of::<usize>());
 ```
 Alternatively, a boxed slice can be constructed directly from an iterator with
-[`Iterator::collect`], avoiding the need for reallocation.
+[`Iterator::collect`]. If the iterator's length is known in advance, this
+avoids any reallocation.
 ```rust
 let bs: Box<[u32]> = (1..3).collect();
 ```
