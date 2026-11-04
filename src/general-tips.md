@@ -63,6 +63,7 @@ most common ones first.
 
 When dealing with lookups that involve high locality, it can be a win to put a
 small cache in front of a data structure.
+[**Example**](https://github.com/rust-lang/rust/pull/163628/changes/5e04ccd901bb3e03cb3ef2208b9648af7667ef5c).
 
 Optimized code often has a non-obvious structure, which means that explanatory
 comments are valuable, particularly those that reference profiling
